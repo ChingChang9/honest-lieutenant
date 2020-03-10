@@ -44,7 +44,7 @@ module.exports = {
       const name = arguments[0].toLowerCase();
       const command = commands.get(name) || commands.find((command) => command.aliases && command.aliases.includes(name));
       if (!command) return message.reply("That's not a valid command!");
-
+      const commandUsage = command.usage ? ` ${ command.usage }` : "";
       const helpEmbed = {
       	color: "#fefefe",
       	author: {
@@ -57,7 +57,7 @@ module.exports = {
       	fields: [
           {
             name: "Usage",
-            value: `\`${ prefix }${ command.name } ${ command.usage }\``,
+            value: `\`${ prefix }${ command.name }${ commandUsage }\``,
             inline: true
           },
           {
