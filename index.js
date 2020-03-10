@@ -13,9 +13,7 @@ for (const file of commandFiles) {
 
 client.on("ready", () => {
   console.log(`Logged in as ${ client.user.tag }!`);
-  client.user.setActivity("with Ching", {
-    type: "Game"
-  });
+  client.user.setActivity("with Ching");
 });
 
 client.on("message", async (message) => {

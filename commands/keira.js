@@ -1,14 +1,15 @@
 const fs = require("fs");
-const Discord = require("discord.js");
-const Canvas = require("canvas");
-
-const folderSize = fs.readdirSync("./assets/keira").length;
 
 module.exports = {
   name: "keira",
   description: "Sends a random picture of Keira Knightley",
   arguments: false,
-  async execute(message, arguments) {const index = Math.floor(Math.random() * folderSize);
+  async execute(message, arguments) {
+    const folderSize = fs.readdirSync("./assets/keira").length;
+    const index = Math.floor(Math.random() * (folderSize + 1));
+    if (index === 396) {
+      message.channel.send("Ha! you thought!");
+    }
     message.channel.send({
       files: [`./assets/keira/${ index }.jpg`]
     });

@@ -1,6 +1,7 @@
 module.exports = {
   name: "clean",
   description: "Delete a number of the most recent messages",
+  arguments: false,
   usage: "<#-of-messages>",
   default: "10",
   execute(message, arguments) {
