@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "1.0.0",
+  "version": "0.4.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -15,9 +15,9 @@
     "canvas": "^2.6.1",
     "discord.js": "github:discordjs/discord.js",
     "eslint": "^6.8.0",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-static": "^3.0.0",
+    "ffmpeg-static": "^4.0.1",
+    "googleapis": "^48.0.0",
     "sodium": "^3.0.2",
-    "ytdl-core": "^1.0.7"
+    "ytdl-core-discord": "^1.1.0"
   }
 }

@@ -2,9 +2,9 @@ const fs = require("fs");
 
 module.exports = {
   name: "keira",
-  description: "Sends a random picture of Keira Knightley",
+  description: "Send a random picture of Keira Knightley",
   arguments: false,
-  async execute(message, arguments) {
+  execute(message, arguments) {
     const folderSize = fs.readdirSync("./assets/keira").length;
     const index = Math.floor(Math.random() * (folderSize + 1));
     if (index === 396) {

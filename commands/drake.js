@@ -3,9 +3,9 @@ const Canvas = require("canvas");
 
 module.exports = {
   name: "drake",
-  description: "Makes a drake meme",
+  description: "Make a drake meme",
   arguments: true,
-  usage: "<bad> <good>",
+  usage: "<bad> : <good>",
   async execute(message, arguments) {
     const canvas = Canvas.createCanvas(640, 550);
     const context = canvas.getContext("2d");
@@ -13,9 +13,13 @@ module.exports = {
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
     context.font = "bold 42px Arial";
     context.fillStyle = "#000000";
-  	context.fillText(arguments[0], (canvas.width * 3 / 4 - context.measureText(arguments[0]).width / 2), canvas.height / 4 + 21);
-    context.fillText(arguments[1], (canvas.width * 3 / 4 - context.measureText(arguments[1]).width / 2), canvas.height * 3 / 4 + 21);
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "you're-fake.jpg");
+    let [text1, text2] = arguments.join(" ").split(":");
+    if (!text2) {
+      return message.reply("you didn't provide the second argument!");
+    }
+  	context.fillText(text1, (canvas.width * 3 / 4 - context.measureText(text1).width / 2), canvas.height / 4 + 21);
+    context.fillText(text2, (canvas.width * 3 / 4 - context.measureText(text2).width / 2), canvas.height * 3 / 4 + 21);
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "drake-meme.jpg");
     message.channel.send(attachment);
   }
 };

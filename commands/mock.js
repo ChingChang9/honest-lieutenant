@@ -3,7 +3,7 @@ const Canvas = require("canvas");
 
 module.exports = {
   name: "mock",
-  description: "Turns the message into a spongebob mocking meme",
+  description: "Turn the message into a spongebob mocking meme",
   arguments: true,
   usage: "<text-to-mock>",
   async execute(message, arguments) {
@@ -49,7 +49,7 @@ module.exports = {
   	context.fillStyle = "#ffffff";
   	context.fillText(text1, (canvas.width - context.measureText(text1).width) / 2, 53);
     context.fillText(text2, (canvas.width - context.measureText(text2).width) / 2, 380);
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "you're-fake.jpg");
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "youre-fake.jpg");
     message.channel.send(attachment);
   }
 };

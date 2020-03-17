@@ -39,12 +39,12 @@ module.exports = {
       	})
       	.catch((error) => {
       		console.error(`Could not send help DM to ${ message.author.tag }.\n`, error);
-      		message.reply("It seems like I can't DM you! Do you have DM's disabled?");
+      		message.reply("it seems like I can't DM you! Do you have DM's disabled?");
       	});
     } else {
       const name = arguments[0].toLowerCase();
       const command = commands.get(name) || commands.find((command) => command.aliases && command.aliases.includes(name));
-      if (!command) return message.reply("That's not a valid command!");
+      if (!command) return message.reply("that's not a valid command!");
       const commandUsage = command.usage ? ` ${ command.usage }` : "";
       const helpEmbed = {
       	color: "#fefefe",
@@ -54,7 +54,7 @@ module.exports = {
       		url: "https://www.chingchang.dev"
       	},
         title: `${ prefix }${ command.name }`,
-      	description: `Function:\n${ command.description }`,
+      	description: command.description,
       	fields: [
           {
             name: "Usage",
@@ -75,7 +75,7 @@ module.exports = {
       return message.channel.send({ files: [icon], embed: helpEmbed })
       	.catch((error) => {
       		console.error(`Could not send help DM to ${ message.author.tag }.\n`, error);
-      		message.reply("It seems like I can't DM you! Do you have DM's disabled?");
+      		message.reply("it seems like I can't DM you! Do you have DM's disabled?");
       	});
     }
   }

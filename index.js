@@ -13,10 +13,14 @@ for (const file of commandFiles) {
 
 client.on("ready", () => {
   console.log(`Logged in as ${ client.user.tag }!`);
-  client.user.setActivity("with Ching");
+  client.user.setActivity("with myself | .help");
 });
 
-client.on("message", async (message) => {
+client.on("message", (message) => {
+	if (message.content.toLowerCase().startsWith("im") || message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("i am")) {
+		return message.channel.send(`Hi ${ message.content.split(/ +/).splice(1).join(" ") }, I'm dad! 😂`);
+	}
+
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const arguments = message.content.slice(prefix.length).split(/ +/);
@@ -26,23 +30,21 @@ client.on("message", async (message) => {
   if (!command) return;
 
   if (command.arguments && !arguments.length) {
-    let reply = `You didn't provide any arguments, ${ message.author }!`;
-		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${ prefix }${ command.name } ${ command.usage }\``;
-		}
-		return message.channel.send(reply);
+		return message.reply(`you didn't provide any arguments!\nThe proper usage would be: \`${ prefix }${ command.name } ${ command.usage }\``);
   }
 
   try {
-  	await command.execute(message, arguments);
+  	command.execute(message, arguments);
   } catch (error) {
   	console.error(error);
-  	message.reply("There was an error trying to execute that command!");
+  	message.reply("there was an error trying to execute that command!");
   }
 });
 
 client.on("error", (error) => {
 	 console.error("The websocket connection encountered an error:", error);
 });
+
+process.on("unhandledRejection", (error) => console.error("Uncaught Promise Rejection", error));
 
 client.login(token);
