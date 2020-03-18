@@ -17,8 +17,11 @@ client.on("ready", () => {
 });
 
 client.on("message", (message) => {
-	if (message.content.toLowerCase().startsWith("im") || message.content.toLowerCase().startsWith("i'm") || message.content.toLowerCase().startsWith("i am")) {
+	if (message.content.toLowerCase().startsWith("im ") || message.content.toLowerCase().startsWith("i'm ")) {
 		return message.channel.send(`Hi ${ message.content.split(/ +/).splice(1).join(" ") }, I'm dad! 😂`);
+	}
+	if (message.content.toLowerCase().startsWith("i am ")) {
+		return message.channel.send(`Hi ${ message.content.split(/ +/).splice(2).join(" ") }, I'm dad! 😂`);
 	}
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;

@@ -9,7 +9,6 @@ module.exports = {
   arguments: false,
   usage: "<command-name>",
   execute(message, arguments) {
-    const data = [];
     const { commands } = message.client;
 
     if (!arguments.length) {
@@ -32,51 +31,39 @@ module.exports = {
       		icon_url: "attachment://icon.jpg"
       	}
       };
-      return message.author.send({ files: [icon], embed: helpEmbed })
-      	.then(() => {
-      		if (message.channel.type === "dm") return;
-      		message.reply("I've sent you a DM with all my commands!");
-      	})
-      	.catch((error) => {
-      		console.error(`Could not send help DM to ${ message.author.tag }.\n`, error);
-      		message.reply("it seems like I can't DM you! Do you have DM's disabled?");
-      	});
-    } else {
-      const name = arguments[0].toLowerCase();
-      const command = commands.get(name) || commands.find((command) => command.aliases && command.aliases.includes(name));
-      if (!command) return message.reply("that's not a valid command!");
-      const commandUsage = command.usage ? ` ${ command.usage }` : "";
-      const helpEmbed = {
-      	color: "#fefefe",
-      	author: {
-      		name: "Honest Lieutenant",
-      		icon_url: "attachment://icon.jpg",
-      		url: "https://www.chingchang.dev"
-      	},
-        title: `${ prefix }${ command.name }`,
-      	description: command.description,
-      	fields: [
-          {
-            name: "Usage",
-            value: `\`${ prefix }${ command.name }${ commandUsage }\``,
-            inline: true
-          },
-          {
-            name: "Default Value",
-            value: command.default || "No default value",
-            inline: true
-          }
-      	],
-      	footer: {
-      		text: "Ching Chang © 2020 All Rights Reserved",
-      		icon_url: "attachment://icon.jpg"
-      	}
-      };
-      return message.channel.send({ files: [icon], embed: helpEmbed })
-      	.catch((error) => {
-      		console.error(`Could not send help DM to ${ message.author.tag }.\n`, error);
-      		message.reply("it seems like I can't DM you! Do you have DM's disabled?");
-      	});
+      return message.channel.send({ files: [icon], embed: helpEmbed });
     }
+
+    const name = arguments[0].toLowerCase();
+    const command = commands.get(name) || commands.find((command) => command.aliases && command.aliases.includes(name));
+    if (!command) return message.reply("that's not a valid command!");
+    const commandUsage = command.usage ? ` ${ command.usage }` : "";
+    const helpEmbed = {
+    	color: "#fefefe",
+    	author: {
+    		name: "Honest Lieutenant",
+    		icon_url: "attachment://icon.jpg",
+    		url: "https://www.chingchang.dev"
+    	},
+      title: `${ prefix }${ command.name }`,
+    	description: command.description,
+    	fields: [
+        {
+          name: "Usage",
+          value: `\`${ prefix }${ command.name }${ commandUsage }\``,
+          inline: true
+        },
+        {
+          name: "Default Value",
+          value: command.default || "No default value",
+          inline: true
+        }
+    	],
+    	footer: {
+    		text: "Ching Chang © 2020 All Rights Reserved",
+    		icon_url: "attachment://icon.jpg"
+    	}
+    };
+    return message.channel.send({ files: [icon], embed: helpEmbed });
   }
 };
