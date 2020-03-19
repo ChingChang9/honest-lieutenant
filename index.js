@@ -44,6 +44,10 @@ client.on("message", (message) => {
   }
 });
 
+client.on("guildMemberAdd", (guildMember) => {
+	guildMember.roles.add(guildMember.guild.roles.find((role) => role.name === "Stressed IB student"));
+});
+
 client.on("error", (error) => {
 	 console.error("The websocket connection encountered an error:", error);
 });

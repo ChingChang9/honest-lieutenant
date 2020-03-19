@@ -8,7 +8,7 @@ module.exports = {
     }
     const connection = await message.guild.voice.channel.join();
     if (!connection.player.dispatcher) {
-      return message.reply("I'm wasn't playing anything!");
+      return message.reply("I wasn't playing anything!");
     }
     connection.player.dispatcher.resume();
   }

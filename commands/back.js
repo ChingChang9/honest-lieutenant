@@ -17,7 +17,6 @@ module.exports = {
       if (error) return console.log(error);
 
       const { queue, played } = JSON.parse(data);
-      console.log(queue, played)
       if (played <= 1) {
         play.play(message, connection, queue, 0);
       }

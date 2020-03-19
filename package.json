@@ -17,6 +17,7 @@
     "eslint": "^6.8.0",
     "ffmpeg-static": "^4.0.1",
     "googleapis": "^48.0.0",
+    "node-fetch": "^2.6.0",
     "sodium": "^3.0.2",
     "ytdl-core-discord": "^1.1.0"
   }
