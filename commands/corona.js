@@ -72,4 +72,4 @@ module.exports = {
 
     return message.reply("Humm, it seems like I don't have data for this country/province. Sorry 😬")
   }
-}
+};

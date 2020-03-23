@@ -17,8 +17,8 @@ module.exports = {
     fs.readFile("./assets/queue.json", (error, data) => {
       if (error) return console.log(error);
 
-      const { queue, played } = JSON.parse(data);
-      let index = played - 1;
+      const { queue, settings } = JSON.parse(data);
+      let index = settings.played - 1;
       message.channel.send({
         embed: {
           color: "#fefefe",

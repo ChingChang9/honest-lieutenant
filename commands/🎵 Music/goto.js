@@ -2,12 +2,11 @@ const fs = require("fs");
 const play = require("./play.js");
 
 module.exports = {
-  name: "back",
-  description: "Play the previous song",
-  aliases: ["prev"],
-  arguments: false,
-  usage: "<#-of-songs-to-back>",
-  default: "1",
+  name: "goto",
+  description: "Play a specific song in the queue",
+  aliases: ["jump"],
+  arguments: true,
+  usage: "<index-of-song>",
   async execute(message, arguments)  {
     if (!message.guild.voice) {
       return message.reply("I'm not in the voice channel!");
@@ -17,11 +16,9 @@ module.exports = {
       if (error) return console.log(error);
 
       const { queue, settings } = JSON.parse(data);
-      if (settings.played <= 1) {
-        play.play(message, connection, queue, 0);
-      }
-      let skip = parseInt(arguments[0]) || 1;
-      play.play(message, connection, queue, settings.played - skip - 1);
+      let index = parseInt(arguments[0]);
+      if (!queue[index - 1]) return message.reply("I can't find the track, maybe the queue has been cleared?");
+      play.play(message, connection, queue, index - 1);
     });
   }
 };

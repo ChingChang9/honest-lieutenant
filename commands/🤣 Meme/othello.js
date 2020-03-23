@@ -4,6 +4,6 @@ module.exports = {
   arguments: false,
   usage: "<scene-name>",
   execute(message, arguments) {
-    message.reply("Still working on this command 😅");
+    message.reply("I'm still working on this command 😅");
   }
 };

@@ -16,6 +16,9 @@ module.exports = {
     if (amount < 2 || amount > 100) {
       return message.reply("you need to input a number between 1 and 99");
     }
+    if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+      return message.reply("you don't have the permission to use this command");
+    }
     message.channel.bulkDelete(amount, true).catch((error) => {
       message.reply("there was an error trying to delete messages in this channel");
     });
