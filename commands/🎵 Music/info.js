@@ -35,21 +35,21 @@ module.exports = {
             {
               name: "Duration",
               value: `${ queue[index].duration < 36000 ? "0" : "" }${ Math.floor(queue[index].duration / 3600) }:${
-                queue[index].duration < 600 ? "0" : "" }${ Math.floor(queue[index].duration / 60) }:${
-                  queue[index].duration % 60 < 10 ? "0" : "" }${ queue[index].duration % 60 }`,
-                  inline: true
-                },
-                {
-                  name: "Requested by",
-                  value: message.member.nickname || message.author.username,
-                  inline: true
-                }
-              ],
-              footer: {
-                text: "Ching Chang © 2020 All Rights Reserved",
-                icon_url: "attachment://icon.jpg"
-              }
+              queue[index].duration % 3600 < 600 ? "0" : "" }${ Math.floor(queue[index].duration % 3600 / 60) }:${
+              queue[index].duration % 60 < 10 ? "0" : "" }${ queue[index].duration % 60 }`,
+              inline: true
+            },
+            {
+              name: "Requested by",
+              value: message.member.nickname || message.author.username,
+              inline: true
             }
+          ],
+          footer: {
+            text: "Ching Chang © 2020 All Rights Reserved",
+            icon_url: "attachment://icon.jpg"
+          }
+        }
       });
     });
   }

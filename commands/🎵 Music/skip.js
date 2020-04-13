@@ -8,19 +8,16 @@ module.exports = {
   arguments: false,
   usage: "<#-of-songs-to-skip>",
   default: "1",
-  async execute(message, arguments)  {
-    if (!message.guild.voice) {
-      return message.reply("I'm not in the voice channel!");
+  async execute(message, arguments) {
+    if (!message.member.voice.channel) {
+      return message.reply("you need to be in a voice channel to use this command!");
     }
-    const connection = await message.guild.voice.channel.join();
-    if (!connection.player.dispatcher) {
-      return message.reply("I wasn't playing anything!");
-    }
+    const connection = await message.member.voice.channel.join();
     fs.readFile("./assets/queue.json", (error, data) => {
       if (error) return console.log(error);
 
       const { queue, settings } = JSON.parse(data);
-      if (settings.played === queue.length) {
+      if (connection.player.dispatcher && settings.played === queue.length) {
         return connection.player.dispatcher.destroy();
       }
       let skip = parseInt(arguments[0]) || 1;

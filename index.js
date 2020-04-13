@@ -17,6 +17,7 @@ function readDirectory(path) {
 	}
 }
 readDirectory("./commands");
+const troll = require("./troll.js");
 
 client.on("ready", () => {
   console.log(`Logged in as ${ client.user.tag }!`);
@@ -24,14 +25,11 @@ client.on("ready", () => {
 });
 
 client.on("message", (message) => {
-	if (message.content.toLowerCase().startsWith("im ") || message.content.toLowerCase().startsWith("i'm ")) {
-		return message.channel.send(`Hi ${ message.content.split(/ +/).splice(1).join(" ") }, I'm dad! 😂`);
-	}
-	if (message.content.toLowerCase().startsWith("i am ")) {
-		return message.channel.send(`Hi ${ message.content.split(/ +/).splice(2).join(" ") }, I'm dad! 😂`);
-	}
+  if (message.author.bot) return;
 
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+	troll.execute(message);
+
+	if (!message.content.startsWith(prefix)) return;
 
   const arguments = message.content.slice(prefix.length).split(/ +/);
 	const commandName = arguments.shift().toLowerCase();
@@ -52,11 +50,11 @@ client.on("message", (message) => {
 });
 
 client.on("guildMemberAdd", (guildMember) => {
-	guildMember.roles.add(guildMember.guild.roles.find((role) => role.name === "Stressed IB student"));
+	guildMember.roles.add(guildMember.guild.roles.cache.find((role) => role.name === "Stressed IB student"));
 });
 
 client.on("error", (error) => {
-	 console.error("The websocket connection encountered an error:", error);
+	 console.error("The websocket connection encountered an error: ", error);
 });
 
 process.on("unhandledRejection", (error) => console.error("Uncaught Promise Rejection", error));

@@ -9,10 +9,10 @@ module.exports = {
   usage: "<#-of-songs-to-back>",
   default: "1",
   async execute(message, arguments)  {
-    if (!message.guild.voice) {
-      return message.reply("I'm not in the voice channel!");
+    if (!message.member.voice.channel) {
+      return message.reply("you need to be in a voice channel to use this command!");
     }
-    const connection = await message.guild.voice.channel.join();
+    const connection = await message.member.voice.channel.join();
     fs.readFile("./assets/queue.json", (error, data) => {
       if (error) return console.log(error);
 
