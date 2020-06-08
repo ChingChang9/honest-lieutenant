@@ -3,6 +3,7 @@ const fs = require("fs");
 module.exports = {
   name: "info",
   description: "Provide information on the current song",
+  aliases: ["np", "current"],
   arguments: false,
   async execute(message, arguments) {
     if (!message.guild.voice) {
@@ -14,11 +15,16 @@ module.exports = {
       return message.reply("I am not playing anything!");
     }
 
-    fs.readFile("./assets/queue.json", (error, data) => {
+    fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
-      const { queue, settings } = JSON.parse(data);
-      let index = settings.played - 1;
+      const { guilds } = await JSON.parse(data);
+      const { queue, settings } = guilds[message.guild.id];
+      const index = settings.played - 1;
+
+      const runTime = this.formatTime(Math.floor(connection.player.dispatcher.streamTime / 1000));
+      const duration = this.formatTime(queue[index].duration);
+      const ratio = Math.floor(connection.player.dispatcher.streamTime / 1000 / queue[index].duration * 10);
       message.channel.send({
         embed: {
           color: "#fefefe",
@@ -31,17 +37,16 @@ module.exports = {
           thumbnail: {
             url: queue[index].thumbnail
           },
+          description: `${ runTime } ${ "▬".repeat(ratio) }🔘${ "▬".repeat((9 - ratio)) } ${ duration }`,
           fields: [
             {
-              name: "Duration",
-              value: `${ queue[index].duration < 36000 ? "0" : "" }${ Math.floor(queue[index].duration / 3600) }:${
-              queue[index].duration % 3600 < 600 ? "0" : "" }${ Math.floor(queue[index].duration % 3600 / 60) }:${
-              queue[index].duration % 60 < 10 ? "0" : "" }${ queue[index].duration % 60 }`,
+              name: "Requested by",
+              value: queue[index].requester,
               inline: true
             },
             {
-              name: "Requested by",
-              value: message.member.nickname || message.author.username,
+              name: "Index",
+              value: settings.played,
               inline: true
             }
           ],
@@ -52,5 +57,10 @@ module.exports = {
         }
       });
     });
+  },
+  formatTime(seconds) {
+    return `${ seconds < 36000 ? "0" : "" }${ Math.floor(seconds / 3600) }:${
+    seconds % 3600 < 600 ? "0" : "" }${ Math.floor(seconds % 3600 / 60) }:${
+    seconds % 60 < 10 ? "0" : "" }${ seconds % 60 }`;
   }
 };

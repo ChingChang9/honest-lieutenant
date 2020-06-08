@@ -1,5 +1,4 @@
 const fs = require("fs");
-const play = require("./play.js");
 
 module.exports = {
   name: "loop",
@@ -16,12 +15,13 @@ module.exports = {
     if (!connection.player.dispatcher) {
       return message.reply("I'm not playing anything!");
     }
-    fs.readFile("./assets/queue.json", (error, data) => {
+    let loop = !(arguments[0] === "off");
+    fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
-      let loop = !(arguments[0] === "off");
-      const { queue, settings } = JSON.parse(data);
-      fs.writeFile("./assets/queue.json", `{"queue":${ JSON.stringify(queue) },"settings":{"played":${ settings.played },"loop":${ loop }}}`, (error) => {
+      let { guilds } = await JSON.parse(data);
+      guilds[message.guild.id].settings.loop = loop;
+      fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
         if (error) return console.log(error);
         message.react("👍🏽");
       });

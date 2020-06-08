@@ -1,57 +1,72 @@
 const fs = require("fs");
 const getArtistTitle = require("get-artist-title");
 const fetch = require("node-fetch");
-const cheerio = require("cheerio");
-const Genius = require("genius-api");
-const genius = new Genius("1LN7orAOLwZ834934gh9A_gXOdCCGwJkCELbxlXfjdGQTB43HlNLENlKneEVbrA1")
+const l = require("better-lyric-get");
 
 module.exports = {
   name: "lyrics",
   description: "Get the lyrics of the current song",
   arguments: false,
-  execute(message, arguments) {
+  usage: "<original/translate>",
+  default: "original",
+  async execute(message, arguments) {
+    if (!message.guild.voice) {
+      return message.reply("I'm not in the voice channel!");
+    }
+
+    const connection = await message.guild.voice.channel.join();
+    if (!connection.player.dispatcher) {
+      return message.reply("I am not playing anything!");
+    }
+
     fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
-      const { queue, settings } = JSON.parse(data);
-      let index = settings.played - 1;
-      const [ artist, title ] = await getArtistTitle(queue[index].title);
+      const { guilds } = await JSON.parse(data);
+      const { queue, settings } = guilds[message.guild.id];
+      const index = settings.played - 1;
+      const [ artist, title ] = await getArtistTitle(queue[index].title, {
+        defaultArtist: queue[index].channel
+      });
+      l.get(artist, title, async (error, response) => {
+        if (error) return message.reply("sorry, I couldn't find the lyrics for this song. 😬");
 
-      Genius.prototype.getArtistIdByName = async function getArtistIdByName(artist) {
-        const response = await this.search(artist);
-        for (let index = 0; index < response.hits.length; index += 1) {
-          if (response.hits[index].type === "song" &&
-          response.hits[index].result.primary_artist.name.toLowerCase() === artist.toLowerCase()) {
-            const songInfo = await response.hits[index].result;
-            return songInfo.primary_artist.id;
+        const lyrics = response.lyrics;
+
+        if (arguments[0] === "translate") {
+          let language = await fetch(`https://translate.yandex.net/api/v1.5/tr.json/detect?key=trnsl.1.1.20200413T020422Z.e5c12f79700e76fe.41811567ebcd2a3f09222ec588669064cf0d47df&text=${ lyrics }`);
+          language = JSON.parse(await language.text());
+          if (language.lang !== "en") {
+            lyrics = await fetch(`https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20200413T020422Z.e5c12f79700e76fe.41811567ebcd2a3f09222ec588669064cf0d47df&text=${ lyrics }&lang=${ language.lang }-en`);
+            lyrics = JSON.parse(await lyrics.text());
+            lyrics = lyrics.text.join("");
           }
         }
-        return message.reply("sorry, I couldn't find the lyrics for this song. 😬");
-      }
-      const artistId = await genius.getArtistIdByName(artist)
-      const response = await genius.songsByArtist(artistId, {
-        per_page: 50,
-        sort: "popularity",
-      });
-      const { songs } = response;
-      for (let counter = 0; counter < songs.length; counter++) {
-        if (title.includes(songs[counter].title)) {
-          const htmlResponse = await fetch(songs[counter].url);
-          const lyricsHtml = await htmlResponse.text();
-          const $ = await cheerio.load(lyricsHtml);
-          const lyrics = await $(".lyrics").text();
-          return message.channel.send({
+
+        message.channel.send({
+          embed: {
+            color: "#fefefe",
+            title: `${ title }\n${ artist }`,
+            description: lyrics.slice(0, 2048)
+          }
+        });
+        if (lyrics.length > 2049) {
+          message.channel.send({
             embed: {
               color: "#fefefe",
-              title: `${ songs[counter].title }\n${ songs[counter].primary_artist.name }`,
-              thumbnail: {
-                url: songs[counter].header_image_url
-              },
-              description: lyrics.slice(0, 2048)
+              description: lyrics.slice(2048, 4096)
             }
           });
         }
-      }
+        if (lyrics.length > 4097) {
+          message.channel.send({
+            embed: {
+              color: "#fefefe",
+              description: lyrics.slice(4096, 6144)
+            }
+          });
+        }
+      });
     });
   }
 };

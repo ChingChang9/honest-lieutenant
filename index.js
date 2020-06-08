@@ -17,7 +17,7 @@ function readDirectory(path) {
 	}
 }
 readDirectory("./commands");
-const troll = require("./troll.js");
+const prefixless = require("./prefixless.js");
 
 client.on("ready", () => {
   console.log(`Logged in as ${ client.user.tag }!`);
@@ -27,9 +27,7 @@ client.on("ready", () => {
 client.on("message", (message) => {
   if (message.author.bot) return;
 
-	troll.execute(message);
-
-	if (!message.content.startsWith(prefix)) return;
+	if (!message.content.startsWith(prefix)) return prefixless.execute(message);
 
   const arguments = message.content.slice(prefix.length).split(/ +/);
 	const commandName = arguments.shift().toLowerCase();

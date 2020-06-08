@@ -1,5 +1,5 @@
 const fs = require("fs");
-const play = require("./play.js");
+const library = require("../../library.js");
 
 module.exports = {
   name: "skip",
@@ -13,15 +13,36 @@ module.exports = {
       return message.reply("you need to be in a voice channel to use this command!");
     }
     const connection = await message.member.voice.channel.join();
-    fs.readFile("./assets/queue.json", (error, data) => {
+    fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
-      const { queue, settings } = JSON.parse(data);
-      if (connection.player.dispatcher && settings.played === queue.length) {
+      const { guilds } = await JSON.parse(data);
+      if (!guilds[message.guild.id]) {
+        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+      }
+      const { queue, settings } = guilds[message.guild.id];
+      if (settings.played === queue.length) {
+        if (!connection.player.dispatcher) return;
         return connection.player.dispatcher.destroy();
       }
-      let skip = parseInt(arguments[0]) || 1;
-      play.play(message, connection, queue, settings.played + skip - 1);
+      const skip = parseInt(arguments[0]) || 1;
+
+      if (message.member.id === queue[settings.played - 1].requesterId || message.member.voice.channel.members.size < 3) {
+        library.play(message, connection, queue, settings.played + skip - 1);
+      } else {
+        message.channel.send(`Vote on skipping \`${ queue[settings.played - 1].title }\``).then(async (message) => {
+          await message.react("⏩");
+          const collector = await message.createReactionCollector((reaction) => reaction.emoji.name === "⏩", {
+            maxUsers: Math.ceil(message.member.voice.channel.members.size * 2 / 3),
+            time: 8000
+          });
+          collector.on("collect", (reaction, user) => {
+            if (user.id === queue[settings.played - 1].requesterId || collector.size > Math.ceil(message.member.voice.channel.members.size * 2 / 3)) {
+              library.play(message, connection, queue, settings.played + skip - 1);
+            }
+          });
+        });
+      }
     });
   }
 };

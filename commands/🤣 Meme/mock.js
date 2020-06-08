@@ -37,16 +37,15 @@ module.exports = {
 
     const canvas = Canvas.createCanvas(800, 400);
     const context = canvas.getContext("2d");
-    const background = await Canvas.loadImage("./assets/spongebob-mocking.jpg");
+    const background = await Canvas.loadImage("./assets/meme/spongebob-mocking.jpg");
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
     context.font = "bold 48px Impact";
     context.shadowColor = "#000000";
+    context.fillStyle = "#ffffff";
     context.shadowBlur = 6;
     context.lineWidth = 3;
     context.strokeText(text1, (canvas.width - context.measureText(text1).width) / 2, 53);
     context.strokeText(text2, (canvas.width - context.measureText(text2).width) / 2, 380);
-    context.shadowBlur = 5;
-  	context.fillStyle = "#ffffff";
   	context.fillText(text1, (canvas.width - context.measureText(text1).width) / 2, 53);
     context.fillText(text2, (canvas.width - context.measureText(text2).width) / 2, 380);
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "youre-fake.jpg");

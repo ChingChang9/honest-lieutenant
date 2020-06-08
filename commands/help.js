@@ -19,10 +19,11 @@ module.exports = {
       		if (fs.statSync(`${ path }/${ file }`).isDirectory()) {
       			readDirectory(`${ path }/${ file }`, directory);
       		} else {
-            if (directory[path.split("/")[ path.split("/").length - 1]]) {
-              directory[path.split("/")[ path.split("/").length - 1]].push(file);
+            if (directory[path.split("/")[path.split("/").length - 1]]) {
+              directory[path.split("/")[path.split("/").length - 1]].push(file);
             } else {
-              directory[path.split("/")[ path.split("/").length - 1]] = [file];
+              if (path.split("/")[path.split("/").length - 1] === "🤫 Secret") return;
+              directory[path.split("/")[path.split("/").length - 1]] = [file];
             }
       		}
       	}

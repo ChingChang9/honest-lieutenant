@@ -7,22 +7,25 @@ module.exports = {
   arguments: true,
   usage: "<song-index>",
   execute(message, arguments) {
-    fs.readFile("./assets/queue.json", (error, data) => {
+    fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
-      const queue = JSON.parse(data);
-      if (arguments[0] > queue.queue.length) {
+      let { guilds } = await JSON.parse(data);
+      if (!guilds[message.guild.id]) {
+        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+      }
+      if (arguments[0] > guilds[message.guild.id].queue.length) {
         return message.reply("that was an invalid index");
       }
-      if (arguments[0] == queue.settings.played) {
+      if (arguments[0] == guilds[message.guild.id].settings.played) {
         return message.reply("bruh I'm playing that right now. I can't delete the currently playing song 🙄🙄")
       }
-      if (arguments[0] < queue.settings.played) {
-        queue.settings.played--;
+      if (arguments[0] < guilds[message.guild.id].settings.played) {
+        guilds[message.guild.id].settings.played--;
       }
-      queue.queue.splice(arguments[0] - 1, 1);
+      guilds[message.guild.id].queue.splice(arguments[0] - 1, 1);
 
-      fs.writeFile("./assets/queue.json", JSON.stringify(queue), (error) => {
+      fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
         if (error) return console.log(error);
         message.react("👍🏽");
       });

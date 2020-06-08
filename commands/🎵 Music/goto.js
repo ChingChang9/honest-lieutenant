@@ -1,5 +1,5 @@
 const fs = require("fs");
-const play = require("./play.js");
+const library = require("../../library.js");
 
 module.exports = {
   name: "goto",
@@ -12,13 +12,34 @@ module.exports = {
       return message.reply("you need to be in a voice channel to use this command!");
     }
     const connection = await message.member.voice.channel.join();
-    fs.readFile("./assets/queue.json", (error, data) => {
+
+    fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
-      const { queue, settings } = JSON.parse(data);
-      let index = parseInt(arguments[0]);
+      const { guilds } = await JSON.parse(data);
+      if (!guilds[message.guild.id]) {
+        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+      }
+      const { queue } = guilds[message.guild.id];
+      const index = await parseInt(arguments[0]);
       if (!queue[index - 1]) return message.reply("I can't find the track, maybe the queue has been cleared?");
-      play.play(message, connection, queue, index - 1);
+
+      if (message.member.id === queue[settings.played - 1].requesterId || message.member.voice.channel.members.size < 3) {
+        library.play(message, connection, queue, index - 1);
+      } else {
+        message.channel.send(`Vote on jumping to \`${ queue[index - 1].title }\``).then(async (message) => {
+          await message.react(":arrow_double_up:");
+          const collector = await message.createReactionCollector((reaction) => reaction.emoji.name === "⏩", {
+            maxUsers: Math.ceil(message.member.voice.channel.members.size * 2 / 3),
+            time: 8000
+          });
+          collector.on("collect", (reaction, user) => {
+            if (user.id === queue[settings.played - 1].requesterId || collector.size > Math.ceil(message.member.voice.channel.members.size * 2 / 3)) {
+              library.play(message, connection, queue, index - 1);
+            }
+          });
+        });
+      }
     });
   }
 };
