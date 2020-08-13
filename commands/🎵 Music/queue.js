@@ -13,7 +13,7 @@ module.exports = {
 
       const { guilds } = await JSON.parse(data);
       if (!guilds[message.guild.id]) {
-        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
       }
       const { queue, settings } = guilds[message.guild.id];
       if (parseInt(arguments[0]) > Math.ceil(queue.length / 10) || parseInt(arguments[0]) < 1) {
@@ -39,7 +39,7 @@ module.exports = {
         if (page !== Math.ceil(queue.length / 10)) await message.react("➡️");
         if (Math.ceil(queue.length / 10) === 1) return;
         const collected = await message.awaitReactions((reaction, user) => ["⬅️", "➡️"].includes(reaction.emoji.name) && !user.bot, {
-          max: 1, time: 8000
+          max: 1, time: 12000
         });
         if (!collected.first()) return;
         if (collected.first()._emoji.name === "⬅️") return this.postQueue(message, page - 1);

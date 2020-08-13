@@ -1,11 +1,12 @@
-const fetch = require("node-fetch");
+const axios = require("axios");
 
 module.exports = {
   name: "dog",
   description: "Send a random picture of dog",
+  aliases: ["puppy"],
   arguments: false,
   async execute(message, arguments) {
-    const responseString = await fetch("https://dog.ceo/api/breeds/image/random").then(async (response) => await response.text());
-    message.channel.send(JSON.parse(responseString).message);
+    const url = await axios("https://dog.ceo/api/breeds/image/random").then((response) => response.data.message);
+    message.channel.send(url);
   }
 };

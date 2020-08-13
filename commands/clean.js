@@ -7,7 +7,7 @@ module.exports = {
   default: "10",
   execute(message, arguments) {
     if (message.channel.type === "dm") {
-      return message.channel.send("I can't do that in DM");
+      return message.channel.send("I can only do this in servers 😔");
     }
     let amount = parseInt(arguments[0]) + 1 || 11;
     if (isNaN(amount)) {

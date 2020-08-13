@@ -14,7 +14,7 @@ module.exports = {
 
     const canvas = Canvas.createCanvas(804, 6 + 249 * textArray.length);
     const context = canvas.getContext("2d");
-    const background = await Canvas.loadImage("./assets/meme/brain.jpg");
+    const background = await Canvas.loadImage("./assets/meme/expanding-brain.jpg");
     context.drawImage(background, 0, 0, 804, 4239);
     context.font = "bold 40px Arial";
     context.fillStyle = "#000000";

@@ -48,7 +48,7 @@ module.exports = {
     context.strokeText(text2, (canvas.width - context.measureText(text2).width) / 2, 380);
   	context.fillText(text1, (canvas.width - context.measureText(text1).width) / 2, 53);
     context.fillText(text2, (canvas.width - context.measureText(text2).width) / 2, 380);
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "youre-fake.jpg");
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "spongebob-mocking-meme.jpg");
     message.channel.send(attachment);
   }
 };

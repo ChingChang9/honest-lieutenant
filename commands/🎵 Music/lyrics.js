@@ -1,7 +1,8 @@
 const fs = require("fs");
 const getArtistTitle = require("get-artist-title");
-const fetch = require("node-fetch");
-const l = require("better-lyric-get");
+const axios = require("axios");
+const cheerio = require("cheerio");
+const library = require("../../library.js");
 
 module.exports = {
   name: "lyrics",
@@ -25,48 +26,59 @@ module.exports = {
       const { guilds } = await JSON.parse(data);
       const { queue, settings } = guilds[message.guild.id];
       const index = settings.played - 1;
-      const [ artist, title ] = await getArtistTitle(queue[index].title, {
+      let [ artist, title ] = await getArtistTitle(queue[index].title, {
         defaultArtist: queue[index].channel
       });
-      l.get(artist, title, async (error, response) => {
-        if (error) return message.reply("sorry, I couldn't find the lyrics for this song. 😬");
+      title = await title.replace(/[[(].*?[)\]]/g, "").trim();
 
-        const lyrics = response.lyrics;
-
-        if (arguments[0] === "translate") {
-          let language = await fetch(`https://translate.yandex.net/api/v1.5/tr.json/detect?key=trnsl.1.1.20200413T020422Z.e5c12f79700e76fe.41811567ebcd2a3f09222ec588669064cf0d47df&text=${ lyrics }`);
-          language = JSON.parse(await language.text());
-          if (language.lang !== "en") {
-            lyrics = await fetch(`https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20200413T020422Z.e5c12f79700e76fe.41811567ebcd2a3f09222ec588669064cf0d47df&text=${ lyrics }&lang=${ language.lang }-en`);
-            lyrics = JSON.parse(await lyrics.text());
-            lyrics = lyrics.text.join("");
-          }
+      const geniusUrls = await axios("http://genius.com/api/search/song", {
+        params: {
+          q: title
         }
+      }).then((response) => response.data.response.sections[0].hits);
 
+      if (!geniusUrls.length) return message.reply("sorry, I can't find the lyrics for this song 😬")
+
+      let geniusUrl = geniusUrls[0].result.url;
+      for (let songIndex = 0; songIndex < geniusUrls.length; songIndex++) {
+        if (geniusUrls[songIndex].result.primary_artist.name === artist) {
+          geniusUrl = geniusUrls[songIndex].result.url;
+        }
+      }
+
+      const html = await axios(geniusUrl).then((response) => response.data);
+      const $ = await cheerio.load(html);
+      title = await $("h1.header_with_cover_art-primary_info-title").text();
+      let lyrics = await $(".lyrics").text().trim();
+      const thumbnailUrl = await $("img.cover_art-image").attr("src");
+
+      if (!lyrics) return setTimeout(function() {
+        this.this.execute(message, arguments);
+      }, 1000);
+
+      if (arguments[0] === "translate") {
+        lyrics = await library.translate(lyrics);
+      }
+
+      message.channel.send({
+        embed: {
+          color: "#fefefe",
+          title: `${ title }`,
+          url: geniusUrl,
+          thumbnail: {
+            url: thumbnailUrl
+          },
+          description: lyrics.slice(0, 2048)
+        }
+      });
+      for (let lyricsLength = 2049; lyricsLength < lyrics.length; lyricsLength += 2048) {
         message.channel.send({
           embed: {
             color: "#fefefe",
-            title: `${ title }\n${ artist }`,
-            description: lyrics.slice(0, 2048)
+            description: lyrics.slice(lyricsLength - 1, lyricsLength + 2047)
           }
         });
-        if (lyrics.length > 2049) {
-          message.channel.send({
-            embed: {
-              color: "#fefefe",
-              description: lyrics.slice(2048, 4096)
-            }
-          });
-        }
-        if (lyrics.length > 4097) {
-          message.channel.send({
-            embed: {
-              color: "#fefefe",
-              description: lyrics.slice(4096, 6144)
-            }
-          });
-        }
-      });
+      }
     });
   }
 };

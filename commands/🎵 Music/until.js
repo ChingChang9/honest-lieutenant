@@ -1,9 +1,9 @@
 const fs = require("fs");
 
 module.exports = {
-  name: "time",
+  name: "until",
   description: "Estimate the time until a certain can be played",
-  aliases: ["until"],
+  aliases: ["time"],
   arguments: true,
   usage: "<index-of-song>",
   async execute(message, arguments) {

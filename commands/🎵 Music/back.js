@@ -18,13 +18,13 @@ module.exports = {
 
       const { guilds } = await JSON.parse(data);
       if (!guilds[message.guild.id]) {
-        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
       }
       const { queue, settings } = guilds[message.guild.id];
       if (!queue) message.reply("the queue is empty!");
       const back = await parseInt(arguments[0]) || 1;
 
-      if (message.member.id === queue[settings.played - 1].requesterId || message.member.voice.channel.members.size < 3) {
+      if (message.member.id === queue[settings.played - back - 1].requesterId || message.member.voice.channel.members.size < 3) {
         if (settings.played <= 1) {
           library.play(message, connection, queue, 0);
         }
@@ -33,11 +33,11 @@ module.exports = {
         message.channel.send(`Vote on rewinding to \`${ queue[settings.played - back - 1].title }\``).then(async (message) => {
           await message.react("⏪");
           const collector = await message.createReactionCollector((reaction) => reaction.emoji.name === "⏩", {
-            maxUsers: Math.ceil(message.member.voice.channel.members.size * 2 / 3),
-            time: 8000
+            maxUsers: Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3),
+            time: 12000
           });
           collector.on("collect", (reaction, user) => {
-            if (user.id === queue[settings.played - 1].requesterId || collector.size > Math.ceil(message.member.voice.channel.members.size * 2 / 3)) {
+            if (user.id === queue[settings.played - back - 1].requesterId || collector.size > Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3)) {
               if (settings.played <= 1) {
                 library.play(message, connection, queue, 0);
               }

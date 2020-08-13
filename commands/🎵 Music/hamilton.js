@@ -108,7 +108,7 @@ module.exports = {
   async execute(message, arguments) {
     const version = arguments[0] || "original";
     const playList = version === "original" ? original : cut;
-    await message.reply(`I added some outtakes. If you want the cut version, please end the process right now with\n\`.restart\`,\nand wait for ~5 seconds, then\n\`.clear\`\nAnd use \`.hamilton cut\` in the future\nSorry for the inconvenience. Don't blame me, blame the person who programmed me 😩😩`);
+    await message.reply(`I added some outtakes. If you want the cut version, please end the process right now with\n\`.restart\`,\nwait for ~5 seconds, then\n\`.clear\`\nAnd use \`.hamilton cut\` in the future\nSorry for the inconvenience. Don't blame me, blame the person who programmed me 😩😩`);
     for (let index = 0; index < playList.length; index++) {
       await play.execute(message, [playList[index]]);
     }

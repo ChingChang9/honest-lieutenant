@@ -14,7 +14,7 @@ module.exports = {
     const canvas = Canvas.createCanvas(1200, 800);
     const context = canvas.getContext("2d");
     const background = await Canvas.loadImage("./assets/meme/man-looking-back.jpg");
-    textArray.length === 6 ? context.drawImage(background, 0, 0, 1200, 800) : context.drawImage(background, 0, 0, 1200, 800);
+    context.drawImage(background, 0, 0, 1200, 800);
     context.font = "bold 40px Arial";
     context.shadowColor = "#000000";
     context.fillStyle = "#ffffff";
@@ -25,7 +25,7 @@ module.exports = {
     library.wordWrap(context, textArray[1], 800, 200, 350, 200, true);
     library.wordWrap(context, textArray[2], 170, 200, 350, 200, true);
 
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "disloyal.jpg");
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "man-looking-back-meme.jpg");
     message.channel.send(attachment);
   }
 };

@@ -42,11 +42,11 @@ module.exports = {
         embed: {
         	color: "#fefefe",
         	author: {
-        		name: "Honest Lieutenant",
+        		name: "Honest Lieutenant's Commands",
         		icon_url: "attachment://icon.jpg",
         		url: "https://www.chingchang.dev"
         	},
-        	description: "Here's a list of all my commands\nType `.help <command>` for information on a specific command.",
+        	description: `Use \`${ prefix }help <command>\` for more information on a specific command`,
         	fields: fields,
         	footer: {
         		text: "Ching Chang © 2020 All Rights Reserved",
@@ -66,7 +66,7 @@ module.exports = {
       embed: {
       	color: "#fefefe",
       	author: {
-      		name: "Honest Lieutenant",
+      		name: "Honest Lieutenant's Help Menu",
       		icon_url: "attachment://icon.jpg",
       		url: "https://www.chingchang.dev"
       	},
@@ -82,12 +82,12 @@ module.exports = {
             name: "Default Value",
             value: command.default || "No default value",
             inline: true
+          },
+          {
+            name: "Aliases",
+            value: command.aliases ? `\`${ prefix }${ command.aliases.join(`\`, \`${ prefix }`) }\`` : "No aliases"
           }
-      	],
-      	footer: {
-      		text: "Ching Chang © 2020 All Rights Reserved",
-      		icon_url: "attachment://icon.jpg"
-      	}
+      	]
       }
     });
   }

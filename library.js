@@ -1,5 +1,6 @@
 const fs = require("fs");
 const ytdl = require("ytdl-core-discord");
+const axios = require("axios");
 
 module.exports = {
   async play(message, connection, queue, index) {
@@ -13,14 +14,14 @@ module.exports = {
       fs.readFile("./assets/queue.json", async (error, data) => {
         if (error) return console.log(error);
 
-        let { guilds } = JSON.parse(data);
+        let { guilds } = await JSON.parse(data);
         guilds[message.guild.id].settings.played = index + 1;
         fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
           if (error) return console.log(error);
         });
 
         const { queue, settings } = guilds[message.guild.id];
-        if (!settings.loop) message.channel.send({
+        if (!settings.repeat) message.channel.send({
           embed: {
             color: "#fefefe",
             author: {
@@ -65,7 +66,7 @@ module.exports = {
 
         const { guilds } = await JSON.parse(data);
         const { queue, settings } = await guilds[message.guild.id];
-        if (settings.loop) return this.play(message, connection, queue, index);
+        if (settings.repeat) return this.play(message, connection, queue, index);
         if (index + 1 === queue.length) return dispatcher.destroy();
         this.play(message, connection, queue, ++index);
       });
@@ -95,5 +96,19 @@ module.exports = {
       context.fillText(textLines[lineIndex], x + (maxWidth - context.measureText(textLines[lineIndex]).width) / 2, y);
       y += parseInt(context.font.match(/\d+px/));
     }
+  },
+  async translate(originalText) {
+    const language = await axios.get("https://translate.yandex.net/api/v1.5/tr.json/detect?key=trnsl.1.1.20200413T020422Z.e5c12f79700e76fe.41811567ebcd2a3f09222ec588669064cf0d47df", {
+      params: {
+        text: originalText
+      }
+    }).then((response) => response.data);
+    const translatedText = await axios.get("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20200413T020422Z.e5c12f79700e76fe.41811567ebcd2a3f09222ec588669064cf0d47df", {
+      params: {
+        text: originalText,
+        lang: `${ language.lang }-en`
+      }
+    }).then((response) => response.data.text[0]);
+    return translatedText;
   }
 };

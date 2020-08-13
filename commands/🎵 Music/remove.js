@@ -12,7 +12,7 @@ module.exports = {
 
       let { guilds } = await JSON.parse(data);
       if (!guilds[message.guild.id]) {
-        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
       }
       if (arguments[0] > guilds[message.guild.id].queue.length) {
         return message.reply("that was an invalid index");

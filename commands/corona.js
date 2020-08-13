@@ -1,4 +1,5 @@
-const fetch = require("node-fetch");
+const axios = require("axios");
+const cheerio = require("cheerio");
 const messages = [
   "Stay strong guys!",
   "Take care!",
@@ -10,66 +11,61 @@ const messages = [
 
 module.exports = {
   name: "corona",
-  description: "Display the stats for the coronavirus",
+  description: "Display the coronavirus stats in Edmonton",
   arguments: false,
-  usage: "<country/province>",
-  default: "alberta",
   async execute(message, arguments) {
-    let location = arguments.join(" ").toLowerCase() || "alberta";
-    let confirmed = deaths = recovered = 0;
+    const html = await axios("https://www.alberta.ca/covid-19-alberta-data.aspx").then((response) => response.data);
+    const $ = await cheerio.load(html);
+    const table = $(".goa-table > table > tbody").children().eq(3).children();
+    const confirmed = table.eq(1).text();
+    const active = table.eq(2).text();
+    const recovered = table.eq(3).text();
+    const hospital = table.eq(4).text();
+    const intensive = table.eq(5).text();
+    const deaths = table.eq(6).text();
 
-    if (location === "world") {
-      const responseString = await fetch("https://coronavirus-tracker-api.herokuapp.com/v2/latest")
-        .then(async (response) => await response.text());
-      const responseJSON = JSON.parse(responseString).latest;
-      confirmed = responseJSON.confirmed;
-      deaths = responseJSON.deaths;
-      recovered = responseJSON.recovered;
-    } else {
-      const responseString = await fetch("https://coronavirus-tracker-api.herokuapp.com/v2/locations")
-        .then(async (response) => await response.text());
-      const responseArray = JSON.parse(responseString).locations;
-      for (let index = 0; index < responseArray.length; index++) {
-        if (responseArray[index].country.toLowerCase() === location) {
-          confirmed += responseArray[index].latest.confirmed;
-          deaths += responseArray[index].latest.deaths;
-          recovered += responseArray[index].latest.recovered;
-        }
-      }
-      for (let index = 0; index < responseArray.length; index++) {
-        if (responseArray[index].province.toLowerCase() === location) {
-          confirmed = responseArray[index].latest.confirmed;
-          deaths = responseArray[index].latest.deaths;
-          recovered = responseArray[index].latest.recovered;
-        }
-      }
-    }
+    const [matched, cases, date] = (/by (\d+) on (.+)\./g).exec($("#goa-grid28054").children().eq(-2).text());
 
-    if (confirmed || deaths || recovered) {
-      return message.channel.send({
-        embed: {
-          color: "#fefefe",
-          author: {
-            name: location[0].toUpperCase() + location.substring(1)
+    return message.channel.send({
+      embed: {
+        color: "#fefefe",
+        author: {
+          name: "Cases in Edmonton"
+        },
+        description: `${ cases } new cases on ${ date } in Alberta`,
+        fields: [
+          {
+            name: "Confirmed",
+            value: confirmed,
+            inline: true
           },
-          fields: [
-        		{
-        			name: "Confirmed",
-        			value: confirmed
-        		},
-            {
-        			name: "Deaths",
-        			value: deaths
-        		},
-            {
-        			name: "Recovered",
-        			value: recovered
-        		}
-        	]
-        }
-      }).then(() => message.channel.send(messages[Math.floor(Math.random() * (messages.length + 1))]));
-    }
-
-    return message.reply("Humm, it seems like I don't have data for this country/province. Sorry 😬")
+          {
+            name: "Active",
+            value: active,
+            inline: true
+          },
+          {
+            name: "Recovered",
+            value: recovered,
+            inline: true
+          },
+          {
+            name: "In Hospital",
+            value: hospital,
+            inline: true
+          },
+          {
+            name: "In Intensive Care",
+            value: intensive,
+            inline: true
+          },
+          {
+            name: "Deaths",
+            value: deaths,
+            inline: true
+          }
+        ]
+      }
+    }).then(() => message.channel.send(messages[Math.floor(Math.random() * (messages.length + 1))]));
   }
 };

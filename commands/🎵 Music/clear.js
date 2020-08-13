@@ -9,7 +9,7 @@ module.exports = {
       if (error) return console.log(error);
 
       let { guilds } = await JSON.parse(data);
-      guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"loop":false}};
+      guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
       fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
         if (error) return console.log(error);
         message.react("👍🏽");
