@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { emptyQueue: emptyQueue } = require("../../config.json");
 
 module.exports = {
   name: "remove",
@@ -11,16 +12,17 @@ module.exports = {
       if (error) return console.log(error);
 
       let { guilds } = await JSON.parse(data);
-      if (!guilds[message.guild.id]) {
-        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
-      }
+      if (!guilds[message.guild.id]) guilds[message.guild.id] = emptyQueue;
       if (arguments[0] > guilds[message.guild.id].queue.length) {
         return message.reply("that was an invalid index");
       }
-      if (arguments[0] == guilds[message.guild.id].settings.played) {
-        return message.reply("bruh I'm playing that right now. I can't delete the currently playing song 🙄🙄")
+      if (arguments[0] == guilds[message.guild.id].settings.played && message.guild.voice) {
+        const connection = await message.guild.voice.channel.join();
+        if (connection.player.dispatcher) {
+          return message.reply("bruh I'm playing that right now. I can't delete the currently playing song 🙄🙄")
+        }
       }
-      if (arguments[0] < guilds[message.guild.id].settings.played) {
+      if (arguments[0] <= guilds[message.guild.id].settings.played) {
         guilds[message.guild.id].settings.played--;
       }
       guilds[message.guild.id].queue.splice(arguments[0] - 1, 1);

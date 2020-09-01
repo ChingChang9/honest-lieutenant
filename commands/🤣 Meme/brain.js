@@ -6,7 +6,7 @@ module.exports = {
   name: "brain",
   description: "Make an expanding brain meme",
   arguments: true,
-  usage: "<text1> : <text2> : <text3> : ...",
+  usage: "<text1> : <text2> : [text3] : [...]",
   async execute(message, arguments) {
     const textArray = arguments.join(" ").split(" : ");
     if (textArray.length < 2) return message.reply("please have at least two arguments");

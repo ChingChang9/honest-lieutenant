@@ -6,9 +6,9 @@ const fs = require("fs");
 module.exports = {
   name: "help",
   description: "List all of my commands or info about a specific command",
-  aliases: ["commands"],
+  aliases: ["alias", "aliases", "command", "commands"],
   arguments: false,
-  usage: "<command-name>",
+  usage: "[command-name]",
   execute(message, arguments) {
     const { commands } = message.client;
 
@@ -46,7 +46,7 @@ module.exports = {
         		icon_url: "attachment://icon.jpg",
         		url: "https://www.chingchang.dev"
         	},
-        	description: `Use \`${ prefix }help <command>\` for more information on a specific command`,
+        	description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
         	fields: fields,
         	footer: {
         		text: "Ching Chang © 2020 All Rights Reserved",

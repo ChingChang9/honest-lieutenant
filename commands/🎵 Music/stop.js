@@ -1,3 +1,5 @@
+const library = require("../../library.js");
+
 module.exports = {
   name: "stop",
   description: "Stop the music in the voice channel",
@@ -8,5 +10,6 @@ module.exports = {
     }
     const connection = await message.guild.voice.channel.join();
     connection.player.dispatcher.destroy();
+    library.disconnect(message, connection);
   }
 };

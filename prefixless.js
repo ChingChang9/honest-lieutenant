@@ -7,7 +7,7 @@ module.exports = {
   execute(message) {
     const content = message.content.toLowerCase().split(/ +/);
     if (content[0] === "+play") {
-      return message.channel.send("heyy im online too and im better than <@228537642583588864> 😉");
+      return message.reply("heyy im online too and im better than <@228537642583588864> 😉");
     }
 
     if (content.join(" ").match(/you know what i(.)?m talking about/)) {

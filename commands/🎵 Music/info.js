@@ -1,4 +1,5 @@
 const fs = require("fs");
+const library = require("../../library.js");
 
 module.exports = {
   name: "info",
@@ -22,8 +23,8 @@ module.exports = {
       const { queue, settings } = guilds[message.guild.id];
       const index = settings.played - 1;
 
-      const runTime = this.formatTime(Math.floor(connection.player.dispatcher.streamTime / 1000));
-      const duration = this.formatTime(queue[index].duration);
+      const runTime = library.formatTime(Math.floor(connection.player.dispatcher.streamTime / 1000));
+      const duration = library.formatTime(queue[index].duration);
       const ratio = Math.floor(connection.player.dispatcher.streamTime / 1000 / queue[index].duration * 10);
       message.channel.send({
         embed: {
@@ -57,10 +58,5 @@ module.exports = {
         }
       });
     });
-  },
-  formatTime(seconds) {
-    return `${ seconds < 36000 ? "0" : "" }${ Math.floor(seconds / 3600) }:${
-    seconds % 3600 < 600 ? "0" : "" }${ Math.floor(seconds % 3600 / 60) }:${
-    seconds % 60 < 10 ? "0" : "" }${ seconds % 60 }`;
   }
 };

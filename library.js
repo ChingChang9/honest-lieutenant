@@ -1,6 +1,7 @@
 const fs = require("fs");
 const ytdl = require("ytdl-core-discord");
 const axios = require("axios");
+let timeouts = {};
 
 module.exports = {
   async play(message, connection, queue, index) {
@@ -14,6 +15,10 @@ module.exports = {
       fs.readFile("./assets/queue.json", async (error, data) => {
         if (error) return console.log(error);
 
+        if (timeouts[connection.channel.guild.id]) {
+          timeouts[connection.channel.guild.id].close();
+          timeouts[connection.channel.guild.id] = null;
+        }
         let { guilds } = await JSON.parse(data);
         guilds[message.guild.id].settings.played = index + 1;
         fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
@@ -36,9 +41,7 @@ module.exports = {
             fields: [
               {
                 name: "Duration",
-                value: `${ queue[index].duration < 36000 ? "0" : "" }${ Math.floor(queue[index].duration / 3600) }:${
-                queue[index].duration % 3600 < 600 ? "0" : "" }${ Math.floor(queue[index].duration % 3600 / 60) }:${
-                queue[index].duration % 60 < 10 ? "0" : "" }${ queue[index].duration % 60 }`,
+                value: this.formatTime(queue[index].duration),
                 inline: true
               },
               {
@@ -67,11 +70,37 @@ module.exports = {
         const { guilds } = await JSON.parse(data);
         const { queue, settings } = await guilds[message.guild.id];
         if (settings.repeat) return this.play(message, connection, queue, index);
-        if (index + 1 === queue.length) return dispatcher.destroy();
+        if (index + 1 === queue.length) {
+          dispatcher.destroy();
+          return this.disconnect(message, connection);
+        }
         this.play(message, connection, queue, ++index);
       });
     });
     dispatcher.on("error", (error) => message.reply("there was an error playing this song"));
+  },
+  disconnect(message, connection) {
+    timeouts[connection.channel.guild.id] = setTimeout(() => {
+      timeouts[connection.channel.guild.id] = null;
+      const disconnectMessages = [
+        "Ight imma head out",
+        "Time to banana split out of this awkwardness",
+        "Let me strawberry jam outta here",
+        "Anyway~ I gotta wake up early tomorrow, so... yeah",
+        "Alright, cya",
+        `For LOHS TV, I am ${ message.guild.members.cache.get("668301556185300993").displayName }, and just remember: BE LEGENDARY!`
+      ];
+      message.channel.send(disconnectMessages[Math.floor(Math.random() * (disconnectMessages.length))]).then(() => {
+        setTimeout(() => {
+          connection.disconnect();
+        }, 5 * 1000);
+      });
+    }, 8 * 60 * 1000);
+  },
+  formatTime(seconds) {
+    return `${ seconds < 36000 ? "0" : "" }${ Math.floor(seconds / 3600) }:${
+    seconds % 3600 < 600 ? "0" : "" }${ Math.floor(seconds % 3600 / 60) }:${
+    seconds % 60 < 10 ? "0" : "" }${ seconds % 60 }`.replace(/^00:/, "");
   },
   wordWrap(context, text, x, y, maxWidth, maxHeight, shadow = false) {
     let words = text.split(" ");

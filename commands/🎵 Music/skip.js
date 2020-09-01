@@ -1,25 +1,25 @@
 const fs = require("fs");
 const library = require("../../library.js");
+const { emptyQueue: emptyQueue } = require("../../config.json");
 
 module.exports = {
   name: "skip",
   description: "Skip to the next song",
   aliases: ["next", "forward"],
   arguments: false,
-  usage: "<#-of-songs-to-skip>",
+  usage: "[#-of-songs-to-skip]",
   default: "1",
   async execute(message, arguments) {
     if (!message.member.voice.channel) {
       return message.reply("you need to be in a voice channel to use this command!");
     }
     const connection = await message.member.voice.channel.join();
+    connection.voice.setSelfDeaf(true);
     fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
       const { guilds } = await JSON.parse(data);
-      if (!guilds[message.guild.id]) {
-        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
-      }
+      if (!guilds[message.guild.id]) guilds[message.guild.id] = emptyQueue;
       const { queue, settings } = guilds[message.guild.id];
       if (settings.played === queue.length) {
         if (!connection.player.dispatcher) return;

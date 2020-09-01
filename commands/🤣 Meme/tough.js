@@ -6,10 +6,10 @@ module.exports = {
   name: "tough",
   description: "Make a spongebob getting tough meme",
   arguments: true,
-  usage: "<text1> : <text2> : <text3> : ...",
+  usage: "<text1> : <text2> : [text3] : ...",
   async execute(message, arguments) {
     const textArray = arguments.join(" ").split(" : ");
-    if (textArray.length < 2) return message.reply("please have at least two arguments");
+    if (textArray.length < 2) return message.reply("please have at least 2 arguments");
     if (textArray.length > 6) return message.reply("that's too many arguments. The max I can do is 6");
 
     const canvas = Canvas.createCanvas(500, 145 * textArray.length - 29);

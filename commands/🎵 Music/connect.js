@@ -3,10 +3,11 @@ module.exports = {
   description: "Connect to the voice channel",
   aliases: ["join"],
   arguments: false,
-  execute(message, arguments) {
+  async execute(message, arguments) {
     if (!message.member.voice.channel) {
       return message.reply("you need to be in a voice channel to use this command!");
     }
-    message.member.voice.channel.join();
+    const connection = await message.member.voice.channel.join();
+    connection.voice.setSelfDeaf(true);
   }
 };

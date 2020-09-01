@@ -5,7 +5,7 @@ module.exports = {
   description: "Toggle repeat",
   aliases: ["loop"],
   arguments: false,
-  usage: "<on/off>",
+  usage: "[on/off]",
   default: "toggle",
   async execute(message, arguments)  {
     if (!message.guild.voice) {

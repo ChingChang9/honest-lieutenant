@@ -24,7 +24,7 @@ module.exports = {
     const intensive = table.eq(5).text();
     const deaths = table.eq(6).text();
 
-    const [matched, cases, date] = (/by (\d+) on (.+)\./g).exec($("#goa-grid28054").children().eq(-2).text());
+    const [ ,, cases, date] = (/by(.)(\d+) on (.+)\./g).exec($("#goa-grid28054").children().eq(-2).text());
 
     return message.channel.send({
       embed: {

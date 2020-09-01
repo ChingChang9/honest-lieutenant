@@ -1,4 +1,5 @@
 const fs = require("fs");
+const library = require("../../library.js");
 
 module.exports = {
   name: "until",
@@ -34,12 +35,7 @@ module.exports = {
       for (let counter = index + 1; counter < parseInt(arguments[0]) - 1; counter++) {
         timeLeft += parseInt(queue[counter].duration);
       }
-      return message.channel.send(`\`${ this.formatTime(timeLeft) }\` until \`${ queue[parseInt(arguments[0]) - 1].title }\` plays`);
+      return message.channel.send(`\`${ library.formatTime(timeLeft) }\` until \`${ queue[parseInt(arguments[0]) - 1].title }\` plays`);
     });
-  },
-  formatTime(seconds) {
-    return `${ seconds < 36000 ? "0" : "" }${ Math.floor(seconds / 3600) }:${
-    seconds % 3600 < 600 ? "0" : "" }${ Math.floor(seconds % 3600 / 60) }:${
-    seconds % 60 < 10 ? "0" : "" }${ seconds % 60 }`;
   }
 };

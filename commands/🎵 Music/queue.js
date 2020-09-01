@@ -1,20 +1,19 @@
 const fs = require("fs");
+const { emptyQueue: emptyQueue } = require("../../config.json");
 
 module.exports = {
   name: "queue",
   description: "Display the music queue",
   aliases: ["que", "q", "cue"],
   arguments: false,
-  usage: "<page>",
+  usage: "[page]",
   default: "auto",
   execute(message, arguments) {
     fs.readFile("./assets/queue.json", async (error, data) => {
       if (error) return console.log(error);
 
       const { guilds } = await JSON.parse(data);
-      if (!guilds[message.guild.id]) {
-        guilds[message.guild.id] = {"queue":[],"settings":{"played":0,"repeat":false}};
-      }
+      if (!guilds[message.guild.id]) guilds[message.guild.id] = emptyQueue;
       const { queue, settings } = guilds[message.guild.id];
       if (parseInt(arguments[0]) > Math.ceil(queue.length / 10) || parseInt(arguments[0]) < 1) {
         return message.reply("the page doesn't exist");

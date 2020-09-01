@@ -3,7 +3,7 @@ module.exports = {
   description: "Delete a number of the most recent messages",
   aliases: ["sweep"],
   arguments: false,
-  usage: "<#-of-messages>",
+  usage: "[#-of-messages]",
   default: "10",
   execute(message, arguments) {
     if (message.channel.type === "dm") {

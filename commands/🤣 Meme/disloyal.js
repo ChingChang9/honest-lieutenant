@@ -6,16 +6,17 @@ module.exports = {
   name: "disloyal",
   description: "Make a disloyal guy meme",
   arguments: true,
-  usage: "<guy> : <ex> : <girl>",
+  usage: "<guy> : <ex> : <girl> : [\"weeb\"]",
   async execute(message, arguments) {
     const textArray = arguments.join(" ").split(" : ");
-    if (textArray.length < 3) return message.reply("that's not enough arguments, the proper usage would be: `.disloyal-guy <guy> : <ex> : <girl>`");
+    if (textArray.length < 3) return message.reply("that's not enough arguments, the proper usage would be: `.disloyal-guy <guy> : <ex> : <girl> : [\"weeb\"]`");
 
     const canvas = Canvas.createCanvas(1200, 800);
     const context = canvas.getContext("2d");
-    const background = await Canvas.loadImage("./assets/meme/man-looking-back.jpg");
+    const disloyalGuy = !textArray[3] ? "man" : "subaru";
+    const background = await Canvas.loadImage(`./assets/meme/${ disloyalGuy }-looking-back.jpg`);
     context.drawImage(background, 0, 0, 1200, 800);
-    context.font = "bold 40px Arial";
+    context.font = "bold 72px Arial";
     context.shadowColor = "#000000";
     context.fillStyle = "#ffffff";
     context.shadowBlur = 6;

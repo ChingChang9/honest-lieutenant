@@ -8,7 +8,7 @@ module.exports = {
   name: "lyrics",
   description: "Get the lyrics of the current song",
   arguments: false,
-  usage: "<original/translate>",
+  usage: "[original/translate]",
   default: "original",
   async execute(message, arguments) {
     if (!message.guild.voice) {
