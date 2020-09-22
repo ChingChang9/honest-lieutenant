@@ -1,7 +1,7 @@
 module.exports = {
   name: "restart",
   description: "Restart the bot",
-  aliases: ["reboot"],
+  aliases: ["reboot", "ff"],
   arguments: false,
   execute(message, arguments) {
     process.exit();

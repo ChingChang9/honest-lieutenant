@@ -1,6 +1,6 @@
 const fs = require("fs");
 const library = require("../../library.js");
-const { emptyQueue: emptyQueue } = require("../../config.json");
+const { emptyQueue } = require("../../config.json");
 
 module.exports = {
   name: "back",
@@ -24,7 +24,7 @@ module.exports = {
       if (!queue) message.reply("the queue is empty!");
       const back = await parseInt(arguments[0]) || 1;
 
-      if (message.member.id === queue[settings.played - back - 1].requesterId || message.member.voice.channel.members.size < 3) {
+      if (message.member.id === queue[settings.played - 1].requesterId || message.member.voice.channel.members.size < 3) {
         if (settings.played <= 1) {
           library.play(message, connection, queue, 0);
         }
@@ -32,12 +32,12 @@ module.exports = {
       } else {
         message.channel.send(`Vote on rewinding to \`${ queue[settings.played - back - 1].title }\``).then(async (message) => {
           await message.react("⏪");
-          const collector = await message.createReactionCollector((reaction) => reaction.emoji.name === "⏩", {
-            maxUsers: Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3),
+          const collector = await message.createReactionCollector((reaction) => reaction.emoji.name === "⏪", {
+            maxUsers: Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3) + 1,
             time: 12000
           });
           collector.on("collect", (reaction, user) => {
-            if (user.id === queue[settings.played - back - 1].requesterId || collector.size > Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3)) {
+            if (user.id === queue[settings.played - 1].requesterId || collector.size > Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3)) {
               if (settings.played <= 1) {
                 library.play(message, connection, queue, 0);
               }

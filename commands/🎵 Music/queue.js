@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { emptyQueue: emptyQueue } = require("../../config.json");
+const { emptyQueue } = require("../../config.json");
 
 module.exports = {
   name: "queue",

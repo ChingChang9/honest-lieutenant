@@ -1,6 +1,6 @@
 const fs = require("fs");
 const Discord = require("discord.js");
-const { prefix, token } = require("./config.json");
+const { prefix, discordToken } = require("./config.json");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -53,4 +53,4 @@ client.on("error", (error) => {
 
 process.on("unhandledRejection", (error) => console.error("Uncaught Promise Rejection", error));
 
-client.login(token);
+client.login(discordToken);

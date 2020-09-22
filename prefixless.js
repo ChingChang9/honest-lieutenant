@@ -6,6 +6,9 @@ const dadTriggerWords = ["i'm", "im", "am", "i’m"];
 module.exports = {
   execute(message) {
     const content = message.content.toLowerCase().split(/ +/);
+
+    if (content[0].startsWith("no") && message.author.id === "195217084974759936") return message.channel.send("https://media.discordapp.net/attachments/458510721664417853/723527184635002890/unknown.png");
+
     if (content[0] === "+play") {
       return message.reply("heyy im online too and im better than <@228537642583588864> 😉");
     }

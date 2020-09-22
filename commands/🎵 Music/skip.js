@@ -1,6 +1,6 @@
 const fs = require("fs");
 const library = require("../../library.js");
-const { emptyQueue: emptyQueue } = require("../../config.json");
+const { emptyQueue } = require("../../config.json");
 
 module.exports = {
   name: "skip",
@@ -27,17 +27,17 @@ module.exports = {
       }
       const skip = parseInt(arguments[0]) || 1;
 
-      if (message.member.id === queue[settings.played + skip - 1].requesterId || message.member.voice.channel.members.size < 3) {
+      if (message.member.id === queue[settings.played - 1].requesterId || message.member.voice.channel.members.size < 3) {
         library.play(message, connection, queue, settings.played + skip - 1);
       } else {
         message.channel.send(`Vote on skipping \`${ queue[settings.played - 1].title }\``).then(async (message) => {
           await message.react("⏩");
           const collector = await message.createReactionCollector((reaction) => reaction.emoji.name === "⏩", {
-            maxUsers: Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3),
+            maxUsers: Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3) + 1,
             time: 12000
           });
           collector.on("collect", (reaction, user) => {
-            if (user.id === queue[settings.played + skip - 1].requesterId || collector.size > Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3)) {
+            if (user.id === queue[settings.played - 1].requesterId || collector.size > Math.ceil((message.member.voice.channel.members.size - 1) * 2 / 3)) {
               library.play(message, connection, queue, settings.played + skip - 1);
             }
           });
