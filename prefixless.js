@@ -1,24 +1,29 @@
 const fs = require("fs");
 
 const coffinTriggerWords = ["die", "dies", "dying"];
-const dadTriggerWords = ["i'm", "im", "am", "i’m"];
+const dadTriggerWords = ["am", "i'm", "im", "i’m"];
+const emojis = ["😂", "😇", "🙃", "😉", "😏", "😘", "😝", "😎", "🤗", "🤣"];
 
 module.exports = {
   execute(message) {
-    const content = message.content.toLowerCase().split(/ +/);
+    const content = message.content.toLowerCase().split(/s|\n/);
+    const displayName = message.guild.members.cache.get("668301556185300993").displayName;
 
-    if (content[0].startsWith("no") && message.author.id === "195217084974759936") return message.channel.send("https://media.discordapp.net/attachments/458510721664417853/723527184635002890/unknown.png");
+    if (content[0].match(/^ay+/) && content.length === 1) return message.channel.send("lmao");
 
-    if (content[0] === "+play") {
-      return message.reply("heyy im online too and im better than <@228537642583588864> 😉");
-    }
+    if (content[0] === "owo" && content.length === 1) return message.channel.send("What's this?");
+
+    if (content[0].match(/^no+/) && message.author.id === "195217084974759936") return message.channel.send("https://media.discordapp.net/attachments/458510721664417853/723527184635002890/unknown.png");
+
+    if (content[0] === "+play") return message.reply("heyy im online too and im better than <@228537642583588864> 😉");
+
+    if (coffinTriggerWords.some((word) => content.includes(word))) return message.channel.send("https://tenor.com/view/dancing-coffin-coffin-dance-funeral-funny-farewell-gif-16737844");
 
     if (content.join(" ").match(/you know what i(.)?m talking about/)) {
-      const randomNumber = Math.random();
-      if (message.author.id === "371129637725798400" || randomNumber < 0.5) {
+      if (message.author.id === "371129637725798400" || Math.random() < 0.5) {
         return message.channel.send({
           files: [`./assets/i-know-what-youre-talking-about/${
-            Math.floor(Math.random() * fs.readdirSync("./assets/i-know-what-youre-talking-about").length)
+            Math.floor(Math.random() * fs.readdirSync("./assets/i-know-what-youre-talking-about").length - 1)
           }.jpg`]
         });
       }
@@ -27,53 +32,44 @@ module.exports = {
       });
     }
 
-    for (let index = 0; index < coffinTriggerWords.length; index++) {
-      if (content.includes(coffinTriggerWords[index])) return message.channel.send("https://tenor.com/view/dancing-coffin-coffin-dance-funeral-funny-farewell-gif-16737844");
-    }
+    for (const triggerWord of dadTriggerWords) {
+      if (content.includes(triggerWord)) {
+        if (triggerWord === "am" && (!content[content.indexOf(triggerWord) - 1] ||
+          content[content.indexOf(triggerWord) - 1] !== "i") ||
+          Math.random() < 0.76) return;
 
-    for (let index = 0; index < dadTriggerWords.length; index++) {
-      if (content.includes(dadTriggerWords[index])) {
-        if (dadTriggerWords[index] === "am" && (!content[content.indexOf(dadTriggerWords[index]) - 1] || content[content.indexOf(dadTriggerWords[index]) - 1] !== "i")) return;
+        const sonName = content.slice(content.indexOf(triggerWord) + 1).join(" ");
+        if (!sonName && message.author.id == "195217084974759936") return message.reply("stop doing that 🙄");
 
-        const sonName = content.slice(content.indexOf(dadTriggerWords[index]) + 1).join(" ");
-        if (!sonName) return message.reply("stop doing that 🙄");
+        if (sonName.match(/^not /) && sonName.length > 4) return message.channel.send(`We know you're ${ sonName }, you're ${
+          message.member.displayName }! ${ emojis[Math.floor(Math.random() * (emojis.length))] }`);
 
-        let randomNumber = Math.random();
-        if (randomNumber < 0.76) return;
-
-        if (sonName.slice(0, 3) === "not") {
-          return message.channel.send(`We know you're ${ sonName }, you're ${ message.member.displayName }! ${ emojis[Math.floor(Math.random() * (emojis.length))] }`);
-        }
+        if (message.author.id === "633488684116606976") return message.channel.send(`Hi ${ sonName }, I'm also ${ sonName }! ❤️`);
 
         if (message.author.id === "180472559148597249") {
           return message.channel.send({
             files: [`./assets/snake/${ Math.floor(Math.random() * fs.readdirSync("./assets/snake").length) }.jpg`]
           }, `No, you're not ${ sonName }\nYou're a`);
         }
-        if (message.author.id === "633488684116606976") {
-          return message.channel.send(`Hi ${ sonName }, I'm also ${ sonName }! ❤️`);
-        }
 
         const dadNames = [
           "a comedian",
           "so funny",
           "dad",
-          message.guild.members.cache.get("668301556185300993").displayName
-        ];
-        const harshResponses = [
-          "gonna delete your existence",
-          "gonna put some dirt in your eye",
-          "gonna eat you"
+          displayName,
+          `something of a ${ displayName } myself`,
+          `your friendly neighbourhood ${ displayName }`,
+          "a dead bot",
+          "gonna put some dirt in your eye"
         ];
 
-        randomNumber = Math.random();
-        if (randomNumber < 1 / (dadNames.length + 1)) {
+        if (Math.random() < 1 / (dadNames.length + 1)) {
           return message.channel.send(`You are ${ sonName }?? I thought you were ${ message.member.displayName } 🤔🤔`);
         }
 
-        const emojis = ["😂", "😇", "🙃", "😉", "😏", "😘", "😝", "😎", "🤗", "🤣"];
-        return message.channel.send(`Hi ${ sonName }, I'm ${ message.author.id === "628441856765591573" ? harshResponses[Math.floor(Math.random() * (harshResponses.length))] :
-        dadNames[Math.floor(Math.random() * (dadNames.length))] }! ${ emojis[Math.floor(Math.random() * (emojis.length))] }`);
+        return message.channel.send(`Hi ${ sonName }, I'm ${
+          dadNames[Math.floor(Math.random() * (dadNames.length - 1))] }! ${
+          emojis[Math.floor(Math.random() * (emojis.length - 1))] }`);
       }
     }
   }

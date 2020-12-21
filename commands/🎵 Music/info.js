@@ -1,5 +1,5 @@
-const fs = require("fs");
-const library = require("../../library.js");
+const firebase = require("@/scripts/firebase.js");
+const formatTime = require("@/scripts/formatTime.js");
 
 module.exports = {
   name: "info",
@@ -8,55 +8,52 @@ module.exports = {
   arguments: false,
   async execute(message, arguments) {
     if (!message.guild.voice) {
-      return message.reply("I'm not in the voice channel!");
+      return message.reply("I'm not in a voice channel!");
     }
 
     const connection = await message.guild.voice.channel.join();
     if (!connection.player.dispatcher) {
       return message.reply("I am not playing anything!");
     }
+    const queue = await firebase.getQueue(message.guild.id);
+    const played = await firebase.getPlayed(message.guild.id);
+    const seekTimestamp = await firebase.database.ref(`${ message.guild.id }/settings/seek`).once("value");
+    const index = played - 1;
 
-    fs.readFile("./assets/queue.json", async (error, data) => {
-      if (error) return console.log(error);
-
-      const { guilds } = await JSON.parse(data);
-      const { queue, settings } = guilds[message.guild.id];
-      const index = settings.played - 1;
-
-      const runTime = library.formatTime(Math.floor(connection.player.dispatcher.streamTime / 1000));
-      const duration = library.formatTime(queue[index].duration);
-      const ratio = Math.floor(connection.player.dispatcher.streamTime / 1000 / queue[index].duration * 10);
-      message.channel.send({
-        embed: {
-          color: "#fefefe",
-          author: {
-            name: queue[index].channel,
-            url: queue[index].channelUrl
+    const runTimeTimestamp = Math.floor(connection.player.dispatcher.streamTime / 1000) + seekTimestamp.val();
+    const runTime = formatTime.exec(runTimeTimestamp);
+    const duration = formatTime.exec(queue[index].duration);
+    const ratio = Math.floor(runTimeTimestamp / queue[index].duration * 10);
+    message.channel.send({
+      embed: {
+        color: "#fefefe",
+        author: {
+          name: queue[index].channel,
+          url: queue[index].channelUrl
+        },
+        title: queue[index].title,
+        url: queue[index].videoUrl,
+        thumbnail: {
+          url: queue[index].thumbnail
+        },
+        description: `${ runTime } ${ "▬".repeat(ratio) }🔘${ "▬".repeat((9 - ratio)) } ${ duration }`,
+        fields: [
+          {
+            name: "Requested by",
+            value: queue[index].requester,
+            inline: true
           },
-          title: queue[index].title,
-          url: queue[index].videoUrl,
-          thumbnail: {
-            url: queue[index].thumbnail
-          },
-          description: `${ runTime } ${ "▬".repeat(ratio) }🔘${ "▬".repeat((9 - ratio)) } ${ duration }`,
-          fields: [
-            {
-              name: "Requested by",
-              value: queue[index].requester,
-              inline: true
-            },
-            {
-              name: "Index",
-              value: settings.played,
-              inline: true
-            }
-          ],
-          footer: {
-            text: "Ching Chang © 2020 All Rights Reserved",
-            icon_url: "attachment://icon.jpg"
+          {
+            name: "Index",
+            value: played,
+            inline: true
           }
+        ],
+        footer: {
+          text: "Ching Chang © 2020 All Rights Reserved",
+          icon_url: "attachment://icon.jpg"
         }
-      });
+      }
     });
   }
 };

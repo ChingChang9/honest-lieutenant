@@ -1,7 +1,7 @@
 module.exports = {
   name: "disconnect",
   description: "Disconnect me from the voice channel",
-  aliases: ["leave", "quit"],
+  aliases: ["leave", "stop", "quit"],
   arguments: false,
   async execute(message, arguments) {
     if (!message.guild.voice) {

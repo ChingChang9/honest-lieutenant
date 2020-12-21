@@ -4,7 +4,9 @@ module.exports = {
   arguments: true,
   usage: "<channel-id message-id new-text>",
   execute(message, arguments) {
-    if (message.author.id !== "371129637725798400" && message.author.id !== "195217084974759936") return message.reply("you don't have the permission to use this command");
+    if (message.author.id !== "371129637725798400" && message.author.id !== "195217084974759936") {
+      return message.reply("you don't have the permission to use this command");
+    }
 
     const channelId = arguments.shift();
     const messageId = arguments.shift();

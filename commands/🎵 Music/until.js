@@ -1,5 +1,5 @@
-const fs = require("fs");
-const library = require("../../library.js");
+const firebase = require("@/scripts/firebase.js");
+const formatTime = require("@/scripts/formatTime.js");
 
 module.exports = {
   name: "until",
@@ -9,7 +9,7 @@ module.exports = {
   usage: "<index-of-song>",
   async execute(message, arguments) {
     if (!message.guild.voice) {
-      return message.reply("I'm not playing anything!");
+      return message.reply("I'm not in a voice channel!");
     }
 
     const connection = await message.guild.voice.channel.join();
@@ -17,25 +17,22 @@ module.exports = {
       return message.reply("I'm not playing anything!");
     }
 
-    fs.readFile("./assets/queue.json", async (error, data) => {
-      if (error) return console.log(error);
+    const queue = await firebase.getQueue(message.guild.id);
+    const played = await firebase.getPlayed(message.guild.id);
+    const index = played - 1;
+    const untilIndex = parseInt(arguments[0])
 
-      const { guilds } = await JSON.parse(data);
-      const { queue, settings } = guilds[message.guild.id];
-      const index = settings.played - 1;
+    if (untilIndex < index + 1) {
+      return message.reply("that song is already played");
+    } else if (untilIndex === index + 1) {
+      return message.reply("I'm currently playing that song right now, duh 🙄");
+    }
 
-      if (parseInt(arguments[0]) < index + 1) {
-        return message.reply("that song has already been played");
-      }
-      if (parseInt(arguments[0]) === index + 1) {
-        return message.reply("I'm currently playing that song right now, duh 🙄");
-      }
+    let timeLeft = queue[index].duration - Math.floor(connection.player.dispatcher.streamTime / 1000);
+    for (let counter = index + 1; counter < untilIndex - 1; counter++) {
+      timeLeft += parseInt(queue[counter].duration);
+    }
 
-      let timeLeft = queue[index].duration - Math.floor(connection.player.dispatcher.streamTime / 1000);
-      for (let counter = index + 1; counter < parseInt(arguments[0]) - 1; counter++) {
-        timeLeft += parseInt(queue[counter].duration);
-      }
-      return message.channel.send(`\`${ library.formatTime(timeLeft) }\` until \`${ queue[parseInt(arguments[0]) - 1].title }\` plays`);
-    });
+    message.channel.send(`\`${ formatTime.exec(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
   }
 };

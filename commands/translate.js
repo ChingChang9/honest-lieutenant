@@ -1,4 +1,4 @@
-const library = require("../library.js");
+const library = require("@/scripts/translate.js");
 
 module.exports = {
   name: "translate",

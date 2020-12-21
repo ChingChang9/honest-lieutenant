@@ -1,4 +1,4 @@
-const play = require("./play.js");
+const addPlaylist = require("@/scripts/addPlaylist.js");
 
 const original = [
   "https://www.youtube.com/watch?v=VhinPd5RRJw",
@@ -109,8 +109,6 @@ module.exports = {
     const version = arguments[0] || "original";
     const playList = version === "original" ? original : cut;
     await message.reply(`I added some outtakes. If you want the cut version, please end the process right now with\n\`.restart\`,\nwait for ~5 seconds, then\n\`.empty\`\nAnd use \`.hamilton cut\` in the future\nSorry for the inconvenience. Don't blame me, blame the person who programmed me 😩😩`);
-    for (let index = 0; index < playList.length; index++) {
-      await play.execute(message, [playList[index]]);
-    }
+    addPlaylist.exec(message, playList, "all");
   }
 };

@@ -6,7 +6,7 @@ module.exports = {
   arguments: false,
   execute(message, arguments) {
     const folderSize = fs.readdirSync("./assets/keira").length;
-    const index = Math.floor(Math.random() * (folderSize));
+    const index = Math.floor(Math.random() * folderSize);
     if (index === folderSize.length - 1) {
       message.channel.send("Ha! you thought!");
     }

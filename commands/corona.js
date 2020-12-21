@@ -66,6 +66,6 @@ module.exports = {
           }
         ]
       }
-    }).then(() => message.channel.send(messages[Math.floor(Math.random() * (messages.length + 1))]));
+    }).then(() => message.channel.send(messages[Math.floor(Math.random() * messages.length)]));
   }
 };

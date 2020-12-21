@@ -5,7 +5,7 @@ module.exports = {
   arguments: false,
   async execute(message, arguments) {
     if (!message.guild.voice) {
-      return message.reply("I'm not in the voice channel!");
+      return message.reply("I'm not in a voice channel!");
     }
     const connection = await message.guild.voice.channel.join();
     if (!connection.player.dispatcher) {

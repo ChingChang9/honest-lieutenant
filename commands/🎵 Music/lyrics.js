@@ -1,8 +1,8 @@
 const fs = require("fs");
-const getArtistTitle = require("get-artist-title");
 const axios = require("axios");
-const cheerio = require("cheerio");
-const library = require("../../library.js");
+const firebase = require("@/scripts/firebase.js");
+const { ksoftAuth } = require("@/config.json");
+const translate = require("@/scripts/translate.js");
 
 module.exports = {
   name: "lyrics",
@@ -12,7 +12,7 @@ module.exports = {
   default: "original",
   async execute(message, arguments) {
     if (!message.guild.voice) {
-      return message.reply("I'm not in the voice channel!");
+      return message.reply("I'm not in a voice channel!");
     }
 
     const connection = await message.guild.voice.channel.join();
@@ -20,65 +20,53 @@ module.exports = {
       return message.reply("I am not playing anything!");
     }
 
-    fs.readFile("./assets/queue.json", async (error, data) => {
-      if (error) return console.log(error);
+    const [videoTitle, videoUrl] = await getVideoInfo(message);
 
-      const { guilds } = await JSON.parse(data);
-      const { queue, settings } = guilds[message.guild.id];
-      const index = settings.played - 1;
-      let [ artist, title ] = await getArtistTitle(queue[index].title, {
-        defaultArtist: queue[index].channel
-      });
-      title = await title.replace(/[[(].*?[)\]]/g, "").trim();
-
-      const geniusUrls = await axios("http://genius.com/api/search/song", {
-        params: {
-          q: title
-        }
-      }).then((response) => response.data.response.sections[0].hits);
-
-      if (!geniusUrls.length) return message.reply("sorry, I can't find the lyrics for this song 😬")
-
-      let geniusUrl = geniusUrls[0].result.url;
-      for (let songIndex = 0; songIndex < geniusUrls.length; songIndex++) {
-        if (geniusUrls[songIndex].result.primary_artist.name === artist) {
-          geniusUrl = geniusUrls[songIndex].result.url;
-        }
+    const data = await axios("https://api.ksoft.si/lyrics/search", {
+      headers: {
+        Authorization: `Bearer ${ ksoftAuth }`
+      },
+      params: {
+        q: videoTitle,
+        limit: 1
       }
+    }).then((response) => response.data.data[0]);
 
-      const html = await axios(geniusUrl).then((response) => response.data);
-      const $ = await cheerio.load(html);
-      title = await $("h1.header_with_cover_art-primary_info-title").text();
-      let lyrics = await $(".lyrics").text().trim();
-      const thumbnailUrl = await $("img.cover_art-image").attr("src");
+    let lyrics = data.lyrics;
+    const songTitle = data.name;
+    const artist = data.artist;
+    const thumbnailUrl = data.album_art;
 
-      if (!lyrics) return setTimeout(function() {
-        this.this.execute(message, arguments);
-      }, 1000);
+    if (arguments[0] === "translate") {
+      lyrics = await translate.exec(lyrics);
+    }
 
-      if (arguments[0] === "translate") {
-        lyrics = await library.translate(lyrics);
+    let start = 0
+    let end = 0;
+    while (end < lyrics.length) {
+      end = start + 2048;
+      if (lyrics.length > end) {
+        while (lyrics[--end] !== "\n") {}
       }
-
       message.channel.send({
         embed: {
           color: "#fefefe",
-          title: `${ title }`,
-          url: geniusUrl,
-          thumbnail: {
-            url: thumbnailUrl
-          },
-          description: lyrics.slice(0, 2048)
+          title: start === 0 ? songTitle : null,
+          url: start === 0 ? videoUrl : null,
+          thumbnail: start === 0 ? { url: thumbnailUrl } : null,
+          description: lyrics.slice(start, end),
+          footer: end >= lyrics.length ? { text: "Lyrics provided by KSoft.Si" } : null
         }
       });
-      for (let lyricsLength = 2049; lyricsLength < lyrics.length; lyricsLength += 2048) {
-        message.channel.send({
-          embed: {
-            color: "#fefefe",
-            description: lyrics.slice(lyricsLength - 1, lyricsLength + 2047)
-          }
-        });
-      }
-    });
+      start = end + 1
+    }
   }
 };
+
+async function getVideoInfo(message) {
+  const queue = await firebase.getQueue(message.guild.id);
+  const played = await firebase.getPlayed(message.guild.id);
+  const index = played - 1;
+
+  return [queue[index].title, queue[index].videoUrl];
+}

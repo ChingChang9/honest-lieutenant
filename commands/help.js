@@ -6,7 +6,7 @@ const fs = require("fs");
 module.exports = {
   name: "help",
   description: "List all of my commands or info about a specific command",
-  aliases: ["alias", "aliases", "command", "commands"],
+  aliases: ["alias", "aliases", "command", "commands", "h"],
   arguments: false,
   usage: "[command-name]",
   execute(message, arguments) {
@@ -18,14 +18,12 @@ module.exports = {
       	for (const file of commandFiles) {
       		if (fs.statSync(`${ path }/${ file }`).isDirectory()) {
       			readDirectory(`${ path }/${ file }`, directory);
-      		} else {
-            if (directory[path.split("/")[path.split("/").length - 1]]) {
-              directory[path.split("/")[path.split("/").length - 1]].push(file);
-            } else {
-              if (path.split("/")[path.split("/").length - 1] === "🤫 Secret") return;
-              directory[path.split("/")[path.split("/").length - 1]] = [file];
-            }
-      		}
+      		} else if (directory[path.split("/")[path.split("/").length - 1]]) {
+            directory[path.split("/")[path.split("/").length - 1]].push(file);
+          } else {
+            if (path.split("/")[path.split("/").length - 1] === "🤫 Secret") return;
+            directory[path.split("/")[path.split("/").length - 1]] = [file];
+          }
       	}
         return directory;
       }

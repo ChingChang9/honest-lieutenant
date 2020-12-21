@@ -1,16 +1,17 @@
-const fs = require("fs");
-const ytdl = require("ytdl-core-discord");
+const ytdl = require("ytdl-core");
 const { google } = require("googleapis");
-const { emptyQueue, youtubeAuth } = require("../../config.json");
+const scrapePlaylist = require("youtube-playlist-scraper");
+const { youtubeAuth } = require("@/config.json");
+const addSong = require("@/scripts/addSong.js");
+const addPlaylist = require("@/scripts/addPlaylist.js");
+
 const youtube = google.youtube({
   version: "v3",
   auth: youtubeAuth
 });
-const library = require("../../library.js");
-const forbiddenWords = [
-  "taylor swift",
-  "nightcore",
-  "gangnam style"
+const trashes = [
+  "100 gecs",
+  "ppcocaine"
 ];
 
 module.exports = {
@@ -18,55 +19,63 @@ module.exports = {
   description: "Queue music in the voice channel",
   aliases: ["add", "p"],
   arguments: true,
-  usage: "<song-name/link-to-the-song>",
+  usage: "<name/link/playlist> [#-in-playlist (playlist only)]",
   async execute(message, arguments) {
     if (!message.member.voice.channel) {
       return message.reply("you need to be in a voice channel to queue music!");
     }
 
-    let songUrl = arguments[0];
-    if (!arguments[0].startsWith("http")) {
-      const result = await youtube.search.list({
-        part: "snippet",
-        q: arguments.join(" "),
-        type: "video",
-        maxResults: 1
-      });
-      songUrl = `https://www.youtube.com/watch?v=${ result.data.items[0].id.videoId }`;
-    }
-    const songInfo = await ytdl.getInfo(songUrl).catch(() => message.reply("the video link is invalid"));
-    const trash = forbiddenWords.some((forbiddenWord) => {
-      if (songInfo.title.toLowerCase().includes(forbiddenWord)) return forbiddenWord
+    if (arguments[0].match(/^http.+playlist\?list=(.+)&?/)) return queuePlaylist(message, songUrl, arguments[1]);
+    const songUrl = await getSongUrl(arguments);
+    if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬. Maybhaps give me the link?");
+
+    const songInfo = await ytdl.getInfo(songUrl).catch((error) => {
+      console.log(error);
+      return message.reply("this link is invalid");
     });
-    if (message.author.id === "180472559148597249" && trash) return message.reply(`no ${ trash } please!`);
 
-    fs.readFile("./assets/queue.json", async (error, data) => {
-      if (error) return console.log(error);
+    const trashMessage = checkTrash(songInfo.videoDetails.title.toLowerCase());
+    if (trashMessage) return message.reply(trashMessage);
 
-      let { guilds } = await JSON.parse(data);
-      if (!guilds[message.guild.id]) guilds[message.guild.id] = emptyQueue;
-      let { queue } = guilds[message.guild.id];
-      queue.push({
-        title: songInfo.title,
-        videoUrl: songInfo.video_url,
-        thumbnail: songInfo.player_response.videoDetails.thumbnail.thumbnails[0].url,
-        channel: songInfo.author.name,
-        channelUrl: songInfo.author.channel_url,
-        duration: songInfo.length_seconds,
-        requester: message.member.displayName,
-        requesterId: message.member.id
-      });
-      guilds[message.guild.id].queue = queue;
-      await fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
-        if (error) return console.log(error);
-        message.channel.send(`Enqueued \`${ songInfo.title }\` at position \`${ queue.length }\``)
-      });
-
-      const connection = await message.member.voice.channel.join();
-      connection.voice.setSelfDeaf(true);
-      if (!connection.player.dispatcher) {
-        library.play(message, connection, queue, queue.length - 1);
-      }
-    });
+    addSong.exec(message, songInfo);
   }
 };
+
+async function getSongUrl(arguments) {
+  if (arguments[0].match(/^http/)) return arguments[0];
+
+  const result = await youtube.search.list({
+    part: "snippet",
+    q: arguments.join(" "),
+    type: "video",
+    maxResults: 1
+  });
+
+  if (result.data.items) {
+    return `https://www.youtube.com/watch?v=${ result.data.items[0].id.videoId }`;
+  }
+}
+
+function checkTrash(title) {
+  const trash = trashes.some((trash) => {
+    if (title.includes(trash)) return trash;
+  });
+
+  if (trash) {
+    const refusal = [
+      `no ${ trash } please!`,
+      `I refuse to queue ${ trash }`,
+      `nah bro, not ${ trash }`,
+      `${ trash }... this ain't it chief`
+    ];
+    return refusal[Math.floor(Math.random() * refusal.length)]
+  }
+}
+
+function queuePlaylist(message, url, number) {
+  const id = url.match(/^http.+playlist\?list=(.+)&?/)[1];
+  scrapePlaylist(id).then((response) => {
+    const urls = response.playlist.map((video) => video.url);
+    addPlaylist.exec(message, urls, number);
+  });
+}

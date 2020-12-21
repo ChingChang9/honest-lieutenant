@@ -1,5 +1,4 @@
-const fs = require("fs");
-const { emptyQueue } = require("../../config.json");
+const firebase = require("@/scripts/firebase.js");
 
 module.exports = {
   name: "remove",
@@ -7,30 +6,24 @@ module.exports = {
   aliases: ["delete"],
   arguments: true,
   usage: "<song-index>",
-  execute(message, arguments) {
-    fs.readFile("./assets/queue.json", async (error, data) => {
-      if (error) return console.log(error);
+  async execute(message, arguments) {
+    const queue = await firebase.getQueue(message.guild.id);
+    const played = await firebase.getPlayed(message.guild.id);
 
-      let { guilds } = await JSON.parse(data);
-      if (!guilds[message.guild.id]) guilds[message.guild.id] = emptyQueue;
-      if (arguments[0] > guilds[message.guild.id].queue.length) {
-        return message.reply("that was an invalid index");
+    if (arguments[0] > queue.length || arguments[0] < 1) {
+      return message.reply("that was an invalid index");
+    }
+    if (arguments[0] == played && message.guild.voice) {
+      const connection = await message.guild.voice.channel.join();
+      if (connection.player.dispatcher) {
+        return message.reply("bruh I'm playing that right now. I can't delete the current song 🙄🙄");
       }
-      if (arguments[0] == guilds[message.guild.id].settings.played && message.guild.voice) {
-        const connection = await message.guild.voice.channel.join();
-        if (connection.player.dispatcher) {
-          return message.reply("bruh I'm playing that right now. I can't delete the currently playing song 🙄🙄")
-        }
-      }
-      if (arguments[0] <= guilds[message.guild.id].settings.played) {
-        guilds[message.guild.id].settings.played--;
-      }
-      guilds[message.guild.id].queue.splice(arguments[0] - 1, 1);
+    }
+    if (arguments[0] <= played) {
+      await firebase.updateValue(`${ message.guild.id }/settings/played`, played - 1);
+    }
+    queue.splice(arguments[0] - 1, 1);
 
-      fs.writeFile("./assets/queue.json", `{"guilds":${ JSON.stringify(guilds) }}`, (error) => {
-        if (error) return console.log(error);
-        message.react("👍🏽");
-      });
-    });
+    message.react("👍🏽");
   }
 };
