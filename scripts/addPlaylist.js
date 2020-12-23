@@ -22,8 +22,8 @@ module.exports = {
     const songs = await addPlaylist(message, ref, urls, number);
 
     if (songs) {
-      await ref.update(songs);
-      message.channel.send("Enqueued all of the above! 😁😁")
+      ref.update(songs);
+      message.channel.send("Enqueued all of the above! 😁😁");
     }
   }
 };
@@ -32,7 +32,6 @@ async function addPlaylist(message, ref, urls, number) {
   const queue = await ref.once("value");
   let enqueuedIndex = Object.keys(queue.val() || {}).length;
   let songs = {};
-  let enqueuedMessage = "";
 
   for (const url of urls) {
     if (Object.keys(songs).length > number) return;
@@ -41,19 +40,14 @@ async function addPlaylist(message, ref, urls, number) {
     songs[ref.push().key] = {
       title: songInfo.videoDetails.title,
       videoUrl: songInfo.videoDetails.video_url,
-      thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length - 1].url,
+      thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
       channel: songInfo.videoDetails.author.name,
       channelUrl: songInfo.videoDetails.author.channel_url,
       duration: songInfo.videoDetails.lengthSeconds,
       requester: message.member.displayName,
       requesterId: message.member.id
     };
-    enqueuedMessage += `Ready to queue \`${ songInfo.videoDetails.title }\` at position \`${ ++enqueuedIndex }\`\n`;
-    if ((enqueuedMessage.match(/\n/g) || []).length == 10) {
-      message.channel.send(enqueuedMessage);
-      enqueuedMessage = "";
-    }
+    message.channel.send(`Ready to queue \`${ songInfo.videoDetails.title }\` at position \`${ ++enqueuedIndex }\``);
   }
-  if (enqueuedMessage) message.channel.send(enqueuedMessage);
   return songs;
 }

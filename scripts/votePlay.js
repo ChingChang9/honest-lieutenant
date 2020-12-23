@@ -3,7 +3,7 @@ const play = require("@/scripts/play.js");
 module.exports = {
   async exec(message, queue, currentIndex, toIndex, text, emoji) {
     if (!message.member.voice.channel) {
-      return message.reply("you need to be in a voice channel to use this command!");
+      return message.reply("please only use this when you're in a voice channel");
     }
 
     const connection = await message.member.voice.channel.join();

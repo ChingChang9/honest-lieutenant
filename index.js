@@ -1,16 +1,43 @@
 require("module-alias/register");
 const fs = require("fs");
-const Discord = require("discord.js");
+const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
+const path = require("path");
+const sqlite = require("sqlite");
 const { prefix, emptyQueue, discordToken } = require("@/config.json");
 const prefixless = require("@/prefixless.js");
 const firebase = require("@/scripts/firebase.js");
 
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+const client = new CommandoClient({
+  commandPrefix: prefix,
+  owner: "371129637725798400",
+  invite: "https://discordapp.com/invite/Bu8rPza",
+  disableEveryone: true
+});
 
-getCommands(client, "./commands");
+sqlite.open({
+  filename: path.join(__dirname, "settings.sqlite3"),
+  driver: sqlite.Database
+}).then((db) => client.setProvider(new SQLiteProvider(db)));
 
-client.on("ready", () => {
+client.registry
+  .registerDefaultTypes()
+  .registerGroups([
+    ["utility", "⚙️ Utility"],
+    ["music", "🎵 Music"],
+    // ["meme", "🙃 Meme"],
+    ["picture", "🖼️ Picture"],
+    ["other", "❓ Other"]
+  ])
+  .registerDefaultGroups()
+  .registerDefaultCommands({
+    help: false,
+    ping: false,
+    prefix: false,
+    unknownCommand: false
+  })
+  .registerCommandsIn(path.join(__dirname, "commands"));
+
+client.once("ready", () => {
   console.log(`Logged in as ${ client.user.tag }!`);
   client.user.setActivity("with myself | .help");
 });
@@ -24,41 +51,10 @@ client.on("guildDelete", (guild) => {
 });
 
 client.on("message", (message) => {
-  if (message.author.bot) return;
-
-	if (!message.content.startsWith(prefix)) return prefixless.execute(message);
-
-  const arguments = message.content.slice(prefix.length).trim().split(/ +/);
-	const commandName = arguments.shift().toLowerCase();
-
-  const command = client.commands.get(commandName) || client.commands.find((command) => command.aliases && command.aliases.includes(commandName));
-  if (!command) return;
-
-  if (command.arguments && !arguments.length) {
-		return message.reply(`you didn't provide any arguments!\nThe proper usage would be: \`${ prefix }${ command.name } ${ command.usage }\``);
-  }
-
-  try {
-  	command.execute(message, arguments);
-  } catch (error) {
-  	console.error(error);
-  	message.reply("there was an error trying to execute that command!");
-  }
+  if (!message.author.bot && !message.content.startsWith(prefix)) prefixless.run(message);
 });
 
 client.on("error", (error) => console.error("The websocket connection encountered an error: ", error));
 process.on("unhandledRejection", (error) => console.error("Uncaught Promise Rejection", error));
 
 client.login(discordToken);
-
-function getCommands(client, path) {
-	const commandFiles = fs.readdirSync(path);
-	for (const file of commandFiles) {
-		if (fs.statSync(`${ path }/${ file }`).isDirectory()) {
-			getCommands(client, `${ path }/${ file }`);
-		} else {
-			const command = require(`${ path }/${ file }`);
-			client.commands.set(command.name, command);
-		}
-	}
-}

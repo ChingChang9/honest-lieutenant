@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/ChingChang9/honest-lieutenant.git"
   },
+  "keywords": [
+    "discord",
+    "music",
+    "meme"
+  ],
   "author": "Ching Chang",
   "license": "ISC",
   "bugs": {
@@ -18,20 +23,22 @@
   "homepage": "https://github.com/ChingChang9/honest-lieutenant#readme",
   "_moduleAliases": {
     "@": ".",
-    "@music": "./commands/🎵 Music"
+    "@music": "./commands/music"
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "@firebase/database": "^0.7.1",
-    "axios": "^0.20.0",
+    "@firebase/database": "^0.8.1",
+    "axios": "^0.21.1",
     "canvas": "^2.6.1",
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.5",
     "discord.js": "^12.3.1",
+    "discord.js-commando": "github:discordjs/Commando",
     "ffmpeg-static": "^4.2.7",
-    "firebase": "^8.0.2",
-    "googleapis": "^60.0.1",
+    "firebase": "^8.2.1",
+    "googleapis": "^66.0.0",
     "module-alias": "^2.2.2",
-    "youtube-playlist-scraper": "^1.0.2",
-    "ytdl-core": "^4.1.4"
+    "sqlite": "^4.0.18",
+    "youtube-playlist-scraper": "^2.1.1",
+    "ytdl-core": "^4.2.1"
   }
 }

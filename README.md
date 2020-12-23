@@ -1,1 +1,1 @@
-# Don't read me. It makes me shy
+Don't read me. It makes me shy
