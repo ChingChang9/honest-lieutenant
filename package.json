@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ChingChang9/honest-lieutenant.git"
+    "url": "https://github.com/ChingChang9/honest-lieutenant.git"
   },
   "keywords": [
     "discord",
@@ -16,9 +16,17 @@
     "meme"
   ],
   "author": "Ching Chang",
+  "contributors": [
+    {
+      "name": "Ching Chang",
+      "email": "chingtheprogrammer@gmail.com",
+      "url": "https://www.chingchang.dev"
+    }
+  ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ChingChang9/honest-lieutenant/issues"
+    "url": "https://github.com/ChingChang9/honest-lieutenant/issues",
+    "email": "chingtheprogrammer@gmail.com"
   },
   "homepage": "https://github.com/ChingChang9/honest-lieutenant#readme",
   "_moduleAliases": {

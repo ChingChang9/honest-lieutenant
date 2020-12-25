@@ -15,7 +15,7 @@ module.exports = class DisconnectCommand extends Command {
   }
 
   async run(message) {
-    message.guild.voice.channel?.leave();
+    message.guild.voice?.channel?.leave();
     message.react("👍🏽");
     server.setTimeout(message.guild.id, null);
     server.setDispatcher(message.guild.id, null);

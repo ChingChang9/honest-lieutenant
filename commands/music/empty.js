@@ -15,21 +15,17 @@ module.exports = class EmptyCommand extends Command {
   }
 
   async run(message) {
-    if (!message.guild.voice.channel) {
+    if (!servers.getDispatcher(message.guild.id)) {
       await firebase.updateValue(message.guild.id, emptyQueue);
     } else {
-      if (!servers.getDispatcher(message.guild.id)) {
-        await firebase.updateValue(message.guild.id, emptyQueue);
-      } else {
-        const played = await firebase.getItem(message.guild.id, "played");
-        const queue = await firebase.database.ref(`${ message.guild.id }/queue`).once("value");
-        let newQueue = {};
-        newQueue[Object.keys(queue.val())[played - 1]] = Object.values(queue.val())[played - 1];
-        await firebase.database.ref(`${ message.guild.id }/queue`).set(newQueue);
-        await firebase.updateValue(`${ message.guild.id }/settings`, {
-          played: 1
-        });
-      }
+      const played = await firebase.getItem(message.guild.id, "played");
+      const queue = await firebase.database.ref(`${ message.guild.id }/queue`).once("value");
+      let newQueue = {};
+      newQueue[Object.keys(queue.val())[played - 1]] = Object.values(queue.val())[played - 1];
+      firebase.database.ref(`${ message.guild.id }/queue`).set(newQueue);
+      firebase.updateValue(`${ message.guild.id }/settings`, {
+        played: 1
+      });
     }
     message.react("👍🏽");
   }

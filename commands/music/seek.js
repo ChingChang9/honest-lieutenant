@@ -11,7 +11,6 @@ module.exports = class SeekCommand extends Command {
 			aliases: ["jump"],
 			description: "Jump to a timestamp of the currently playing song",
       format: "<timestamp>",
-      // TODO: EXAMPLES
       guildOnly: true,
       args: [
         {

@@ -70,16 +70,42 @@ module.exports = {
       } else if (index + 1 === queue.length && repeat === "queue") {
         this.exec(message, connection, queue, 0);
       } else if (index + 1 === queue.length) {
-        dispatcher.destroy();
-        disconnect(message);
+        dispatcher.end();
+        this.disconnect(message);
       } else {
         this.exec(message, connection, queue, ++index);
       }
     });
 
     dispatcher.on("error", (error) => {
-      message.reply(`${ error } :(`);
+      if (error.message === "input stream: Video unavailable") {
+        message.reply("this video is not available in my country :(");
+      }
     });
+  },
+  disconnect(message) {
+    servers.setTimeout(message.guild.id,
+      setTimeout(() => {
+        servers.setTimeout(message.guild.id, null);
+        if (!message.guild.voice?.channel) return;
+
+        const farewells = [
+          "Ight imma head out",
+          "Time to banana split out of this awkwardness",
+          "Let me strawberry jam outta here",
+          "Anyway~ I gotta wake up early tomorrow, so... yeah",
+          "Alright, cya",
+          `For LOHS TV, I am ${ message.guild.members.cache.get("668301556185300993").displayName }, and just remember: BE LEGENDARY!`
+        ];
+
+        message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);
+
+        setTimeout(() => {
+          message.guild.voice.channel.leave();
+        }, 3 * 1000);
+
+      }, 4 * 60 * 1000)
+    );
   }
 };
 
@@ -95,29 +121,4 @@ async function playSong(connection, queue, index, seekTimestamp) {
       highWaterMark: 1
     }
   );
-}
-
-function disconnect(message) {
-  servers.setTimeout(message.guild.id,
-    setTimeout(() => {
-      servers.setTimeout(message.guild.id, null);
-      if (!message.guild.voice.channel) return;
-
-      const farewells = [
-        "Ight imma head out",
-        "Time to banana split out of this awkwardness",
-        "Let me strawberry jam outta here",
-        "Anyway~ I gotta wake up early tomorrow, so... yeah",
-        "Alright, cya",
-        `For LOHS TV, I am ${ message.guild.members.cache.get("668301556185300993").displayName }, and just remember: BE LEGENDARY!`
-      ];
-
-      message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);
-
-      setTimeout(() => {
-        message.guild.voice.channel.leave();
-      }, 3 * 1000);
-
-    }, 4 * 60 * 1000)
-  )
 }

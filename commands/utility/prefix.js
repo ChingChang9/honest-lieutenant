@@ -29,7 +29,7 @@ module.exports = class PrefixCommand extends Command {
 		}
 
 		if (!message.member.hasPermission('ADMINISTRATOR')) {
-			return message.reply("sorry, you need admin permission to change the prefix :(");
+			return message.reply("sorry, you need admin permission to change the prefix");
 		}
 
 		if (args.prefix.toLowerCase() === "default") {
