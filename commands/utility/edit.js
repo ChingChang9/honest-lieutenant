@@ -6,35 +6,31 @@ module.exports = class EditCommand extends Command {
       name: "edit",
 			group: "utility",
 			memberName: "edit",
-			description: "Edit a message in a channel",
-      format: "<channel-id> <message-id> <new-text>",
+			description: "Edits a message sent by the bot",
+      format: "<message-link> <new-text>",
       guildOnly: true,
       ownerOnly: true,
       hidden: true,
 			args: [
 				{
-					key: "channelId",
-					prompt: "Which channel do you want to say it in?",
+					key: "messageLink",
+					prompt: "Which message do you want to edit?",
 					type: "string",
-          parse: (channelId) => {
-            return channelId.slice(2, -1);
+          parse: (messageLink) => {
+            const split = messageLink.split("/");
+            return [split[split.length - 2], split[split.length - 1]];
           }
 				},
         {
-          key: "messageId",
-          prompt: "Which message do you want to edit?",
-          type: "string"
-        },
-        {
           key: "newText",
-          prompt: "What do you want to edit it to?",
+          prompt: "What would you like to edit it to?",
           type: "string"
         }
 			]
     });
   }
 
-  run(message, { channelId, messageId, newText }) {
+  run(message, { messageLink: [channelId, messageId], newText }) {
     message.guild.channels.cache.get(channelId).messages.fetch(messageId).then((fetchedMessage) => {
       fetchedMessage.edit(newText);
     });

@@ -8,9 +8,13 @@ module.exports = class HelpCommand extends Command {
 			name: "help",
 			group: "utility",
 			memberName: "help",
-			aliases: ["alias", "aliases", "command", "commands", "h"],
-			description: "List all of my commands or details about a specific command",
-			examples: ["help", "help prefix"],
+			aliases: ["h", "alias", "aliases", "command", "commands"],
+			description: "Lists all of my commands or details about a specific command",
+			format: "[command]",
+			examples: [
+				"` (Lists all my commands)",
+				" prefix` (Shows a detailed menu for the `prefix` command)"
+			],
       guarded: true,
 			args: [
 				{
@@ -24,20 +28,9 @@ module.exports = class HelpCommand extends Command {
 	}
 
   run(message, { command }) {
+		const prefix = message.guild?.commandPrefix || this.client.commandPrefix;
 		if (!command) {
-      let fields = [];
-      this.client.registry.groups.forEach((group) => {
-        fields.push({
-          name: group.name,
-          value: `\`${ this.client.commandPrefix }${ group.commands.map((command) => command.name).join(`\`, \`${ this.client.commandPrefix }`) }\``
-        });
-      });
-      for (let group in this.client.registry.groups) {
-        fields.push({
-          name: group,
-          value: `\`${ this.client.commandPrefix }${ this.client.registry.groups[key].map((command) => command.join(`\`, \`${ this.client.commandPrefix }`)) }\``
-        });
-      }
+      const fields = getCommands(this.client);
       return message.channel.send({
         files: [icon],
         embed: {
@@ -47,8 +40,8 @@ module.exports = class HelpCommand extends Command {
         		icon_url: "attachment://icon.jpg",
         		url: "https://www.chingchang.dev"
         	},
-        	description: `Use \`${ this.client.commandPrefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
-        	fields: fields,
+        	description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
+        	fields,
         	footer: {
         		text: "Ching Chang © 2020 All Rights Reserved",
         		icon_url: "attachment://icon.jpg"
@@ -58,41 +51,62 @@ module.exports = class HelpCommand extends Command {
 		}
 
     const commands = this.client.registry.findCommands(command, false, message);
-    if (commands.length === 1) {
+    if (commands.length) {
       command = commands[0];
-      return message.channel.send({
-        files: [icon],
-        embed: {
-          color: "#fefefe",
-          author: {
-            name: "Honest Lieutenant's Help Menu",
-            icon_url: "attachment://icon.jpg",
-            url: "https://www.chingchang.dev"
-          },
-          title: `${ this.client.commandPrefix }${ command.name }`,
-          description: command.description,
-          fields: [
-            {
-              name: "Usage",
-              value: `\`${ this.client.commandPrefix }${ command.name } ${ command.format }\``,
-              inline: true
-            },
-            {
-              name: "Default Value",
-              value: command.default || "No default value",
-              inline: true
-            },
-            {
-              name: "Aliases",
-              value: command.aliases ? `\`${ this.client.commandPrefix }${ command.aliases.join(`\`, \`${ this.client.commandPrefix }`) }\`` : "No aliases"
-            }
-          ]
-        }
+			const fields = getDetails(commands[0], prefix);
+      message.embed({
+        color: "#fefefe",
+        title: `${ prefix }${ command.name }`,
+        description: command.description,
+        fields
       });
-    } else if (commands.length > 1) {
-      return message.reply("Found multiple commands, please be more specific");
     } else {
-      return message.reply("I can't find the command. Use `.help` to see all my commands.");
+      message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
     }
   }
 };
+
+function getCommands(client) {
+	let fields = [];
+	client.registry.groups.forEach((group) => {
+		fields.push({
+			name: group.name,
+			value: `\`${ client.commandPrefix }${ group.commands.map((command) => {
+				if (!command.hidden) return command.name;
+			}).filter(Boolean).join(`\`, \`${ client.commandPrefix }`) }\``
+		});
+	});
+	return fields;
+}
+
+function getDetails(command, prefix) {
+	let fields = [];
+	if (command.details) {
+		fields.push({
+			name: "Details",
+			value: command.details
+		});
+	}
+	fields.push({
+		name: "Usage",
+		value: `\`${ prefix }${ command.name }${ command.format ? ` ${ command.format }` : "" }\``,
+		inline: true
+	});
+	fields.push({
+		name: "Default Value",
+		value: command.argsCollector?.args?.[0].default || command.default || "No default value",
+		inline: true
+	});
+	if (command.examples) {
+		fields.push({
+			name: "Examples",
+			value: command.examples.map((example) => `\`${ prefix }${ command.name }${ example }`).join("\n")
+		});
+	}
+	fields.push({
+		name: "Aliases",
+		value: command.aliases.length ? `\`${ prefix }${ command.aliases.join(`\`, \`${ prefix }`) }\`` : "No aliases"
+	});
+
+	return fields;
+}

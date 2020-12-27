@@ -6,15 +6,19 @@ module.exports = class ReloadCommand extends Command {
 			name: "reload",
 			group: "utility",
 			memberName: "reload",
-			description: "Reload a command or command group",
+			description: "Reloads a command or command group",
+			format: "<command/group>",
+			examples: [
+				" meme` (Reloads all commands in `🙃 Meme`)",
+				" dog` (Reloads the `dog` command)"
+			],
 			ownerOnly: true,
 			hidden: true,
 			args: [
 				{
 					key: "command",
-					label: "command/group",
-					prompt: "Which command or group would you like to reload?",
-					type: "group|command"
+					prompt: "Which command/group would you like to reload?",
+					type: "command|group"
 				}
 			]
 		});

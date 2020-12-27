@@ -7,14 +7,19 @@ module.exports = class EnableCommand extends Command {
 			group: "utility",
 			memberName: "enable",
 			description: "Enables a command or command group",
+			format: "<command/group>",
+			examples: [
+				" meme` (Enables all commands in `🙃 Meme`)",
+				" dog` (Enables the `dog` command)"
+			],
       userPermissions: ["ADMINISTRATOR"],
+			guildOnly: true,
 			guarded: true,
       args: [
 				{
 					key: "command",
-					label: "command/group",
 					prompt: "Which command or group would you like to disable?",
-					type: "group|command"
+					type: "command|group"
 				}
 			]
 		});

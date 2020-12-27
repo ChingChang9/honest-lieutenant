@@ -4,6 +4,10 @@ const firebase = require("@/scripts/firebase.js");
 
 module.exports = {
   async exec(message, urls, number) {
+    if (!message.member.voice.channel) {
+      return message.reply("please only use this when you're in a voice channel");
+    }
+
     if (!urls) return message.reply("this list empty! YEET!");
 
     const queueRef = await firebase.database.ref(`${ message.guild.id }/queue`);
@@ -23,7 +27,7 @@ module.exports = {
 
     if (songs) {
       queueRef.update(songs);
-      message.channel.send("Enqueued all of the above! 😁😁");
+      if (number > 1) message.channel.send("Enqueued all of the above! 😁😁");
     }
   }
 };

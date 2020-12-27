@@ -9,9 +9,9 @@ module.exports = class UntilCommand extends Command {
 			name: "until",
 			group: "music",
 			memberName: "until",
-			aliases: ["time"],
-			description: "Estimate the time until a certain can be played",
-      format: "<index-of-song>",
+			aliases: ["ut", "time"],
+			description: "Estimates the time until a song plays",
+      format: "<song-index>",
       guildOnly: true,
       args: [
         {

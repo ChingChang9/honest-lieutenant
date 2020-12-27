@@ -9,8 +9,8 @@ module.exports = class ToughCommand extends Command {
 			name: "tough",
 			group: "meme",
 			memberName: "tough",
-			description: "Make a spongebob getting tough meme",
-      format: "<text1> : <text2> : [text3] : [...]",
+			description: "Makes a spongebob getting tough meme",
+      format: "<text1> : <text2> : [...]*",
       args: [
         {
           key: "text",

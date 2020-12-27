@@ -1,5 +1,5 @@
 const { Command } = require("discord.js-commando");
-const play = require("@music/play.js");
+const addPlaylist = require("@/scripts/addPlaylist.js");
 const firebase = require("@/scripts/firebase.js");
 const votePlay = require("@/scripts/votePlay.js");
 
@@ -9,14 +9,15 @@ module.exports = class GotoCommand extends Command {
 			name: "goto",
 			group: "music",
 			memberName: "goto",
-			description: "Play a specific song in the queue",
-      format: "<index-of-song>",
+      aliases: ["gt"],
+			description: "Plays a specific song in the queue",
+      format: "<song-index>",
       guildOnly: true,
       args: [
         {
           key: "index",
 					prompt: "What's the index of the song you want to play?",
-					type: "integer",
+					type: "integer|string",
           min: 1
         }
       ]
@@ -24,8 +25,11 @@ module.exports = class GotoCommand extends Command {
   }
 
   async run(message, { index })  {
-    if (index === "farewell") { // TODO: type string?
-      return play.run(message, { song: "https://www.youtube.com/watch?v=3zbGMcsCtjg" });
+    if (index === "farewell") {
+      return addPlaylist.exec(message, ["https://www.youtube.com/watch?v=3zbGMcsCtjg"], 1);
+    }
+    if (typeof(index) === "string" || index < 1) {
+      return message.reply("the index is invalid!");
     }
 
     const queue = await firebase.getQueue(message.guild.id);

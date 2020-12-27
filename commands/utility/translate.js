@@ -7,7 +7,8 @@ module.exports = class TranslateCommand extends Command {
 			name: "translate",
 			group: "utility",
 			memberName: "translate",
-			description: "Translate a text to English",
+      aliases: ["tr"],
+			description: "Translates a text to English",
       format: "<text-to-translate>",
 			args: [
 				{
@@ -20,7 +21,6 @@ module.exports = class TranslateCommand extends Command {
 	}
 
   async run(message, { text }) {
-    return message.reply("this command is deprecated :(");
     message.say(await translate.exec(text));
   }
 };

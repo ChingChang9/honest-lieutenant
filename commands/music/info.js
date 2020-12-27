@@ -10,7 +10,7 @@ module.exports = class InfoCommand extends Command {
 			group: "music",
 			memberName: "info",
 			aliases: ["np", "current"],
-			description: "Provide information on the current song",
+			description: "Displays information of the current song",
       guildOnly: true
 		});
   }

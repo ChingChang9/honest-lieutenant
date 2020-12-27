@@ -6,12 +6,17 @@ module.exports = class SayCommand extends Command {
       name: "say",
 			group: "utility",
 			memberName: "say",
-			description: "Say something in a channel",
-      format: "[channel-id] <text>",
+			description: "Says something in a channel",
+      format: "[channel] <text>",
+      examples: [
+        " #general hi everyone!` (Says \"hi everyone\" in #general)",
+        " I am a bot` (Replaces this message with \"I am a bot\")"
+      ],
       guildOnly: true,
       ownerOnly: true,
       hidden: true
     });
+    this.default = "this channel"
   }
 
   run(message, args) {

@@ -7,7 +7,13 @@ module.exports = class DisableCommand extends Command {
 			group: "utility",
 			memberName: "disable",
 			description: "Disables a command or command group",
+			format: "<command/group>",
+			examples: [
+				" meme` (Disables all commands in `🙃 Meme`)",
+				" dog` (Disables the `dog` command)"
+			],
       userPermissions: ["ADMINISTRATOR"],
+			guildOnly: true,
 			guarded: true,
 			args: [
 				{

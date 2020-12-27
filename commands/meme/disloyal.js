@@ -9,8 +9,12 @@ module.exports = class DisloyalCommand extends Command {
 			name: "disloyal",
 			group: "meme",
 			memberName: "disloyal",
-			description: "Make a disloyal guy meme",
+			description: "Makes a disloyal guy meme",
       format: "<guy> : <ex> : <girl> : [\"weeb\"]",
+      examples: [
+        " subaru : rem : emilia`",
+        " subaru : rem : emilia : weeb`"
+      ],
       args: [
         {
           key: "text",

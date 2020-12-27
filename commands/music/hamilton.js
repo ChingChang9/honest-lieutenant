@@ -107,7 +107,7 @@ module.exports = class HamiltonCommand extends Command {
 			group: "music",
 			memberName: "hamilton",
 			aliases: ["ham"],
-			description: "Queue the entire Hamilton soundtrack into the queue!! 😃😃",
+			description: "Queues the entire Hamilton soundtrack into the queue!! 😃😃",
       format: "[original/cut]",
       guildOnly: true,
 			args: [
@@ -124,7 +124,6 @@ module.exports = class HamiltonCommand extends Command {
 
   async run(message, { version }) {
     const playList = version === "original" ? original : cut;
-    await message.reply(`I added some outtakes. If you want the cut version, please end the process right now with\n\`.restart\`,\nwait for ~5 seconds, then\n\`.empty\`\nAnd use \`.hamilton cut\` in the future\nSorry for the inconvenience. Don't blame me, blame the person who programmed me 😩😩`);
     addPlaylist.exec(message, playList, "all");
   }
 };

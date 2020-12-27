@@ -8,7 +8,7 @@ module.exports = class MockCommand extends Command {
 			name: "mock",
 			group: "meme",
 			memberName: "mock",
-			description: "Make a spongebob mocking meme",
+			description: "Makes a spongebob mocking meme",
       format: "<text-to-mock>",
       args: [
         {

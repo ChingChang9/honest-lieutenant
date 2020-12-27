@@ -8,16 +8,16 @@ module.exports = class DisconnectCommand extends Command {
 			name: "disconnect",
 			group: "music",
 			memberName: "disconnect",
-			aliases: ["leave", "stop", "quit"],
-			description: "Disconnect me from the voice channel",
+			aliases: ["disc", "dc", "leave", "stop", "quit"],
+			description: "Disconnects me from the voice channel",
       guildOnly: true
 		});
   }
 
   async run(message) {
+    server.setDispatcher(message.guild.id, null);
+    server.setTimeout(message.guild.id, null);
     message.guild.voice?.channel?.leave();
     message.react("👍🏽");
-    server.setTimeout(message.guild.id, null);
-    server.setDispatcher(message.guild.id, null);
   }
 };

@@ -8,8 +8,8 @@ module.exports = class BackCommand extends Command {
 			name: "back",
 			group: "music",
 			memberName: "back",
-			aliases: ["previous", "prev"],
-			description: "Play the previous song",
+			aliases: ["b", "previous", "prev"],
+			description: "Plays the previous song",
       format: "[#-of-songs-to-back]",
       guildOnly: true,
       args: [

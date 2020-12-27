@@ -9,8 +9,12 @@ module.exports = class BrainCommand extends Command {
 			name: "brain",
 			group: "meme",
 			memberName: "brain",
-			description: "Make an expanding brain meme",
-      format: "<text1> : <text2> : [text3] : [...]",
+			description: "Makes an expanding brain meme",
+      format: "<text1> : <text2> : [...]*",
+      examples: [
+        " chika : kaguya`",
+        " chika : kaguya : hayasaka : ishigami`"
+      ],
       args: [
         {
           key: "text",

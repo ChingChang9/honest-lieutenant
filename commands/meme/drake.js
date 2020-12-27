@@ -4,6 +4,7 @@ const Canvas = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
 
 const versions = [
+  "original",
   "chika"
 ];
 
@@ -13,8 +14,12 @@ module.exports = class DrakeCommand extends Command {
 			name: "drake",
 			group: "meme",
 			memberName: "drake",
-			description: "Make a drake meme",
+			description: "Makes a drake meme",
       format: "<bad> : <good> : [version]",
+      examples: [
+        " due date : do date`",
+        " 1 hour : 3 episodes : chika`"
+      ],
       args: [
         {
           key: "text",
@@ -22,13 +27,17 @@ module.exports = class DrakeCommand extends Command {
           type: "string",
           parse: (text) => text.split(" : "),
           validate: (text) => {
-            const [, text2] = text.split(" : ");
+            const [, text2, text3] = text.split(" : ");
             if (!text2) return "you didn't provide the second argument!";
+            if (text3 && !versions.includes(text3)) {
+              return `invalid version! Please enter one of: \`${ versions.join("`, `") }\``;
+            }
             return true;
           }
         }
       ]
 		});
+    this.default = "original"
 	}
 
   async run(message, { text: [text1, text2, version] }) {

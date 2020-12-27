@@ -9,15 +9,20 @@ module.exports = class RepeatCommand extends Command {
 			group: "music",
 			memberName: "repeat",
 			aliases: ["loop"],
-			description: "Toggle repeat",
-      format: "[one/playlist/off]",
+			description: "Toggles repeat",
+      format: "[one/queue/off]",
+      examples: [
+        "` (Toggles between repeat one, queue, and off)",
+        " one` (Repeats one song)",
+        " queue` (Loops the entire playlist)",
+        " off` (Turns repeat off)"
+      ],
       guildOnly: true,
       args: [
         {
           key: "repeat",
 					prompt: "Repeat on or off?",
 					type: "string",
-          oneOf: ["one", "song", "track", "enable", "playlist", "all", "queue", "off", "disable"],
           default: "toggle"
         }
       ]
@@ -30,9 +35,10 @@ module.exports = class RepeatCommand extends Command {
     }
 
     repeat = await simplifyRepeat(message.guild.id, repeat);
+    if (!repeat) return message.reply("please enter one of `one`, `queue`, or `off`");
 
     firebase.updateValue(`${ message.guild.id }/settings`, {
-      repeat: repeat
+      repeat
     });
 
     switch (repeat) {

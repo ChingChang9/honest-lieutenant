@@ -9,7 +9,8 @@ module.exports = class EvalCommand extends Command {
 			name: "eval",
 			group: "utility",
 			memberName: "eval",
-			description: "Execute JavaScript code",
+			description: "Executes JavaScript code",
+			format: "<script>",
 			ownerOnly: true,
       hidden: true,
 			args: [

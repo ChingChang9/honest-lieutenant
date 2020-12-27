@@ -8,9 +8,14 @@ module.exports = class RemoveCommand extends Command {
 			name: "remove",
 			group: "music",
 			memberName: "remove",
-			aliases: ["delete"],
-			description: "Remove a song from the queue",
-      format: "<song-index>",
+			aliases: ["rm", "delete"],
+			description: "Removes a song from the queue",
+      format: "<song-index> [song-index]",
+      examples: [
+        " 2` (Removes the second song in the queue)",
+        " 2 6` (Removes song 2 to 6)",
+        " 6 2` (Also removes song 2 to 6 :D)"
+      ],
       guildOnly: true,
 			args: [
 				{

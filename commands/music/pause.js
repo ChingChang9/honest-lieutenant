@@ -7,7 +7,7 @@ module.exports = class PauseCommand extends Command {
 			name: "pause",
 			group: "music",
 			memberName: "pause",
-			description: "Pause the music in the voice channel",
+			description: "Pauses the music in the voice channel",
       guildOnly: true
 		});
   }

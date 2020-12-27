@@ -6,13 +6,18 @@ module.exports = class PrefixCommand extends Command {
 			name: "prefix",
 			group: "utility",
 			memberName: "prefix",
-			description: 'Shows or sets the command prefix.',
+			description: "Shows or sets the command prefix",
 			format: "[prefix/default]",
+			examples: [
+				"` (Shows my prefix in this server)",
+				" -` (Sets my prefix in this server to `-`)",
+				" default` (Resets my prefix in this server to default)"
+			],
 			guildOnly: true,
-			examples: ["prefix", "prefix -", "prefix default"],
+			guarded: true,
 			args: [
 				{
-					key: "prefix",
+					key: "newPrefix",
 					prompt: "What would you like to set the bot's prefix to?",
 					type: "string",
 					max: 15,
@@ -22,22 +27,22 @@ module.exports = class PrefixCommand extends Command {
 		});
 	}
 
-	async run(message, args) {
-		if (!args.prefix) {
-			const prefix = message.guild?.commandPrefix || this.client.commandPrefix;
-			return message.say(`My prefix in this server is \`${ prefix }\``);
+	async run(message, { newPrefix }) {
+		if (!newPrefix) {
+			const currentPrefix = message.guild?.commandPrefix || this.client.commandPrefix;
+			return message.say(`My prefix in this server is \`${ currentPrefix }\``);
 		}
 
-		if (!message.member.hasPermission('ADMINISTRATOR')) {
+		if (!message.member.hasPermission("ADMINISTRATOR")) {
 			return message.reply("sorry, you need admin permission to change the prefix");
 		}
 
-		if (args.prefix.toLowerCase() === "default") {
+		if (newPrefix.toLowerCase() === "default") {
 			message.guild.commandPrefix = null;
 			message.say(`Reset the command prefix to default: \`${ this.client.commandPrefix }\``);
 		} else {
-			message.guild.commandPrefix = args.prefix;
-			message.say(`Set the command prefix to \`${ args.prefix }\``);
+			message.guild.commandPrefix = newPrefix;
+			message.say(`Set the command prefix to \`${ newPrefix }\``);
 		}
 	}
 };

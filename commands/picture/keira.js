@@ -5,10 +5,9 @@ module.exports = class KeiraCommand extends Command {
   constructor(client) {
     super(client, {
       name: "keira",
-      aliases: ["knightley"],
       group: "picture",
       memberName: "keira",
-      description: "Send a random picture of Keira Knightley"
+      description: "Sends a random picture of Keira Knightley"
     });
   }
 

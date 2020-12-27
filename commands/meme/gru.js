@@ -9,8 +9,8 @@ module.exports = class GruCommand extends Command {
 			name: "gru",
 			group: "meme",
 			memberName: "gru",
-			description: "Make a gru presentation meme",
-      format: "<step-1> : <step-2> : ...",
+			description: "Makes a gru presentation meme",
+      format: "<step-1> : <2> : <3> : [4] : [5]",
       args: [
         {
           key: "text",

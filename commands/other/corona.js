@@ -17,8 +17,8 @@ module.exports = class CoronaCommand extends Command {
 			name: "corona",
 			group: "other",
 			memberName: "corona",
-			aliases: ["covid", "coronavirus", "virus", "stats"],
-			description: "Display the coronavirus stats in Edmonton"
+      aliases: ["covid", "coronavirus", "virus", "stats"],
+			description: "Displays the coronavirus stats in Edmonton"
 		});
 	}
 
@@ -40,7 +40,7 @@ module.exports = class CoronaCommand extends Command {
         name: "Cases in Edmonton",
         url: "https://www.alberta.ca/covid-19-alberta-data.aspx#goa-grid28054"
       },
-      description: description,
+      description,
       fields: [
         {
           name: "Confirmed",

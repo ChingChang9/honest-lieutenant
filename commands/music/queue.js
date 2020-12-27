@@ -10,7 +10,7 @@ module.exports = class QueueCommand extends Command {
 			group: "music",
 			memberName: "queue",
 			aliases: ["que", "q", "cue"],
-			description: "Display the music queue",
+			description: "Displays the music queue",
       format: "[page]",
       guildOnly: true,
       args: [
@@ -19,7 +19,7 @@ module.exports = class QueueCommand extends Command {
 					prompt: "What page of the queue do you want to see?",
 					type: "integer",
           min: 1,
-          default: 0
+          default: "auto"
         }
       ]
 		});
@@ -30,7 +30,7 @@ module.exports = class QueueCommand extends Command {
     if (!queue[0]) return message.reply("the queue is empty!");
 
     const played = await firebase.getItem(message.guild.id, "played");
-    page = page || Math.ceil(played / 10);
+    if (page === "auto") page = Math.ceil(played / 10);
 
     if (page > Math.ceil(queue.length / 10)) {
       return message.reply("the page doesn't exist");
@@ -81,10 +81,10 @@ async function getQueueString(guildId, queue, page, played) {
     const duration = await getDuration(guildId, queue[index].duration, isCurr);
 
     let newLine = `${ isCurr ? "*" : " " }${ index + 1 }) ${ queue[index].title }`;
-    if (lengthInUtf8Bytes(newLine) > 64 - duration.length) {
-      newLine = newLine.slice(0, 63 - duration.length) + "…";
+    if (lengthInUtf8Bytes(newLine) > 54) {
+      newLine = newLine.slice(0, 53) + "…";
     } else {
-      newLine += " ".repeat(64 - duration.length - lengthInUtf8Bytes(newLine));
+      newLine += " ".repeat(54 - lengthInUtf8Bytes(newLine));
     }
     newLine += `| ${ duration }`;
     queueString += `\n${ newLine }`;
@@ -94,6 +94,8 @@ async function getQueueString(guildId, queue, page, played) {
 
 async function getDuration(guildId, durationString, isCurr) {
   const dispatcher = servers.getDispatcher(guildId);
+  if (durationString === "0") return `∞ ${ isCurr && dispatcher ? "left" : "    " }`;
+
   if (isCurr && dispatcher) {
     const seekTimestamp = await firebase.getItem(guildId, "seek");
     const elapsed = Math.floor(dispatcher.streamTime / 1000) + seekTimestamp;

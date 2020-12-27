@@ -5,10 +5,16 @@ module.exports = class CatCommand extends Command {
   constructor(client) {
     super(client, {
       name: "cat",
-      aliases: ["mao", "kitty", "neko"],
       group: "picture",
       memberName: "cat",
-      description: "Send a random picture some cat",
+      aliases: ["mao", "kitty", "neko"],
+      description: "Sends a random cat photo",
+      format: "[breed-id]",
+      examples: [
+        "` (Sends a random cat photo)",
+        " beng` (Sends a random Bengal)",
+        " breeds` (Lists the breeds and their IDs)"
+      ],
       args: [
         {
           key: "breedId",

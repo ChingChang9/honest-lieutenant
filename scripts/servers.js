@@ -1,16 +1,16 @@
 module.exports = {
   setTimeout(guildId, timeout) {
-    this.timeouts[guildId] = timeout;
+    this._timeouts[guildId] = timeout;
   },
   getTimeout(guildId) {
-    return this.timeouts[guildId];
+    return this._timeouts[guildId];
   },
   setDispatcher(guildId, dispatcher) {
-    this.dispatchers[guildId] = dispatcher;
+    this._dispatchers[guildId] = dispatcher;
   },
   getDispatcher(guildId) {
-    return this.dispatchers[guildId];
+    return this._dispatchers[guildId];
   },
-  timeouts: {},
-  dispatchers: {}
+  _timeouts: {},
+  _dispatchers: {}
 };

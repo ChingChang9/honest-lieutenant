@@ -5,10 +5,10 @@ module.exports = class DogCommand extends Command {
   constructor(client) {
     super(client, {
       name: "dog",
-      aliases: ["puppy", "doge"],
       group: "picture",
       memberName: "dog",
-      description: "Send a random picture of some dog"
+      aliases: ["puppy", "doge"],
+      description: "Sends a random dog photo"
     });
   }
 

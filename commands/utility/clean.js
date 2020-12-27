@@ -8,6 +8,7 @@ module.exports = class CleanCommand extends Command {
 			memberName: "clean",
 			aliases: ["sweep"],
 			description: "Delete a number of the most recent messages",
+      format: "[#-of-messages]",
       guildOnly: true,
       clientPermissions: ["MANAGE_MESSAGES"],
       userPermissions: ["MANAGE_MESSAGES"],

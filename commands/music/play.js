@@ -21,14 +21,15 @@ module.exports = class PlayCommand extends Command {
 			name: "play",
 			group: "music",
 			memberName: "play",
-			aliases: ["add", "p", "a"],
-			description: "Queue music in the voice channel",
-      format: "<name/link/playlist> [#-in-playlist (playlist only)]",
+			aliases: ["p", "add", "a"],
+			description: "Adds music to the music queue",
+      format: "<song/playlist> [playlist-length]",
 			examples: [
-        "let it go",
-        "https://www.youtube.com/watch?v=3zbGMcsCtjg",
-        "https://www.youtube.com/playlist?list=PLMaCx7c9SM1H6rUN5SFuRX2HaGmg5d7Nd",
-        "https://www.youtube.com/playlist?list=PLMaCx7c9SM1H6rUN5SFuRX2HaGmg5d7Nd 4"
+        " let it go`",
+        " <song-link>`",
+        " <playlist-link>` (Queues the first 10 songs in the playlist)",
+        " <playlist-link> 4` (Queues the first 4 songs in the playlist)",
+        " <playlist-link> all` (Queues the entire playlist)"
       ],
       guildOnly: true,
 			args: [
@@ -39,12 +40,11 @@ module.exports = class PlayCommand extends Command {
 				}
 			]
 		});
+    this.default = "playlist-length: `10`"
 	}
 
   async run(message, { song }) {
-    if (!message.member.voice.channel) {
-      return message.reply("please only use this when you're in a voice channel");
-    }
+    if (!message.member.voice.channel) return;
 
     const songUrl = await getSongUrl(song);
     if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬. Maybhaps give me the link?");

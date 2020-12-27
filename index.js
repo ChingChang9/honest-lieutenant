@@ -1,5 +1,4 @@
 require("module-alias/register");
-const fs = require("fs");
 const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
 const path = require("path");
 const sqlite = require("sqlite");

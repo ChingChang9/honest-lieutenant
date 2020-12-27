@@ -1,25 +1,28 @@
 const axios = require("axios");
-const { yandexAuth } = require("@/config.json");
+const { v4: uuidv4 } = require("uuid");
+const { azurAuth } = require("@/config.json");
 
 module.exports = {
   async exec(originalText) {
-    const language = await axios.post("https://translate.api.cloud.yandex.net/translate/v2/detect", {
+    return await axios({
+      baseURL: "https://api.cognitive.microsofttranslator.com",
+      url: "/translate",
+      method: "post",
       headers: {
+        "Ocp-Apim-Subscription-Key": azurAuth,
+        "Ocp-Apim-Subscription-Region": "global",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${ yandexAuth }`
+        "X-ClientTraceId": uuidv4().toString()
       },
       params: {
-        key: yandexAuth,
+        "api-version": "3.0",
+        to: "en",
+        toScript: "latn"
+      },
+      data: [{
         text: originalText
-      }
-    }).then((response) => response.data);
-    const translatedText = await axios.post("https://translate.yandex.net/api/v1.5/tr.json/translate", {
-      params: {
-        key: yandexAuth,
-        text: originalText,
-        lang: `${ language.lang }-en`
-      }
-    }).then((response) => response.data.text[0]);
-    return translatedText;
+      }],
+      responseType: "json"
+    }).then((response) => response.data[0].translations[0].text);
   }
 }

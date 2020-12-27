@@ -13,12 +13,16 @@ module.exports = class LyricsCommand extends Command {
 			group: "music",
 			memberName: "lyrics",
 			aliases: ["ly"],
-			description: "Display the lyrics of the current song",
+			description: "Displays the lyrics of the current song",
       format: "[original/translate]",
+      examples: [
+        "` (Displays the lyrics in its language)",
+        " translate` (Displays the English translation of the lyrics)"
+      ],
       guildOnly: true,
       args: [
         {
-          key: "translate",
+          key: "language",
 					prompt: "Should I translate the song?",
 					type: "string",
           oneOf: ["original", "translate"],
@@ -28,7 +32,7 @@ module.exports = class LyricsCommand extends Command {
 		});
   }
 
-  async run(message, { translate }) {
+  async run(message, { language }) {
     if (!servers.getDispatcher(message.guild.id)) {
       return message.reply("I am not playing anything!");
     }
@@ -50,7 +54,7 @@ module.exports = class LyricsCommand extends Command {
     const artist = data.artist;
     const thumbnailUrl = data.album_art;
 
-    if (translate === "translate") {
+    if (language === "translate") {
       lyrics = await translate.exec(lyrics);
     }
 
