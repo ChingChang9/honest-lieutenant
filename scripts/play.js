@@ -10,39 +10,37 @@ module.exports = {
 
     dispatcher.on("start", async () => {
       const repeat = await firebase.getItem(message.guild.id, "repeat");
-      if (repeat !== "one" && !seekTimestamp) message.channel.send({
-        embed: {
-          color: "#fefefe",
-          author: {
-            name: queue[index].channel,
-            url: queue[index].channelUrl
+      if (repeat !== "one" && !seekTimestamp) message.embed({
+        color: "#fefefe",
+        author: {
+          name: queue[index].channel,
+          url: queue[index].channelUrl
+        },
+        title: queue[index].title,
+        url: queue[index].videoUrl,
+        thumbnail: {
+          url: queue[index].thumbnail
+        },
+        fields: [
+          {
+            name: "Duration",
+            value: queue[index].duration === "0" ? "Live" : formatTime.exec(queue[index].duration),
+            inline: true
           },
-          title: queue[index].title,
-          url: queue[index].videoUrl,
-          thumbnail: {
-            url: queue[index].thumbnail
+          {
+            name: "Requested by",
+            value: queue[index].requester,
+            inline: true
           },
-          fields: [
-            {
-              name: "Duration",
-              value: queue[index].duration === "0" ? "Live" : formatTime.exec(queue[index].duration),
-              inline: true
-            },
-            {
-              name: "Requested by",
-              value: queue[index].requester,
-              inline: true
-            },
-            {
-              name: "Index",
-              value: index + 1,
-              inline: true
-            }
-          ],
-          footer: {
-            text: "Ching Chang © 2020 All Rights Reserved",
-            icon_url: "attachment://icon.jpg"
+          {
+            name: "Index",
+            value: index + 1,
+            inline: true
           }
+        ],
+        footer: {
+          text: "Ching Chang © 2020 All Rights Reserved",
+          icon_url: "attachment://icon.jpg"
         }
       });
 
@@ -53,28 +51,32 @@ module.exports = {
 
       servers.setDispatcher(message.guild.id, dispatcher);
 
-      const timeout = await servers.getTimeout(message.guild.id)
+      const timeout = servers.getTimeout(message.guild.id);
       if (timeout) {
         timeout.close();
         servers.setTimeout(message.guild.id, null);
       }
     });
 
-    dispatcher.on("finish", async () => {
-      const repeat = await firebase.getItem(message.guild.id, "repeat");
-      const queue = await firebase.getQueue(message.guild.id);
-      servers.setDispatcher(message.guild.id, null);
+    dispatcher.on("finish", () => {
+      Promise.all([
+        firebase.getQueue(message.guild.id),
+        firebase.getItem(message.guild.id, "repeat")
+      ]).then((result) => {
+        const [queue, repeat] = result;
+        servers.setDispatcher(message.guild.id, null);
 
-      if (repeat === "one") {
-        this.exec(message, connection, queue, index);
-      } else if (index + 1 === queue.length && repeat === "queue") {
-        this.exec(message, connection, queue, 0);
-      } else if (index + 1 === queue.length) {
-        dispatcher.end();
-        this.disconnect(message);
-      } else {
-        this.exec(message, connection, queue, ++index);
-      }
+        if (repeat === "one") {
+          this.exec(message, connection, queue, index);
+        } else if (index + 1 === queue.length && repeat === "queue") {
+          this.exec(message, connection, queue, 0);
+        } else if (index + 1 === queue.length) {
+          dispatcher.end();
+          this.disconnect(message);
+        } else {
+          this.exec(message, connection, queue, ++index);
+        }
+      });
     });
 
     dispatcher.on("error", (error) => {
@@ -98,7 +100,7 @@ module.exports = {
           `For LOHS TV, I am ${ message.guild.members.cache.get("668301556185300993").displayName }, and just remember: BE LEGENDARY!`
         ];
 
-        message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);
+        message.say(farewells[Math.floor(Math.random() * farewells.length)]);
 
         setTimeout(() => {
           message.guild.voice.channel.leave();

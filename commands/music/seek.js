@@ -38,24 +38,29 @@ module.exports = class SeekCommand extends Command {
 		});
   }
 
-  async run(message, { timestamp }) {
+  run(message, { timestamp }) {
     if (!message.member.voice.channel) {
       return message.reply("please only use this when you're in a voice channel");
     }
 
     if (isNaN(timestamp)) return message.reply("that's an invalid timestamp!");
 
-    const connection = await message.member.voice.channel.join();
-    connection.voice.setSelfDeaf(true);
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played"),
+      message.member.voice.channel.join().then((connection) => {
+        connection.voice.setSelfDeaf(true);
+        return connection;
+      })
+    ]).then((result) => {
+      const [queue, played, connection] = result;
+      const index = played - 1;
 
-    const queue = await firebase.getQueue(message.guild.id);
-    const played = await firebase.getItem(message.guild.id, "played");
-    const index = played - 1;
+      if (timestamp >= queue[index].duration) {
+        return message.reply("the timestamp is past the duration of the song!");
+      }
 
-    if (timestamp >= queue[index].duration) {
-      return message.reply("the timestamp is past the duration of the song!");
-    }
-
-    play.exec(message, connection, queue, index, timestamp);
+      play.exec(message, connection, queue, index, timestamp);
+    });
   }
 };

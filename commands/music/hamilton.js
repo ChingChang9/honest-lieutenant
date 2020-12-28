@@ -122,7 +122,7 @@ module.exports = class HamiltonCommand extends Command {
 		});
 	}
 
-  async run(message, { version }) {
+  run(message, { version }) {
     const playList = version === "original" ? original : cut;
     addPlaylist.exec(message, playList, "all");
   }

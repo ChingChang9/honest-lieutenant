@@ -3,8 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 const { azurAuth } = require("@/config.json");
 
 module.exports = {
-  async exec(originalText) {
-    return await axios({
+  exec(text) {
+    return axios({
       baseURL: "https://api.cognitive.microsofttranslator.com",
       url: "/translate",
       method: "post",
@@ -20,7 +20,7 @@ module.exports = {
         toScript: "latn"
       },
       data: [{
-        text: originalText
+        text
       }],
       responseType: "json"
     }).then((response) => response.data[0].translations[0].text);

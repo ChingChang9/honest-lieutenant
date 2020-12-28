@@ -27,7 +27,7 @@ module.exports = class PrefixCommand extends Command {
 		});
 	}
 
-	async run(message, { newPrefix }) {
+	run(message, { newPrefix }) {
 		if (!newPrefix) {
 			const currentPrefix = message.guild?.commandPrefix || this.client.commandPrefix;
 			return message.say(`My prefix in this server is \`${ currentPrefix }\``);

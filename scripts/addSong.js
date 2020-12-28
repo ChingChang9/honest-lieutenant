@@ -2,19 +2,24 @@ const firebase = require("@/scripts/firebase.js");
 const play = require("@/scripts/play.js");
 
 module.exports = {
-  async exec(message, songInfo) {
+  exec(message, songInfo) {
     if (!message.member.voice.channel) {
       return message.reply("please only use this when you're in a voice channel");
     }
 
-    const queue = await addSong(message, songInfo);
+    Promise.all([
+      addSong(message, songInfo),
+      message.member.voice.channel.join().then((connection) => {
+        connection.voice.setSelfDeaf(true);
+        return connection;
+      })
+    ]).then((result) => {
+      const [queue, connection] = result;
 
-    const connection = await message.member.voice.channel.join();
-    connection.voice.setSelfDeaf(true);
-
-    if (!connection.player.dispatcher) {
-      play.exec(message, connection, queue, queue.length - 1);
-    }
+      if (!connection.player.dispatcher) {
+        play.exec(message, connection, queue, queue.length - 1);
+      }
+    });
   }
 }
 
@@ -31,7 +36,7 @@ async function addSong(message, songInfo) {
   });
   const queue = await firebase.getQueue(message.guild.id);
 
-  message.channel.send(`Enqueued \`${ songInfo.videoDetails.title }\` at position \`${ queue.length }\``);
+  message.say(`Enqueued \`${ songInfo.videoDetails.title }\` at index \`${ queue.length }\``);
 
   return queue;
 }

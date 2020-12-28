@@ -78,10 +78,13 @@ module.exports = class LyricsCommand extends Command {
   }
 };
 
-async function getVideoInfo(message) {
-  const queue = await firebase.getQueue(message.guild.id);
-  const played = await firebase.getItem(message.guild.id, "played");
-  const index = played - 1;
-
-  return [queue[index].title, queue[index].videoUrl];
+function getVideoInfo(message) {
+  return Promise.all([
+    firebase.getQueue(message.guild.id),
+    firebase.getItem(message.guild.id, "played")
+  ]).then((result) => {
+    const [queue, played] = result;
+    const index = played - 1;
+    return [queue[index].title, queue[index].videoUrl];
+  });
 }

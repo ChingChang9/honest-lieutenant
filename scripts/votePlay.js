@@ -12,14 +12,14 @@ module.exports = {
     if (message.member.id === queue[currentIndex].requesterId || connection.channel.members.size < 3 || !connection.player.dispatcher) {
       play.exec(message, connection, queue, toIndex);
     } else {
-      const newMessage = await message.channel.send(text);
+      const newMessage = await message.say(text);
       addReactions(newMessage, emoji, connection, queue, currentIndex, toIndex);
     }
   }
 };
 
 async function addReactions(message, emoji, connection, queue, currentIndex, toIndex) {
-  await message.react(emoji);
+  message.react(emoji);
   const collector = await message.createReactionCollector((reaction, user) => reaction.emoji.name === emoji && !user.bot, {
     max: Math.ceil((connection.channel.members.size - 1) * 2 / 3) + 1,
     time: 30 * 1000

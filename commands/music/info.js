@@ -15,45 +15,50 @@ module.exports = class InfoCommand extends Command {
 		});
   }
 
-  async run(message) {
+  run(message) {
     const dispatcher = servers.getDispatcher(message.guild.id);
     if (!dispatcher) {
       return message.reply("I am not playing anything!");
     }
-    const queue = await firebase.getQueue(message.guild.id);
-    const played = await firebase.getItem(message.guild.id, "played");
-    const index = played - 1;
 
-    const [elapsed, duration, ratio] = await getInfo(message.guild.id, dispatcher, queue[index].duration);
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played")
+    ]).then(async (result) => {
+      const [queue, played] = result;
+      const index = played - 1;
 
-    message.embed({
-      color: "#fefefe",
-      author: {
-        name: queue[index].channel,
-        url: queue[index].channelUrl
-      },
-      title: queue[index].title,
-      url: queue[index].videoUrl,
-      thumbnail: {
-        url: queue[index].thumbnail
-      },
-      description: `${ elapsed } ${ "▬".repeat(ratio) }🔘${ "▬".repeat((9 - ratio)) } ${ duration }`,
-      fields: [
-        {
-          name: "Requested by",
-          value: queue[index].requester,
-          inline: true
+      const [elapsed, duration, ratio] = await getInfo(message.guild.id, dispatcher, queue[index].duration);
+
+      message.embed({
+        color: "#fefefe",
+        author: {
+          name: queue[index].channel,
+          url: queue[index].channelUrl
         },
-        {
-          name: "Index",
-          value: played,
-          inline: true
+        title: queue[index].title,
+        url: queue[index].videoUrl,
+        thumbnail: {
+          url: queue[index].thumbnail
+        },
+        description: `${ elapsed } ${ "▬".repeat(ratio) }🔘${ "▬".repeat((9 - ratio)) } ${ duration }`,
+        fields: [
+          {
+            name: "Requested by",
+            value: queue[index].requester,
+            inline: true
+          },
+          {
+            name: "Index",
+            value: played + 1,
+            inline: true
+          }
+        ],
+        footer: {
+          text: "Ching Chang © 2020 All Rights Reserved",
+          icon_url: "attachment://icon.jpg"
         }
-      ],
-      footer: {
-        text: "Ching Chang © 2020 All Rights Reserved",
-        icon_url: "attachment://icon.jpg"
-      }
+      });
     });
   }
 };

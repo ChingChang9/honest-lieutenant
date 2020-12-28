@@ -42,7 +42,7 @@ client.on("guildDelete", (guild) => {
 	firebase.database.ref(guild.id).remove();
 });
 
-client.on("message", async (message) => {
+client.on("message", (message) => {
   if (!message.author.bot && !message.content.startsWith(message.guild.commandPrefix)) {
     prefixless.run(message);
   }

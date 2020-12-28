@@ -13,8 +13,8 @@ module.exports = class ResumeCommand extends Command {
 		});
   }
 
-  async run(message) {
-    const dispatcher = await servers.getDispatcher(message.guild.id);
+  run(message) {
+    const dispatcher = servers.getDispatcher(message.guild.id);
     if (!dispatcher) {
       return message.reply("I wasn't playing anything!");
     }

@@ -14,7 +14,7 @@ module.exports = class DisconnectCommand extends Command {
 		});
   }
 
-  async run(message) {
+  run(message) {
     server.setDispatcher(message.guild.id, null);
     server.setTimeout(message.guild.id, null);
     message.guild.voice?.channel?.leave();

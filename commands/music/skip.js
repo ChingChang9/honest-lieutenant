@@ -26,16 +26,21 @@ module.exports = class SkipCommand extends Command {
 		});
   }
 
-  async run(message, { skip }) {
-    const queue = await firebase.getQueue(message.guild.id);
-    const played = await firebase.getItem(message.guild.id, "played");
+  run(message, { skip }) {
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played")
+    ]).then((result) => {
+      const [queue, played] = result;
+      const index = played - 1;
 
-    if (played === queue.length) {
-      servers.getDispatcher(message.guild.id)?.end();
-      servers.setDispatcher(message.guild.id, null);
-      return disconnect(message);
-    }
+      if (index + 1 === queue.length) {
+        servers.getDispatcher(message.guild.id)?.end();
+        servers.setDispatcher(message.guild.id, null);
+        return disconnect(message);
+      }
 
-    votePlay.exec(message, queue, played - 1, played + skip - 1, `Vote on skipping \`${ queue[played - 1].title }\``, "⏩");
+      votePlay.exec(message, queue, index, index + skip, `Vote on skipping \`${ queue[index].title }\``, "⏩");
+    });
   }
 };

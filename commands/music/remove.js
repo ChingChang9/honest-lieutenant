@@ -35,34 +35,35 @@ module.exports = class RemoveCommand extends Command {
 		});
 	}
 
-  async run(message, { index1, index2 }) {
-    const queueRef = await firebase.database.ref(`${ message.guild.id }/queue`).once("value");
-    const queue = queueRef.val();
-    const timestamps = Object.keys(queue || {});
-
+  run(message, { index1, index2 }) {
     index2 = index2 || index1;
+    Promise.all([
+      firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
+      getCurrentIndex(message.guild.id)
+    ]).then((result) => {
+      const [queueRef, played] = result;
+      const queue = queueRef.val();
+      const timestamps = Object.keys(queue || {});
 
-    if (index1 > timestamps.length) {
-      return message.reply("the first index doesn't exist!");
-    } else if (index2 > timestamps.length) {
-      return message.reply("the second index doesn't exist!");
-    }
+      if (index1 > timestamps.length) {
+        return message.reply("the first index doesn't exist!");
+      } else if (index2 > timestamps.length) {
+        return message.reply("the second index doesn't exist!");
+      }
 
-    const played = await getCurrentIndex(message.guild.id);
+      if (index1 === index2 && index1 === played) {
+        return message.reply("bruh I'm playing that right now. I can't delete the current song 🙄🙄");
+      }
 
-    if (index1 === index2 && index1 === played) {
-      return message.reply("bruh I'm playing that right now. I can't delete the current song 🙄🙄");
-    }
-
-    removeRange(message.guild.id, queue, timestamps, played, Math.min(index1, index2), Math.max(index1, index2));
-
+      removeRange(message.guild.id, queue, timestamps, played, Math.min(index1, index2), Math.max(index1, index2));
+    });
     message.react("👍🏽");
   }
 };
 
-async function getCurrentIndex(guildId) {
+function getCurrentIndex(guildId) {
   if (servers.getDispatcher(guildId)) {
-    return await firebase.getItem(guildId, "played");
+    return firebase.getItem(guildId, "played");
   }
 
   return 0;

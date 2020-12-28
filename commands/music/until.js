@@ -24,27 +24,30 @@ module.exports = class UntilCommand extends Command {
 		});
   }
 
-  async run(message, { untilIndex }) {
-    const dispatcher = await servers.getDispatcher(message.guild.id);
+  run(message, { untilIndex }) {
+    const dispatcher = servers.getDispatcher(message.guild.id);
     if (!dispatcher) {
       return message.reply("I'm not playing anything!");
     }
 
-    const queue = await firebase.getQueue(message.guild.id);
-    const played = await firebase.getItem(message.guild.id, "played");
-    const index = played - 1;
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played")
+    ]).then((result) => {
+      const [queue, played] = result;
 
-    if (untilIndex < index + 1) {
-      return message.reply("that song is already played");
-    } else if (untilIndex === index + 1) {
-      return message.reply("I'm currently playing that song right now, duh 🙄");
-    }
+      if (untilIndex < played) {
+        return message.reply("that song is already played");
+      } else if (untilIndex === played) {
+        return message.reply("I'm currently playing that song right now, duh 🙄");
+      }
 
-    let timeLeft = queue[index].duration - Math.floor(dispatcher.streamTime / 1000);
-    for (let counter = index + 1; counter < untilIndex - 1; counter++) {
-      timeLeft += parseInt(queue[counter].duration);
-    }
+      let timeLeft = queue[played - 1].duration - Math.floor(dispatcher.streamTime / 1000);
+      for (let counter = played; counter < untilIndex - 1; counter++) {
+        timeLeft += parseInt(queue[counter].duration);
+      }
 
-    message.channel.send(`\`${ formatTime.exec(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
+      message.say(`\`${ formatTime.exec(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
+    });
   }
 };

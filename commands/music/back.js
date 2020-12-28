@@ -24,13 +24,18 @@ module.exports = class BackCommand extends Command {
 		});
   }
 
-  async run(message, { back })  {
-    const queue = await firebase.getQueue(message.guild.id);
-    const played = await firebase.getItem(message.guild.id, "played");
+  run(message, { back }) {
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played")
+    ]).then((result) => {
+      const [queue, played] = result;
+      const index = played - 1;
 
-    if (!queue) message.reply("the queue is empty!");
+      if (!queue) message.reply("the queue is empty!");
 
-    const toIndex = Math.max(played - back - 1, 0);
-    votePlay.exec(message, queue, played - 1, toIndex, `Vote on rewinding to \`${ queue[toIndex].title }\``, "⏪");
+      const toIndex = Math.max(index - back, 0);
+      votePlay.exec(message, queue, index, toIndex, `Vote on rewinding to \`${ queue[toIndex].title }\``, "⏪");
+    });
   }
 };

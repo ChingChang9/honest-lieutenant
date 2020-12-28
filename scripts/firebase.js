@@ -4,7 +4,7 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 module.exports = {
-  database: database,
+  database,
   async getQueue(guildId) {
     const queue = await database.ref(`${ guildId }/queue`).once("value");
     return Object.values(queue.val() || {});

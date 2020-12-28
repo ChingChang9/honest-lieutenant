@@ -24,7 +24,7 @@ module.exports = class GotoCommand extends Command {
 		});
   }
 
-  async run(message, { index })  {
+  run(message, { index })  {
     if (index === "farewell") {
       return addPlaylist.exec(message, ["https://www.youtube.com/watch?v=3zbGMcsCtjg"], 1);
     }
@@ -32,12 +32,16 @@ module.exports = class GotoCommand extends Command {
       return message.reply("the index is invalid!");
     }
 
-    const queue = await firebase.getQueue(message.guild.id);
-    const played = await firebase.getItem(message.guild.id, "played");
-    index -= 1;
+    index--;
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played")
+    ]).then((result) => {
+      const [queue, played] = result;
 
-    if (!queue[index]) return message.reply("I can't find the track, maybe the queue has been cleared?");
+      if (!queue[index]) return message.reply("I can't find the track, maybe the queue has been cleared?");
 
-    votePlay.exec(message, queue, played - 1, index, `Vote on jumping to \`${ queue[index].title }\``, "☑️");
+      votePlay.exec(message, queue, played - 1, index, `Vote on jumping to \`${ queue[index].title }\``, "☑️");
+    });
   }
 };

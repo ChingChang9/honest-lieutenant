@@ -25,53 +25,70 @@ module.exports = class QueueCommand extends Command {
 		});
   }
 
-  async run(message, { page }) {
-    const queue = await firebase.getQueue(message.guild.id);
-    if (!queue[0]) return message.reply("the queue is empty!");
+  run(message, { page }) {
+    Promise.all([
+      firebase.getQueue(message.guild.id),
+      firebase.getItem(message.guild.id, "played")
+    ]).then((result) => {
+      const [queue, played] = result;
 
-    const played = await firebase.getItem(message.guild.id, "played");
-    if (page === "auto") page = Math.ceil(played / 10);
+      if (!queue[0]) return message.reply("the queue is empty!");
+      if (page === "auto") page = Math.ceil(played / 10);
+      if (page > Math.ceil(queue.length / 10)) {
+        return message.reply("the page doesn't exist");
+      }
 
-    if (page > Math.ceil(queue.length / 10)) {
-      return message.reply("the page doesn't exist");
-    }
-    sendQueue(message, queue, page, played);
+      sendQueue(message, queue, page, played);
+    });
   }
 };
 
 async function sendQueue(message, queue, page, played) {
   const queueString = await getQueueString(message.guild.id, queue, page, played);
   const newMessage = await message.say(`\`\`\`ml\n${ queueString }\`\`\``);
-  addReactions(newMessage, queue, page);
+
+  if (Math.ceil(queue.length / 10) > 1) {
+    newMessage.react("⬅️");
+    newMessage.react("➡️");
+  }
+  startCollector(newMessage, queue, page);
 }
 
-async function editQueue(message, page) {
-  const queue = await firebase.getQueue(message.guild.id);
-  const played = await firebase.getItem(message.guild.id, "played");
+function editQueue(message, page) {
+  Promise.all([
+    firebase.getQueue(message.guild.id),
+    firebase.getItem(message.guild.id, "played")
+  ]).then(async (result) => {
+    const [queue, played] = result;
 
-  if (!queue[0]) return message.edit("```The queue has been cleared!```");
+    if (!queue[0]) {
+      message.reactions.removeAll();
+      return message.edit("```The queue has been cleared!```");
+    }
 
-  const queueString = await getQueueString(message.guild.id, queue, page, played);
+    const queueString = await getQueueString(message.guild.id, queue, page, played);
 
-  await message.edit(`\`\`\`ml\n${ queueString }\`\`\``);
+    message.edit(`\`\`\`ml\n${ queueString }\`\`\``);
 
-  addReactions(message, queue, page);
+    startCollector(message, queue, page);
+  });
 }
 
-async function addReactions(message, queue, page) {
-  if (page !== 1) await message.react("⬅️");
-  if (page !== Math.ceil(queue.length / 10)) await message.react("➡️");
-
+async function startCollector(message, queue, page) {
   const collector = await message.createReactionCollector((reaction, user) => ["⬅️", "➡️"].includes(reaction.emoji.name) && !user.bot, {
     max: 1,
-    time: 30 * 1000
+    idle: 30 * 1000
   });
+
+  const lastPage = Math.ceil(queue.length / 10);
   collector.on("collect", (reaction, user) => {
-    message.reactions.removeAll();
-    if (reaction.emoji.name === "⬅️") return editQueue(message, page - 1);
-    if (reaction.emoji.name === "➡️") return editQueue(message, page + 1);
+    reaction.users.remove(user.id);
+    if (reaction.emoji.name === "⬅️") return editQueue(message, (lastPage + page - 1) % lastPage || lastPage);
+    if (reaction.emoji.name === "➡️") return editQueue(message, (lastPage + page + 1) % lastPage || lastPage);
   });
-  collector.on("end", (reaction, user) => message.reactions.removeAll());
+  collector.on("end", (reaction, user) => {
+    if (!collector.endReason()) message.reactions.removeAll();
+  });
 }
 
 async function getQueueString(guildId, queue, page, played) {

@@ -1,6 +1,6 @@
 const ytdl = require("ytdl-core");
-const addSong = require("@/scripts/addSong.js");
 const firebase = require("@/scripts/firebase.js");
+const play = require("@/scripts/play.js");
 
 module.exports = {
   async exec(message, urls, number) {
@@ -10,25 +10,32 @@ module.exports = {
 
     if (!urls) return message.reply("this list empty! YEET!");
 
-    const queueRef = await firebase.database.ref(`${ message.guild.id }/queue`);
-
     if (!number && urls.length > 10) {
-      message.channel.send("Queuing the first 10 by default...");
+      message.say("Queuing the first 10 by default...");
       number = 10;
     } else {
       number = parseInt(number) || urls.length;
     }
-    const firstUrl = urls.shift();
-    const songInfo = await ytdl.getInfo(firstUrl).catch((error) => console.log(error));
-    await addSong.exec(message, songInfo);
-    number -= 1;
+    const queueRef = await firebase.database.ref(`${ message.guild.id }/queue`);
 
-    const songs = await addPlaylist(message, queueRef, urls, number);
-
-    if (songs) {
+    Promise.all([
+      addPlaylist(message, queueRef, urls, number - 1),
+      message.member.voice.channel.join().then((connection) => {
+        connection.voice.setSelfDeaf(true);
+        return connection;
+      })
+    ]).then(async (result) => {
+      const [songs, connection] = result;
       queueRef.update(songs);
-      if (number > 1) message.channel.send("Enqueued all of the above! 😁😁");
-    }
+      const songLength = Object.keys(songs).length;
+      message.say(`Enqueued ${ songLength } songs`);
+
+      if (!connection.player.dispatcher) {
+        const queue = await queueRef.once("value");
+        const queueList = Object.values(queue.val());
+        play.exec(message, connection, queueList, queueList.length - songLength);
+      }
+    });
   }
 };
 
@@ -36,22 +43,30 @@ async function addPlaylist(message, queueRef, urls, number) {
   const queue = await queueRef.once("value");
   let enqueuedIndex = Object.keys(queue.val() || {}).length;
   let songs = {};
+  let promises = [];
 
   for (const url of urls) {
     if (Object.keys(songs).length > number) return;
 
-    const songInfo = await ytdl.getInfo(url).catch((error) => console.log(error));
-    songs[queueRef.push().key] = {
-      title: songInfo.videoDetails.title,
-      videoUrl: songInfo.videoDetails.video_url,
-      thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
-      channel: songInfo.videoDetails.author.name,
-      channelUrl: songInfo.videoDetails.author.channel_url,
-      duration: songInfo.videoDetails.lengthSeconds,
-      requester: message.member.displayName,
-      requesterId: message.member.id
-    };
-    message.channel.send(`Ready to queue \`${ songInfo.videoDetails.title }\` at position \`${ ++enqueuedIndex }\``);
+    promises.push(new Promise((resolve, reject) => {
+      ytdl.getInfo(url).then((songInfo) => resolve(songInfo)).catch((error) => console.log(error));
+    }));
   }
-  return songs;
+
+  return Promise.all(promises).then(async (songInfos) => {
+    await songInfos.forEach((songInfo) => {
+      songs[queueRef.push().key] = {
+        title: songInfo.videoDetails.title,
+        videoUrl: songInfo.videoDetails.video_url,
+        thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
+        channel: songInfo.videoDetails.author.name,
+        channelUrl: songInfo.videoDetails.author.channel_url,
+        duration: songInfo.videoDetails.lengthSeconds,
+        requester: message.member.displayName,
+        requesterId: message.member.id
+      };
+    });
+
+    return songs;
+  });
 }

@@ -24,7 +24,7 @@ module.exports = class ReloadCommand extends Command {
 		});
 	}
 
-	async run(message, { command }) {
+	run(message, { command }) {
 		const isCmd = Boolean(command.groupID);
 		command.reload();
     message.say(`Reloaded \`${ command.name }\` ${ isCmd ? "command" : "group" }`);
