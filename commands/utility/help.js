@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const icon = new MessageAttachment("./assets/icon.jpg");
 
@@ -7,20 +7,23 @@ module.exports = class HelpCommand extends Command {
 		super(client, {
 			name: "help",
 			group: "utility",
-			memberName: "help",
 			aliases: ["h", "alias", "aliases", "command", "commands"],
 			description: "Lists all of my commands or details about a specific command",
 			format: "[command]",
 			examples: [
-				"` (Lists all my commands)",
-				" prefix` (Shows a detailed menu for the `prefix` command)"
+				{
+					input: "",
+					explanation: "Lists all my commands"
+				},
+				{
+					input: "prefix",
+					explanation: "Shows a detailed menu for the `prefix` command"
+				}
 			],
       guarded: true,
-			args: [
+			arguments: [
 				{
 					key: "command",
-					prompt: "Which command would you like to view the help for?",
-					type: "string",
 					default: ""
 				}
 			]
@@ -50,28 +53,29 @@ module.exports = class HelpCommand extends Command {
       });
 		}
 
-    const commands = this.client.registry.findCommands(command, false, message);
-    if (commands.length) {
-      command = commands[0];
-			const fields = getDetails(commands[0], prefix);
-      message.embed({
-        color: "#fefefe",
-        title: `${ prefix }${ command.name }`,
-        description: command.description,
-        fields
-      });
-    } else {
-      message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
+    const commands = this.client.registry.findCommands(command);
+
+		if (!commands) return message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
+    if (commands.length > 1) return message.reply(`please be more specific`);{
+
+		command = commands[0];
+		const fields = getDetails(command, prefix);
+    message.embed({
+      color: "#fefefe",
+      title: `${ prefix }${ command.name }`,
+      description: command.description,
+      fields
+    });
     }
   }
 };
 
 function getCommands(client) {
 	let fields = [];
-	client.registry.groups.forEach((group) => {
+	client.registry.groups.forEach(group => {
 		fields.push({
 			name: group.name,
-			value: `\`${ client.commandPrefix }${ group.commands.map((command) => {
+			value: `\`${ client.commandPrefix }${ group.commands.map(command => {
 				if (!command.hidden) return command.name;
 			}).filter(Boolean).join(`\`, \`${ client.commandPrefix }`) }\``
 		});
@@ -81,12 +85,6 @@ function getCommands(client) {
 
 function getDetails(command, prefix) {
 	let fields = [];
-	if (command.details) {
-		fields.push({
-			name: "Details",
-			value: command.details
-		});
-	}
 	fields.push({
 		name: "Usage",
 		value: `\`${ prefix }${ command.name }${ command.format ? ` ${ command.format }` : "" }\``,
@@ -94,13 +92,15 @@ function getDetails(command, prefix) {
 	});
 	fields.push({
 		name: "Default Value",
-		value: command.argsCollector?.args?.[0].default || command.default || "No default value",
+		value: command.arguments?.args?.[0].default || command.default || "No default value",
 		inline: true
 	});
 	if (command.examples) {
 		fields.push({
 			name: "Examples",
-			value: command.examples.map((example) => `\`${ prefix }${ command.name }${ example }`).join("\n")
+			value: command.examples.map(example => `\`${ prefix }${ command.name }${
+				example.input ? ` ${ example.input }` : "" }\`${
+				example.explanation ? ` (${ example.explanation })` : "" }`).join("\n")
 		});
 	}
 	fields.push({

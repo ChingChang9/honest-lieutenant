@@ -1,9 +1,19 @@
 const play = require("@/scripts/play.js");
+const firebase = require("@/scripts/firebase.js");
+const servers = require("@/scripts/servers.js");
 
 module.exports = {
   async exec(message, queue, currentIndex, toIndex, text, emoji) {
     if (!message.member.voice.channel) {
       return message.reply("please only use this when you're in a voice channel");
+    }
+
+    if (toIndex >= queue.length) {
+      firebase.updateValue(`${ message.guild.id }/settings`, {
+        played: queue.length,
+      });
+      servers.getDispatcher(message.guild.id)?.end();
+      return servers.setDispatcher(message.guild.id, null);
     }
 
     const connection = await message.member.voice.channel.join();

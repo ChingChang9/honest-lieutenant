@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const servers = require("@/scripts/servers.js");
 
@@ -7,29 +7,41 @@ module.exports = class RemoveCommand extends Command {
 		super(client, {
 			name: "remove",
 			group: "music",
-			memberName: "remove",
 			aliases: ["rm", "delete"],
 			description: "Removes a song from the queue",
       format: "<song-index> [song-index]",
       examples: [
-        " 2` (Removes the second song in the queue)",
-        " 2 6` (Removes song 2 to 6)",
-        " 6 2` (Also removes song 2 to 6 :D)"
+        {
+          input: "2",
+          explanation: "Removes the second song in the queue"
+        },
+        {
+          input: "2 6",
+          explanation: "Removes song 2 to 6"
+        },
+        {
+          input: "6, 2",
+          explanation: "Also removes song 2 to 6 :D"
+        }
       ],
       guildOnly: true,
-			args: [
+			arguments: [
 				{
 					key: "index1",
-					prompt: "What's the index of the song you want to delete you want to play?",
-					type: "integer",
-          min: 1
+          parse: index1 => parseInt(index1),
+          validate: index1 => {
+            if (isNaN(index1)) return "please enter a number!";
+            return true
+          }
 				},
         {
 					key: "index2",
-					prompt: "What's the other index of the upper/lower bound? (inclusive)",
-					type: "integer",
-          min: 1,
-          default: 0
+          default: 0,
+          parse: index2 => parseInt(index2),
+          validate: index2 => {
+            if (isNaN(index2)) return "the second index is not a number!";
+            return true
+          }
 				}
 			]
 		});
@@ -40,7 +52,7 @@ module.exports = class RemoveCommand extends Command {
     Promise.all([
       firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
       getCurrentIndex(message.guild.id)
-    ]).then((result) => {
+    ]).then(result => {
       const [queueRef, played] = result;
       const queue = queueRef.val();
       const timestamps = Object.keys(queue || {});
@@ -52,7 +64,7 @@ module.exports = class RemoveCommand extends Command {
       }
 
       if (index1 === index2 && index1 === played) {
-        return message.reply("bruh I'm playing that right now. I can't delete the current song 🙄🙄");
+        return message.reply("bruh I'm playing that right now. I can't delete the current track 🙄🙄");
       }
 
       removeRange(message.guild.id, queue, timestamps, played, Math.min(index1, index2), Math.max(index1, index2));

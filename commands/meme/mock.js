@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 
@@ -7,15 +7,12 @@ module.exports = class MockCommand extends Command {
 		super(client, {
 			name: "mock",
 			group: "meme",
-			memberName: "mock",
 			description: "Makes a spongebob mocking meme",
       format: "<text-to-mock>",
-      args: [
+      arguments: [
         {
           key: "text",
-          prompt: "What text do you want to mock?",
-          type: "string",
-          parse: (text) => {
+          parse: text => {
             let text1 = "";
             let text2 = "";
             let counter = 0;

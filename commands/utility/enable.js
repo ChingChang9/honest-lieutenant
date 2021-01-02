@@ -1,25 +1,35 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
+const CommandGroup = require("@/client/commandGroup.js");
 
 module.exports = class EnableCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: "enable",
 			group: "utility",
-			memberName: "enable",
 			description: "Enables a command or command group",
 			format: "<command/group>",
 			examples: [
-				" meme` (Enables all commands in `🙃 Meme`)",
-				" dog` (Enables the `dog` command)"
+				{
+					input: "meme",
+					explanation: "Enables all commands in `🙃 Meme`"
+				},
+				{
+					input: "dog",
+					explanation: "Enables the `dog` command"
+				}
 			],
       userPermissions: ["ADMINISTRATOR"],
 			guildOnly: true,
 			guarded: true,
-      args: [
+      arguments: [
 				{
 					key: "command",
-					prompt: "Which command or group would you like to disable?",
-					type: "command|group"
+					parse: command => this.client.registry.findCommands(command)[0] ||
+					this.client.registry.findGroups(command)[0],
+					validate: command => {
+						if (command instanceof Command || command instanceof CommandGroup) return true;
+						return "cannot find the command/group";
+					}
 				}
 			]
 		});
@@ -28,10 +38,9 @@ module.exports = class EnableCommand extends Command {
 	run(message, { command }) {
 		command.setEnabledIn(message.guild, true);
     const group = command.group;
-    let messageString = "";
     if (group) {
       message.say(`Enabled the \`${ command.name }\` command${
-        group.isEnabledIn(message.guild) ? "" : `, but the \`${ group.name }\` group is disabled, so it still can't be used`
+        group.isEnabledIn(message.guild) === false ? `, but the \`${ group.name }\` group is disabled, so it still can't be used` : ""
       }`);
 		} else {
       message.say(`Enabled all commands in \`${ command.name }\``);

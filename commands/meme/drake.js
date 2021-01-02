@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
@@ -13,21 +13,23 @@ module.exports = class DrakeCommand extends Command {
 		super(client, {
 			name: "drake",
 			group: "meme",
-			memberName: "drake",
 			description: "Makes a drake meme",
       format: "<bad> : <good> : [version]",
       examples: [
-        " due date : do date`",
-        " 1 hour : 3 episodes : chika`"
+        {
+          input: "due date : do date"
+        },
+        {
+          input: "1 hour : 3 episodes : chika"
+        }
       ],
-      args: [
+      default: "original",
+      arguments: [
         {
           key: "text",
-          prompt: "",
-          type: "string",
-          parse: (text) => text.split(" : "),
-          validate: (text) => {
-            const [, text2, text3] = text.split(" : ");
+          parse: text => text.split(" : "),
+          validate: textArray => {
+            const [, text2, text3] = textArray;
             if (!text2) return "you didn't provide the second argument!";
             if (text3 && !versions.includes(text3)) {
               return `invalid version! Please enter one of: \`${ versions.join("`, `") }\``;
@@ -37,7 +39,6 @@ module.exports = class DrakeCommand extends Command {
         }
       ]
 		});
-    this.default = "original"
 	}
 
   async run(message, { text: [text1, text2, version] }) {

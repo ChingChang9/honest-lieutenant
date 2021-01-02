@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const formatTime = require("@/scripts/formatTime.js");
 const servers = require("@/scripts/servers.js");
@@ -8,7 +8,6 @@ module.exports = class InfoCommand extends Command {
     super(client, {
 			name: "info",
 			group: "music",
-			memberName: "info",
 			aliases: ["np", "current"],
 			description: "Displays information of the current song",
       guildOnly: true

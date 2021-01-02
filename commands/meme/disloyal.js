@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
@@ -8,19 +8,20 @@ module.exports = class DisloyalCommand extends Command {
 		super(client, {
 			name: "disloyal",
 			group: "meme",
-			memberName: "disloyal",
 			description: "Makes a disloyal guy meme",
       format: "<guy> : <ex> : <girl> : [\"weeb\"]",
       examples: [
-        " subaru : rem : emilia`",
-        " subaru : rem : emilia : weeb`"
+        {
+          input: "Cassio : Bianca : Desdemona"
+        },
+        {
+          input: "Cassio : Bianca : Desdemona : weeb"
+        }
       ],
-      args: [
+      arguments: [
         {
           key: "text",
-          prompt: "",
-          type: "string",
-          parse: (text) => text.split(" : ")
+          parse: text => text.split(" : ")
         }
       ]
 		});

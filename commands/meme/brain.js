@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
@@ -8,21 +8,21 @@ module.exports = class BrainCommand extends Command {
 		super(client, {
 			name: "brain",
 			group: "meme",
-			memberName: "brain",
 			description: "Makes an expanding brain meme",
       format: "<text1> : <text2> : [...]*",
       examples: [
-        " chika : kaguya`",
-        " chika : kaguya : hayasaka : ishigami`"
+        {
+          input: "chika : kaguya"
+        },
+        {
+          input: "chika : kaguya : hayasaka : ishigami"
+        }
       ],
-      args: [
+      arguments: [
         {
           key: "text",
-          prompt: "",
-          type: "string",
-          parse: (text) => text.split(" : "),
-          validate: (text) => {
-            const textArray = text.split(" : ");
+          parse: text => text.split(" : "),
+          validate: textArray => {
             if (textArray.length < 2) return "please have at least two arguments";
             if (textArray.length > 17) return "that's too many arguments. The max I can do is 17";
             return true;

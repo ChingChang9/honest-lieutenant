@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const play = require("@/scripts/play.js");
 const server = require("@/scripts/servers.js");
 
@@ -7,7 +7,6 @@ module.exports = class DisconnectCommand extends Command {
     super(client, {
 			name: "disconnect",
 			group: "music",
-			memberName: "disconnect",
 			aliases: ["disc", "dc", "leave", "stop", "quit"],
 			description: "Disconnects me from the voice channel",
       guildOnly: true

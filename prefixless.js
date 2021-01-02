@@ -93,7 +93,6 @@ function dadJoke(message, content) {
         clientName,
         `something of a ${ clientName } myself`,
         `your friendly neighbourhood ${ clientName }`,
-        "a dead bot",
         "gonna put some dirt in your eye"
       ];
 

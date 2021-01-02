@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { emptyQueue } = require("@/config.json");
 const firebase = require("@/scripts/firebase.js");
 const servers = require("@/scripts/servers.js");
@@ -8,7 +8,6 @@ module.exports = class EmptyCommand extends Command {
     super(client, {
 			name: "empty",
 			group: "music",
-			memberName: "empty",
       aliases: ["clear"],
 			description: "Clears all entries in the queue",
       guildOnly: true
@@ -22,7 +21,7 @@ module.exports = class EmptyCommand extends Command {
       Promise.all([
         firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
         firebase.getItem(message.guild.id, "played")
-      ]).then((result) => {
+      ]).then(result => {
         const [queue, played] = result
         let newQueue = {};
         newQueue[Object.keys(queue.val())[played - 1]] = Object.values(queue.val())[played - 1];

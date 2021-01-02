@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const fs = require("fs");
 
 module.exports = class KeiraCommand extends Command {
@@ -6,7 +6,6 @@ module.exports = class KeiraCommand extends Command {
     super(client, {
       name: "keira",
       group: "picture",
-      memberName: "keira",
       description: "Sends a random picture of Keira Knightley"
     });
   }

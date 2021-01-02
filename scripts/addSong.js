@@ -9,11 +9,11 @@ module.exports = {
 
     Promise.all([
       addSong(message, songInfo),
-      message.member.voice.channel.join().then((connection) => {
+      message.member.voice.channel.join().then(connection => {
         connection.voice.setSelfDeaf(true);
         return connection;
       })
-    ]).then((result) => {
+    ]).then(result => {
       const [queue, connection] = result;
 
       if (!connection.player.dispatcher) {

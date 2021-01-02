@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const servers = require("@/scripts/servers.js");
 
 module.exports = class ResumeCommand extends Command {
@@ -6,7 +6,6 @@ module.exports = class ResumeCommand extends Command {
     super(client, {
 			name: "resume",
 			group: "music",
-			memberName: "resume",
 			aliases: ["continue"],
 			description: "Resumes the music",
       guildOnly: true

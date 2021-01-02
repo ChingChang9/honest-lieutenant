@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const servers = require("@/scripts/servers.js");
 
@@ -7,33 +7,44 @@ module.exports = class RepeatCommand extends Command {
     super(client, {
 			name: "repeat",
 			group: "music",
-			memberName: "repeat",
 			aliases: ["loop"],
 			description: "Toggles repeat",
       format: "[one/queue/off]",
       examples: [
-        "` (Toggles between repeat one, queue, and off)",
-        " one` (Repeats one song)",
-        " queue` (Loops the entire playlist)",
-        " off` (Turns repeat off)"
+        {
+          input: "",
+          explanation: "Toggles between repeat one, queue, and off"
+        },
+        {
+          input: "one",
+          explanation: "Repeats one song"
+        },
+        {
+          input: "queue",
+          explanation: "Loops the entire playlist"
+        },
+        {
+          input: "off",
+          explanation: "Turns repeat off"
+        }
       ],
       guildOnly: true,
-      args: [
+      arguments: [
         {
           key: "repeat",
-					prompt: "Repeat on or off?",
-					type: "string",
-          default: "toggle"
+          default: "toggle",
+          validate: (_, message) => {
+            if (!servers.getDispatcher(message.guild.id)) {
+              return "I'm not playing anything!";
+            }
+            return true;
+          }
         }
       ]
 		});
   }
 
   async run(message, { repeat })  {
-    if (!servers.getDispatcher(message.guild.id)) {
-      return message.reply("I'm not playing anything!");
-    }
-
     repeat = await simplifyRepeat(message.guild.id, repeat);
     if (!repeat) return message.reply("please enter one of `one`, `queue`, or `off`");
 

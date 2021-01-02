@@ -1,32 +1,43 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 
 module.exports = class SayCommand extends Command {
   constructor(client) {
     super(client, {
       name: "say",
 			group: "utility",
-			memberName: "say",
 			description: "Says something in a channel",
       format: "[channel] <text>",
+      default: "this channel",
       examples: [
-        " #general hi everyone!` (Says \"hi everyone\" in #general)",
-        " I am a bot` (Replaces this message with \"I am a bot\")"
+        {
+          input: "#general hi everyone!",
+          explanation: "Says \"hi everyone!\" in #general"
+        },
+        {
+          input: "I am a bot",
+          explanation: "Replaces this message with \"I am a bot\""
+        }
       ],
       guildOnly: true,
       ownerOnly: true,
-      hidden: true
+      hidden: true,
+      arguments: [
+        {
+          key: "argString"
+        }
+      ]
     });
-    this.default = "this channel"
   }
 
-  run(message, args) {
-    if (args.match(/^<#/)) {
-      message.guild.channels.cache.get(args.slice(2, 20)).send(args.slice(22)).catch((error) => {
+  run(message, { argString }) {
+    const match = argString.match(/^(<#)([0-9]+)>/);
+    if (match) {
+      message.guild.channels.cache.get(match[2]).send(argString.slice(22)).catch(error => {
         message.reply("I don't have permission to post in that channel :(");
       });
     } else {
       message.delete();
-      message.say(args);
+      message.say(argString);
     }
   }
 };

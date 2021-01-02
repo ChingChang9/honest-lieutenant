@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const translate = require("@/scripts/translate.js");
 
 module.exports = class TranslateCommand extends Command {
@@ -6,15 +6,12 @@ module.exports = class TranslateCommand extends Command {
 		super(client, {
 			name: "translate",
 			group: "utility",
-			memberName: "translate",
       aliases: ["tr"],
 			description: "Translates a text to English",
       format: "<text-to-translate>",
-			args: [
+			arguments: [
 				{
-					key: "text",
-					prompt: "What do you want to translate?",
-					type: "string"
+					key: "text"
 				}
 			]
 		});

@@ -1,32 +1,41 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
+const CommandGroup = require("@/client/commandGroup.js");
 
 module.exports = class ReloadCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: "reload",
 			group: "utility",
-			memberName: "reload",
 			description: "Reloads a command or command group",
 			format: "<command/group>",
 			examples: [
-				" meme` (Reloads all commands in `🙃 Meme`)",
-				" dog` (Reloads the `dog` command)"
+				{
+					input: "meme",
+					explanation: "Reloads all commands in `🙃 Meme`"
+				},
+				{
+					input: "dog",
+					explanation: "Reloads the `dog` command"
+				}
 			],
 			ownerOnly: true,
 			hidden: true,
-			args: [
+			arguments: [
 				{
 					key: "command",
-					prompt: "Which command/group would you like to reload?",
-					type: "command|group"
+					parse: command => this.client.registry.findCommands(command)[0] ||
+					this.client.registry.findGroups(command)[0],
+					validate: command => {
+						if (command instanceof Command || command instanceof CommandGroup) return true;
+						return "cannot find the command/group";
+					}
 				}
 			]
 		});
-	}
+	};
 
 	run(message, { command }) {
-		const isCmd = Boolean(command.groupID);
 		command.reload();
-    message.say(`Reloaded \`${ command.name }\` ${ isCmd ? "command" : "group" }`);
-	}
+    message.say(`Reloaded the \`${ command.name }\` ${ !!command.group ? "command" : "group" }`);
+	};
 };

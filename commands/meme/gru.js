@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
@@ -8,17 +8,13 @@ module.exports = class GruCommand extends Command {
 		super(client, {
 			name: "gru",
 			group: "meme",
-			memberName: "gru",
 			description: "Makes a gru presentation meme",
       format: "<step-1> : <2> : <3> : [4] : [5]",
-      args: [
+      arguments: [
         {
           key: "text",
-          prompt: "",
-          type: "string",
-          parse: (text) => text.split(" : "),
-          validate: (text) => {
-            const textArray = text.split(" : ");
+          parse: text => text.split(" : "),
+          validate: textArray => {
             if (textArray.length < 3) return "please give me at least 3 arguments";
             return true;
           }

@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const formatTime = require("@/scripts/formatTime.js");
 const servers = require("@/scripts/servers.js");
@@ -8,18 +8,16 @@ module.exports = class QueueCommand extends Command {
     super(client, {
 			name: "queue",
 			group: "music",
-			memberName: "queue",
 			aliases: ["que", "q", "cue"],
 			description: "Displays the music queue",
       format: "[page]",
+      clientPermissions: ["MANAGE_MESSAGES"],
       guildOnly: true,
-      args: [
+      arguments: [
         {
           key: "page",
-					prompt: "What page of the queue do you want to see?",
-					type: "integer",
-          min: 1,
-          default: "auto"
+          parse: page => parseInt(page),
+          default: "auto",
         }
       ]
 		});
@@ -29,12 +27,13 @@ module.exports = class QueueCommand extends Command {
     Promise.all([
       firebase.getQueue(message.guild.id),
       firebase.getItem(message.guild.id, "played")
-    ]).then((result) => {
+    ]).then(result => {
       const [queue, played] = result;
 
       if (!queue[0]) return message.reply("the queue is empty!");
-      if (page === "auto") page = Math.ceil(played / 10);
-      if (page > Math.ceil(queue.length / 10)) {
+      if (page === "auto") {
+        page = Math.ceil(played / 10);
+      } else if (page > Math.ceil(queue.length / 10)) {
         return message.reply("the page doesn't exist");
       }
 
@@ -45,7 +44,7 @@ module.exports = class QueueCommand extends Command {
 
 async function sendQueue(message, queue, page, played) {
   const queueString = await getQueueString(message.guild.id, queue, page, played);
-  const newMessage = await message.say(`\`\`\`ml\n${ queueString }\`\`\``);
+  const newMessage = await message.code(queueString, "ml");
 
   if (Math.ceil(queue.length / 10) > 1) {
     newMessage.react("⬅️");

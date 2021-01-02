@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const messages = [
@@ -16,14 +16,13 @@ module.exports = class CoronaCommand extends Command {
 		super(client, {
 			name: "corona",
 			group: "other",
-			memberName: "corona",
       aliases: ["covid", "coronavirus", "virus", "stats"],
 			description: "Displays the coronavirus stats in Edmonton"
 		});
 	}
 
   async run(message) {
-    const html = await axios("https://www.alberta.ca/covid-19-alberta-data.aspx").then((response) => response.data);
+    const html = await axios("https://www.alberta.ca/covid-19-alberta-data.aspx").then(response => response.data);
     const $ = await cheerio.load(html);
     const table = $(".goa-table > table > tbody").children().eq(3).children();
     const confirmed = table.eq(1).text();

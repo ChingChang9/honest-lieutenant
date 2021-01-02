@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -37,17 +37,19 @@
     "@discordjs/opus": "^0.3.2",
     "@firebase/database": "^0.8.1",
     "axios": "^0.21.1",
+    "better-sqlite3": "^7.1.2",
     "canvas": "^2.6.1",
     "cheerio": "^1.0.0-rc.5",
+    "discord-rpc": "^3.1.4",
     "discord.js": "^12.3.1",
-    "discord.js-commando": "github:discordjs/Commando",
     "ffmpeg-static": "^4.2.7",
     "firebase": "^8.2.1",
     "googleapis": "^66.0.0",
     "module-alias": "^2.2.2",
-    "sqlite": "^4.0.18",
+    "node-gyp": "^7.1.2",
+    "require-all": "^3.0.0",
     "uuid": "^8.3.2",
     "youtube-playlist-scraper": "^2.1.1",
-    "ytdl-core": "^4.2.1"
+    "ytdl-core": "^4.3.0"
   }
 }

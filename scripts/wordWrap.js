@@ -5,7 +5,7 @@ module.exports = {
     const textRows = adjustFontSize(context, words, maxWidth, maxHeight);
 
     y += (maxHeight - (textRows.length - 1) * parseInt(context.font.match(/\d+px/)) + getHeight(context)) / 2;
-    textRows.forEach((row) => {
+    textRows.forEach(row => {
       const newX = x + (maxWidth - context.measureText(row).width) / 2;
 
       if (shadow) context.strokeText(row, newX, y);
@@ -24,7 +24,7 @@ function adjustFontSize(context, words, maxWidth, maxHeight) {
     context.font = context.font.replace(/\d+px/, `${ parseInt(context.font.match(/\d+px/)) - 2 }px`);
     textRows = []; testLine = "";
 
-    words.forEach((word) => {
+    words.forEach(word => {
       if (context.measureText(testLine + word).width > maxWidth) {
         textRows.push(testLine.trim());
         testLine = "";
@@ -32,7 +32,7 @@ function adjustFontSize(context, words, maxWidth, maxHeight) {
       testLine += `${ word } `;
     });
     textRows.push(testLine.trim());
-  } while (parseInt(context.font.match(/\d+px/)) * 2 * (textRows.length - 1) > maxHeight || textRows.some((row) => context.measureText(row).width > maxWidth));
+  } while (parseInt(context.font.match(/\d+px/)) * 2 * (textRows.length - 1) > maxHeight || textRows.some(row => context.measureText(row).width > maxWidth));
 
   return textRows;
 }

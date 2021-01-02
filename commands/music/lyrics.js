@@ -1,5 +1,4 @@
-const { Command } = require("discord.js-commando");
-const fs = require("fs");
+const Command = require("@/client/command.js");
 const axios = require("axios");
 const firebase = require("@/scripts/firebase.js");
 const { ksoftAuth } = require("@/config.json");
@@ -11,21 +10,30 @@ module.exports = class LyricsCommand extends Command {
     super(client, {
 			name: "lyrics",
 			group: "music",
-			memberName: "lyrics",
 			aliases: ["ly"],
 			description: "Displays the lyrics of the current song",
       format: "[original/translate]",
       examples: [
-        "` (Displays the lyrics in its language)",
-        " translate` (Displays the English translation of the lyrics)"
+        {
+          input: "",
+          explanation: "Displays the lyrics in its language"
+        },
+        {
+          input: "translate",
+          explanation: "Displays the English translation of the lyrics"
+        }
       ],
       guildOnly: true,
-      args: [
+      arguments: [
         {
           key: "language",
-					prompt: "Should I translate the song?",
-					type: "string",
           oneOf: ["original", "translate"],
+          validate: (_, message) => {
+            if (!servers.getDispatcher(message.guild.id)) {
+              return "I'm not playing anything!";
+            }
+            return true;
+          },
           default: "original"
         }
       ]
@@ -33,10 +41,6 @@ module.exports = class LyricsCommand extends Command {
   }
 
   async run(message, { language }) {
-    if (!servers.getDispatcher(message.guild.id)) {
-      return message.reply("I am not playing anything!");
-    }
-
     const [videoTitle, videoUrl] = await getVideoInfo(message);
 
     const data = await axios("https://api.ksoft.si/lyrics/search", {
@@ -47,7 +51,7 @@ module.exports = class LyricsCommand extends Command {
         q: videoTitle,
         limit: 1
       }
-    }).then((response) => response.data.data[0]);
+    }).then(response => response.data.data[0]);
 
     let lyrics = data.lyrics;
     const songTitle = data.name;
@@ -82,7 +86,7 @@ function getVideoInfo(message) {
   return Promise.all([
     firebase.getQueue(message.guild.id),
     firebase.getItem(message.guild.id, "played")
-  ]).then((result) => {
+  ]).then(result => {
     const [queue, played] = result;
     const index = played - 1;
     return [queue[index].title, queue[index].videoUrl];

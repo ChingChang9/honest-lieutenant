@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const addPlaylist = require("@/scripts/addPlaylist.js");
 
 const original = [
@@ -105,12 +105,11 @@ module.exports = class HamiltonCommand extends Command {
 		super(client, {
 			name: "hamilton",
 			group: "music",
-			memberName: "hamilton",
 			aliases: ["ham"],
 			description: "Queues the entire Hamilton soundtrack into the queue!! 😃😃",
       format: "[original/cut]",
       guildOnly: true,
-			args: [
+			arguments: [
 				{
 					key: "version",
 					prompt: "What version do you want?",

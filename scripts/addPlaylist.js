@@ -20,7 +20,7 @@ module.exports = {
 
     Promise.all([
       addPlaylist(message, queueRef, urls, number - 1),
-      message.member.voice.channel.join().then((connection) => {
+      message.member.voice.channel.join().then(connection => {
         connection.voice.setSelfDeaf(true);
         return connection;
       })
@@ -49,12 +49,12 @@ async function addPlaylist(message, queueRef, urls, number) {
     if (Object.keys(songs).length > number) return;
 
     promises.push(new Promise((resolve, reject) => {
-      ytdl.getInfo(url).then((songInfo) => resolve(songInfo)).catch((error) => console.log(error));
+      ytdl.getInfo(url).then(songInfo => resolve(songInfo)).catch(error => console.log(error));
     }));
   }
 
   return Promise.all(promises).then(async (songInfos) => {
-    await songInfos.forEach((songInfo) => {
+    await songInfos.forEach(songInfo => {
       songs[queueRef.push().key] = {
         title: songInfo.videoDetails.title,
         videoUrl: songInfo.videoDetails.video_url,

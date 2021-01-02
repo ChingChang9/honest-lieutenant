@@ -1,54 +1,24 @@
 require("module-alias/register");
-const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
-const path = require("path");
-const sqlite = require("sqlite");
-const { emptyQueue, discordToken } = require("@/config.json");
-const prefixless = require("@/prefixless.js");
-const firebase = require("@/scripts/firebase.js");
+const DiscordClient = require("@/client/client.js");
+const Database = require("better-sqlite3");
+const { discordToken } = require("@/config.json");
+require("@/rpcClient.js");
 
-const client = new CommandoClient({
-  commandPrefix: ".",
-  owner: "371129637725798400",
-  invite: "https://discordapp.com/invite/Bu8rPza",
-  disableEveryone: true
+const db = new Database("./assets/prefix.db", { verbose: console.log });
+
+const client = new DiscordClient({
+  messageCacheMaxSize: 50,
+	messageCacheLifetime: 60,
+	messageSweepInterval: 5 * 60
 });
-
-sqlite.open({
-  filename: path.join(__dirname, "settings.sqlite3"),
-  driver: sqlite.Database
-}).then((db) => client.setProvider(new SQLiteProvider(db)));
-
-client.registry
-  .registerDefaultTypes()
-  .registerGroups([
-    ["utility", "⚙️ Utility"],
-    ["music", "🎵 Music"],
-    ["meme", "🙃 Meme"],
-    ["picture", "🖼️ Picture"],
-    ["other", "❓ Other"]
-  ])
-  .registerCommandsIn(path.join(__dirname, "commands"));
-
-client.once("ready", () => {
-  client.user.setActivity("with myself | .help");
-  console.log(`Logged in as ${ client.user.tag }!`);
-});
-
-client.on("guildCreate", (guild) => {
-	firebase.updateValue(guild.id, emptyQueue);
-});
-
-client.on("guildDelete", (guild) => {
-	firebase.database.ref(guild.id).remove();
-});
-
-client.on("message", (message) => {
-  if (!message.author.bot && !message.content.startsWith(message.guild.commandPrefix)) {
-    prefixless.run(message);
-  }
-});
-
-client.on("error", (error) => console.error("Websocket connection error: ", error));
-process.on("unhandledRejection", (error) => console.error("Uncaught Promise Rejection", error));
+client.registry.registerGroups([
+  { id: "utility", name: "⚙️ Utility", guarded: true },
+  { id: "music", name: "🎵 Music" },
+  { id: "meme", name: "🙃 Meme" },
+  { id: "picture", name: "🖼️ Picture" },
+  { id: "other", name: "❓ Other" }
+]).registerCommandsIn(`${ __dirname }/commands`);
 
 client.login(discordToken);
+
+process.on("unhandledRejection", error => console.error("Uncaught Promise Rejection", error));

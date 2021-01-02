@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const votePlay = require("@/scripts/votePlay.js");
 
@@ -7,18 +7,19 @@ module.exports = class BackCommand extends Command {
     super(client, {
 			name: "back",
 			group: "music",
-			memberName: "back",
 			aliases: ["b", "previous", "prev"],
 			description: "Plays the previous song",
       format: "[#-of-songs-to-back]",
       guildOnly: true,
-      args: [
+      arguments: [
         {
           key: "back",
-					prompt: "How many songs do you want to skip back?",
-					type: "integer",
-          min: 1,
-          default: 1
+          default: 1,
+          parse: back => parseInt(back),
+          validate: back => {
+            if (isNaN(back)) return "please enter a number!";
+            return true
+          }
         }
       ]
 		});
@@ -28,7 +29,7 @@ module.exports = class BackCommand extends Command {
     Promise.all([
       firebase.getQueue(message.guild.id),
       firebase.getItem(message.guild.id, "played")
-    ]).then((result) => {
+    ]).then(result => {
       const [queue, played] = result;
       const index = played - 1;
 

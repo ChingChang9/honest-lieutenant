@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const ytdl = require("ytdl-core");
 const { google } = require("googleapis");
 const { scrapePlaylist } = require("youtube-playlist-scraper");
@@ -20,27 +20,37 @@ module.exports = class PlayCommand extends Command {
 		super(client, {
 			name: "play",
 			group: "music",
-			memberName: "play",
 			aliases: ["p", "add", "a"],
 			description: "Adds music to the music queue",
       format: "<song/playlist> [playlist-length]",
 			examples: [
-        " let it go`",
-        " <song-link>`",
-        " <playlist-link>` (Queues the first 10 songs in the playlist)",
-        " <playlist-link> 4` (Queues the first 4 songs in the playlist)",
-        " <playlist-link> all` (Queues the entire playlist)"
+        {
+          input: "let it go",
+        },
+        {
+          input: "<song-link>"
+        },
+        {
+          input: "<playlist-link>",
+          explanation: "Queues the first 10 songs in the playlist"
+        },
+        {
+          input: " <playlist-link> 4",
+          explanation: "Queues the first 4 songs in the playlist"
+        },
+        {
+          input: "<playlist-link> all",
+          explanation: "Queues the entire playlist"
+        }
       ],
+      default: "playlist-length: `10`",
       guildOnly: true,
-			args: [
+			arguments: [
 				{
-					key: "song",
-					prompt: "What do you want to play?",
-					type: "string"
+					key: "song"
 				}
 			]
 		});
-    this.default = "playlist-length: `10`"
 	}
 
   async run(message, { song }) {
@@ -50,7 +60,7 @@ module.exports = class PlayCommand extends Command {
     if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬. Maybhaps give me the link?");
     if (song.match(/^http.+playlist\?list=(.+)&?/)) return queuePlaylist(message, songUrl, song.split(" ")[1]);
 
-    const songInfo = await ytdl.getInfo(songUrl).catch((error) => {
+    const songInfo = await ytdl.getInfo(songUrl).catch(error => {
       console.log(error);
       return message.reply("this link is invalid");
     });
@@ -78,7 +88,7 @@ async function getSongUrl(song) {
 }
 
 function checkTrash(title) {
-  const trash = trashes.some((trash) => {
+  const trash = trashes.some(trash => {
     if (title.includes(trash)) return trash;
   });
 
@@ -95,7 +105,7 @@ function checkTrash(title) {
 
 function queuePlaylist(message, url, number) {
   const id = url.match(/^http.+playlist\?list=(.+)&?/)[1];
-  scrapePlaylist(id).then((response) => {
+  scrapePlaylist(id).then(response => {
     const urls = response.playlist.map((video) => video.url);
     addPlaylist.exec(message, urls, number);
   });

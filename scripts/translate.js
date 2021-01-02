@@ -23,6 +23,6 @@ module.exports = {
         text
       }],
       responseType: "json"
-    }).then((response) => response.data[0].translations[0].text);
+    }).then(response => response.data[0].translations[0].text);
   }
-}
+};

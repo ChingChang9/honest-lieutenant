@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const addPlaylist = require("@/scripts/addPlaylist.js");
 const firebase = require("@/scripts/firebase.js");
 const votePlay = require("@/scripts/votePlay.js");
@@ -8,17 +8,18 @@ module.exports = class GotoCommand extends Command {
     super(client, {
 			name: "goto",
 			group: "music",
-			memberName: "goto",
       aliases: ["gt"],
 			description: "Plays a specific song in the queue",
       format: "<song-index>",
       guildOnly: true,
-      args: [
+      arguments: [
         {
           key: "index",
-					prompt: "What's the index of the song you want to play?",
-					type: "integer|string",
-          min: 1
+          parse: index => index === "farewell" ? index : parseInt(index),
+          validate: index => {
+            if (isNaN(index) && index !== "farewell") return "please enter a number!";
+            return true
+          }
         }
       ]
 		});
@@ -28,18 +29,15 @@ module.exports = class GotoCommand extends Command {
     if (index === "farewell") {
       return addPlaylist.exec(message, ["https://www.youtube.com/watch?v=3zbGMcsCtjg"], 1);
     }
-    if (typeof(index) === "string" || index < 1) {
-      return message.reply("the index is invalid!");
-    }
 
-    index--;
+    index = parseInt(index) - 1;
     Promise.all([
       firebase.getQueue(message.guild.id),
       firebase.getItem(message.guild.id, "played")
-    ]).then((result) => {
+    ]).then(result => {
       const [queue, played] = result;
 
-      if (!queue[index]) return message.reply("I can't find the track, maybe the queue has been cleared?");
+      if (!queue[index]) return message.reply("the track doesn't exist");
 
       votePlay.exec(message, queue, played - 1, index, `Vote on jumping to \`${ queue[index].title }\``, "☑️");
     });

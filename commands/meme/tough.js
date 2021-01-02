@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
@@ -8,17 +8,13 @@ module.exports = class ToughCommand extends Command {
 		super(client, {
 			name: "tough",
 			group: "meme",
-			memberName: "tough",
 			description: "Makes a spongebob getting tough meme",
       format: "<text1> : <text2> : [...]*",
-      args: [
+      arguments: [
         {
           key: "text",
-          prompt: "",
-          type: "string",
-          parse: (text) => text.split(" : "),
-          validate: (text) => {
-            const textArray = text.split(" : ");
+          parse: text => text.split(" : "),
+          validate: textArray => {
             if (textArray.length < 2) return "please have at least two arguments";
             if (textArray.length > 17) return "that's too many arguments. The max I can do is 6";
             return true;

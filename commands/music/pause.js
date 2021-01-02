@@ -1,4 +1,4 @@
-const { Command } = require("discord.js-commando");
+const Command = require("@/client/command.js");
 const servers = require("@/scripts/servers.js");
 
 module.exports = class PauseCommand extends Command {
@@ -6,7 +6,6 @@ module.exports = class PauseCommand extends Command {
     super(client, {
 			name: "pause",
 			group: "music",
-			memberName: "pause",
 			description: "Pauses the music in the voice channel",
       guildOnly: true
 		});

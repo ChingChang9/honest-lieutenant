@@ -1,8 +1,8 @@
-const fs = require("fs");
 const ytdl = require("ytdl-core");
 const formatTime = require("@/scripts/formatTime.js");
 const firebase = require("@/scripts/firebase.js");
 const servers = require("@/scripts/servers.js");
+const { clientId } = require("@/config.json");
 
 module.exports = {
   async exec(message, connection, queue, index, seekTimestamp = 0) {
@@ -51,35 +51,32 @@ module.exports = {
 
       servers.setDispatcher(message.guild.id, dispatcher);
 
-      const timeout = servers.getTimeout(message.guild.id);
-      if (timeout) {
-        timeout.close();
-        servers.setTimeout(message.guild.id, null);
-      }
+      servers.getTimeout(message.guild.id)?.close();
+      servers.setTimeout(message.guild.id, null);
     });
 
     dispatcher.on("finish", () => {
       Promise.all([
         firebase.getQueue(message.guild.id),
-        firebase.getItem(message.guild.id, "repeat")
-      ]).then((result) => {
-        const [queue, repeat] = result;
+        firebase.getItem(message.guild.id, "repeat"),
+        firebase.getItem(message.guild.id, "played")
+      ]).then(result => {
+        const [queue, repeat, played] = result;
         servers.setDispatcher(message.guild.id, null);
 
         if (repeat === "one") {
-          this.exec(message, connection, queue, index);
-        } else if (index + 1 === queue.length && repeat === "queue") {
+          this.exec(message, connection, queue, played - 1);
+        } else if (played === queue.length && repeat === "queue") {
           this.exec(message, connection, queue, 0);
-        } else if (index + 1 === queue.length) {
-          dispatcher.end();
+        } else if (played === queue.length) {
           this.disconnect(message);
         } else {
-          this.exec(message, connection, queue, ++index);
+          this.exec(message, connection, queue, played);
         }
       });
     });
 
-    dispatcher.on("error", (error) => {
+    dispatcher.on("error", error => {
       if (error.message === "input stream: Video unavailable") {
         message.reply("this video is not available in my country :(");
       }
@@ -97,10 +94,10 @@ module.exports = {
           "Let me strawberry jam outta here",
           "Anyway~ I gotta wake up early tomorrow, so... yeah",
           "Alright, cya",
-          `For LOHS TV, I am ${ message.guild.members.cache.get("668301556185300993").displayName }, and just remember: BE LEGENDARY!`
+          `For LOHS TV, I am ${ message.guild.members.cache.get(clientId).displayName }, and just remember: BE LEGENDARY!`
         ];
 
-        message.say(farewells[Math.floor(Math.random() * farewells.length)]);
+        message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);
 
         setTimeout(() => {
           message.guild.voice.channel.leave();
