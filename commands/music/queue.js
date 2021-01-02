@@ -1,7 +1,6 @@
 const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const formatTime = require("@/scripts/formatTime.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class QueueCommand extends Command {
 	constructor(client) {
@@ -43,7 +42,7 @@ module.exports = class QueueCommand extends Command {
 };
 
 async function sendQueue(message, queue, page, played) {
-	const queueString = await getQueueString(message.guild.id, queue, page, played);
+	const queueString = await getQueueString(message.guild, queue, page, played);
 	const newMessage = await message.code(queueString, "ml");
 
 	if (Math.ceil(queue.length / 10) > 1) {
@@ -65,7 +64,7 @@ function editQueue(message, page) {
 			return message.edit("```The queue has been cleared!```");
 		}
 
-		const queueString = await getQueueString(message.guild.id, queue, page, played);
+		const queueString = await getQueueString(message.guild, queue, page, played);
 
 		message.edit(`\`\`\`ml\n${ queueString }\`\`\``);
 
@@ -90,11 +89,11 @@ async function startCollector(message, queue, page) {
 	});
 }
 
-async function getQueueString(guildId, queue, page, played) {
+async function getQueueString(guild, queue, page, played) {
 	let queueString = `Queue Page ${ page }/${ Math.ceil(queue.length / 10) }\n`;
 	for (let index = (page - 1) * 10; index < Math.min(queue.length, page * 10); index++) {
 		const isCurr = index + 1 === played;
-		const duration = await getDuration(guildId, queue[index].duration, isCurr);
+		const duration = await getDuration(guild, queue[index].duration, isCurr);
 
 		let newLine = `${ isCurr ? "*" : " " }${ index + 1 }) ${ queue[index].title }`;
 		if (lengthInUtf8Bytes(newLine) > 54) {
@@ -108,12 +107,12 @@ async function getQueueString(guildId, queue, page, played) {
 	return queueString;
 }
 
-async function getDuration(guildId, durationString, isCurr) {
-	const dispatcher = servers.getDispatcher(guildId);
+async function getDuration(guild, durationString, isCurr) {
+	const dispatcher = guild.dispatcher;
 	if (durationString === "0") return `∞ ${ isCurr && dispatcher ? "left" : "    " }`;
 
 	if (isCurr && dispatcher) {
-		const seekTimestamp = await firebase.getItem(guildId, "seek");
+		const seekTimestamp = await firebase.getItem(guild.id, "seek");
 		const elapsed = Math.floor(dispatcher.streamTime / 1000) + seekTimestamp;
 		return `${ formatTime.exec(durationString - elapsed) } left`;
 	} else {

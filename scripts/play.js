@@ -1,7 +1,6 @@
 const ytdl = require("ytdl-core");
 const formatTime = require("@/scripts/formatTime.js");
 const firebase = require("@/scripts/firebase.js");
-const servers = require("@/scripts/servers.js");
 const { clientId } = require("@/config.json");
 
 module.exports = {
@@ -40,7 +39,7 @@ module.exports = {
 						}
 					],
 					footer: {
-						text: "Ching Chang © 2020 All Rights Reserved",
+						text: "Ching Chang © 2021 All Rights Reserved",
 						icon_url: "attachment://icon.jpg"
 					}
 				}
@@ -51,10 +50,9 @@ module.exports = {
 				seek: seekTimestamp
 			});
 
-			servers.setDispatcher(message.guild.id, dispatcher);
-
-			servers.getTimeout(message.guild.id)?.close();
-			servers.setTimeout(message.guild.id, null);
+			message.guild.dispatcher = dispatcher;
+			message.guild.timeout?.close();
+			message.guild.timeout = null;
 		});
 
 		dispatcher.on("finish", () => {
@@ -64,7 +62,7 @@ module.exports = {
 				firebase.getItem(message.guild.id, "played")
 			]).then(result => {
 				const [queue, repeat, played] = result;
-				servers.setDispatcher(message.guild.id, null);
+				message.guild.dispatcher = null;
 
 				if (repeat === "one") {
 					this.exec(message, connection, queue, played - 1);
@@ -87,28 +85,26 @@ module.exports = {
 		});
 	},
 	disconnect(message) {
-		servers.setTimeout(message.guild.id,
+		message.guild.timeout = setTimeout(() => {
+			message.guild.timeout = null;
+			if (!message.guild.voice?.channel) return;
+
+			const farewells = [
+				"Ight imma head out",
+				"Time to banana split out of this awkwardness",
+				"Let me strawberry jam outta here",
+				"Anyway~ I gotta wake up early tomorrow, so... yeah",
+				"Alright, cya",
+				`For LOHS TV, I am ${ message.guild.members.cache.get(clientId).displayName }, and just remember: BE LEGENDARY!`
+			];
+
+			message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);
+
 			setTimeout(() => {
-				servers.setTimeout(message.guild.id, null);
-				if (!message.guild.voice?.channel) return;
+				message.guild.voice.channel.leave();
+			}, 3 * 1000);
 
-				const farewells = [
-					"Ight imma head out",
-					"Time to banana split out of this awkwardness",
-					"Let me strawberry jam outta here",
-					"Anyway~ I gotta wake up early tomorrow, so... yeah",
-					"Alright, cya",
-					`For LOHS TV, I am ${ message.guild.members.cache.get(clientId).displayName }, and just remember: BE LEGENDARY!`
-				];
-
-				message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);
-
-				setTimeout(() => {
-					message.guild.voice.channel.leave();
-				}, 3 * 1000);
-
-			}, 4 * 60 * 1000)
-		);
+		}, 4 * 60 * 1000);
 	}
 };
 

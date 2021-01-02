@@ -1,7 +1,6 @@
 const Command = require("@/client/command.js");
 const { emptyQueue } = require("@/config.json");
 const firebase = require("@/scripts/firebase.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class EmptyCommand extends Command {
 	constructor(client) {
@@ -15,7 +14,7 @@ module.exports = class EmptyCommand extends Command {
 	}
 
 	run(message) {
-		if (!servers.getDispatcher(message.guild.id)) {
+		if (!message.guild.dispatcher) {
 			firebase.updateValue(message.guild.id, emptyQueue);
 		} else {
 			Promise.all([

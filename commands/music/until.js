@@ -1,7 +1,6 @@
 const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const formatTime = require("@/scripts/formatTime.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class UntilCommand extends Command {
 	constructor(client) {
@@ -26,7 +25,7 @@ module.exports = class UntilCommand extends Command {
 	}
 
 	run(message, { untilIndex }) {
-		const dispatcher = servers.getDispatcher(message.guild.id);
+		const dispatcher = message.guild.dispatcher;
 		if (!dispatcher) {
 			return message.reply("I'm not playing anything!");
 		}

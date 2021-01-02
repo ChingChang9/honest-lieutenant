@@ -1,6 +1,5 @@
 const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class RemoveCommand extends Command {
 	constructor(client) {
@@ -51,7 +50,7 @@ module.exports = class RemoveCommand extends Command {
 		index2 = index2 || index1;
 		Promise.all([
 			firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
-			getCurrentIndex(message.guild.id)
+			getCurrentIndex(message.guild)
 		]).then(result => {
 			const [queueRef, played] = result;
 			const queue = queueRef.val();
@@ -73,9 +72,9 @@ module.exports = class RemoveCommand extends Command {
 	}
 };
 
-function getCurrentIndex(guildId) {
-	if (servers.getDispatcher(guildId)) {
-		return firebase.getItem(guildId, "played");
+function getCurrentIndex(guild) {
+	if (guild.dispatcher) {
+		return firebase.getItem(guild.id, "played");
 	}
 
 	return 0;

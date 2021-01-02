@@ -25,6 +25,7 @@ module.exports = class EvalCommand extends Command {
 	run(message, { script }) {
 		/* eslint-disable no-unused-vars */
 		const client = this.client;
+		const guild = message.guild;
 		const registry = this.client.registry;
 		const lastResult = this.lastResult;
 		/* eslint-enable no-unused-vars */

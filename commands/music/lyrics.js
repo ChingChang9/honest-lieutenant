@@ -3,7 +3,6 @@ const axios = require("axios");
 const firebase = require("@/scripts/firebase.js");
 const { ksoftAuth } = require("@/config.json");
 const translate = require("@/scripts/translate.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class LyricsCommand extends Command {
 	constructor(client) {
@@ -29,7 +28,7 @@ module.exports = class LyricsCommand extends Command {
 					key: "language",
 					oneOf: ["original", "translate"],
 					validate: (_, message) => {
-						if (!servers.getDispatcher(message.guild.id)) {
+						if (!message.guild.dispatcher) {
 							return "I'm not playing anything!";
 						}
 						return true;

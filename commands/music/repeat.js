@@ -1,6 +1,5 @@
 const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class RepeatCommand extends Command {
 	constructor(client) {
@@ -34,7 +33,7 @@ module.exports = class RepeatCommand extends Command {
 					key: "repeat",
 					default: "toggle",
 					validate: (_, message) => {
-						if (!servers.getDispatcher(message.guild.id)) {
+						if (!message.guild.dispatcher) {
 							return "I'm not playing anything!";
 						}
 						return true;

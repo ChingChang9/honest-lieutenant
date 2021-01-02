@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const server = require("@/scripts/servers.js");
 
 module.exports = class DisconnectCommand extends Command {
 	constructor(client) {
@@ -13,8 +12,8 @@ module.exports = class DisconnectCommand extends Command {
 	}
 
 	run(message) {
-		server.setDispatcher(message.guild.id, null);
-		server.setTimeout(message.guild.id, null);
+		message.guild.dispatcher = null;
+		message.guild.timeout = null;
 		message.guild.voice?.channel?.leave();
 		message.react("👍🏽");
 	}

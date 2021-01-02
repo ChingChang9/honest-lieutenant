@@ -1,7 +1,6 @@
 const Command = require("@/client/command.js");
 const firebase = require("@/scripts/firebase.js");
 const formatTime = require("@/scripts/formatTime.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class InfoCommand extends Command {
 	constructor(client) {
@@ -15,7 +14,7 @@ module.exports = class InfoCommand extends Command {
 	}
 
 	run(message) {
-		const dispatcher = servers.getDispatcher(message.guild.id);
+		const dispatcher = message.guild.dispatcher;
 		if (!dispatcher) {
 			return message.reply("I am not playing anything!");
 		}
@@ -54,7 +53,7 @@ module.exports = class InfoCommand extends Command {
 					}
 				],
 				footer: {
-					text: "Ching Chang © 2020 All Rights Reserved",
+					text: "Ching Chang © 2021 All Rights Reserved",
 					icon_url: "attachment://icon.jpg"
 				}
 			});

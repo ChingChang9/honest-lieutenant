@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = class PauseCommand extends Command {
 	constructor(client) {
@@ -12,7 +11,7 @@ module.exports = class PauseCommand extends Command {
 	}
 
 	run(message) {
-		const dispatcher = servers.getDispatcher(message.guild.id);
+		const dispatcher = message.guild.dispatcher;
 		if (!dispatcher) {
 			return message.reply("I'm not playing anything!");
 		}

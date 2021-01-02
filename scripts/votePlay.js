@@ -1,6 +1,5 @@
 const play = require("@/scripts/play.js");
 const firebase = require("@/scripts/firebase.js");
-const servers = require("@/scripts/servers.js");
 
 module.exports = {
 	async exec(message, queue, currentIndex, toIndex, text, emoji) {
@@ -12,8 +11,8 @@ module.exports = {
 			firebase.updateValue(`${ message.guild.id }/settings`, {
 				played: queue.length,
 			});
-			servers.getDispatcher(message.guild.id)?.end();
-			return servers.setDispatcher(message.guild.id, null);
+			message.guild.dispatcher?.end();
+			return message.guild.dispatcher = null;
 		}
 
 		const connection = await message.member.voice.channel.join();

@@ -7,6 +7,8 @@ module.exports = Structures.extend("Guild", Guild => {
 			this._commandPrefix = null;
 			this._commandsEnabled = new Map();
 			this._groupsEnabled = new Map();
+			this._timeout = null;
+			this._dispatcher = null;
 		}
 
 		get commandPrefix() {
@@ -15,6 +17,22 @@ module.exports = Structures.extend("Guild", Guild => {
 
 		set commandPrefix(prefix) {
 			this._commandPrefix = prefix;
+		}
+
+		get timeout() {
+			return this._timeout;
+		}
+
+		set timeout(value) {
+			this._timeout = value;
+		}
+
+		get dispatcher() {
+			return this._dispatcher;
+		}
+
+		set dispatcher(value) {
+			this._dispatcher = value;
 		}
 
 		setCommandEnabled(command, enabled) {
