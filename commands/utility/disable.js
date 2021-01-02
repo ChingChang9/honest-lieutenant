@@ -18,7 +18,7 @@ module.exports = class DisableCommand extends Command {
 					explanation: "Disables the `dog` command"
 				}
 			],
-      userPermissions: ["ADMINISTRATOR"],
+			userPermissions: ["ADMINISTRATOR"],
 			guildOnly: true,
 			guarded: true,
 			arguments: [

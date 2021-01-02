@@ -18,10 +18,10 @@ module.exports = class EnableCommand extends Command {
 					explanation: "Enables the `dog` command"
 				}
 			],
-      userPermissions: ["ADMINISTRATOR"],
+			userPermissions: ["ADMINISTRATOR"],
 			guildOnly: true,
 			guarded: true,
-      arguments: [
+			arguments: [
 				{
 					key: "command",
 					parse: command => this.client.registry.findCommands(command)[0] ||
@@ -37,13 +37,13 @@ module.exports = class EnableCommand extends Command {
 
 	run(message, { command }) {
 		command.setEnabledIn(message.guild, true);
-    const group = command.group;
-    if (group) {
-      message.say(`Enabled the \`${ command.name }\` command${
-        group.isEnabledIn(message.guild) === false ? `, but the \`${ group.name }\` group is disabled, so it still can't be used` : ""
-      }`);
+		const group = command.group;
+		if (group) {
+			message.say(`Enabled the \`${ command.name }\` command${
+				group.isEnabledIn(message.guild) === false ? `, but the \`${ group.name }\` group is disabled, so it still can't be used` : ""
+			}`);
 		} else {
-      message.say(`Enabled all commands in \`${ command.name }\``);
+			message.say(`Enabled all commands in \`${ command.name }\``);
 		}
 	}
 };

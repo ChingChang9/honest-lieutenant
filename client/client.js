@@ -17,7 +17,7 @@ module.exports = class extends Client {
 		this.once("ready", () => {
 			this.user.setActivity("with myself | .help");
 			this.users.fetch(this.owner);
-		  console.log(`Logged in as ${ this.user.tag }!`);
+			console.log(`Logged in as ${ this.user.tag }!`);
 		});
 
 		this.on("message", message => this.dispatcher.handleMessage(message));

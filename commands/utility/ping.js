@@ -17,6 +17,6 @@ module.exports = class PingCommand extends Command {
 		const newMessage = await message.say("Pinging...");
 		newMessage.edit(`Pong! The message round-trip took ${
 			(newMessage.editedTimestamp || newMessage.createdTimestamp) - (message.editedTimestamp || message.createdTimestamp)
-			}ms. The heartbeat ping is ${ Math.round(this.client.ws.ping) }ms`);
+		}ms. The heartbeat ping is ${ Math.round(this.client.ws.ping) }ms`);
 	}
 };

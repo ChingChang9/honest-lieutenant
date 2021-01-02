@@ -2,13 +2,13 @@ const Command = require("@/client/command.js");
 const translate = require("@/scripts/translate.js");
 
 module.exports = class TranslateCommand extends Command {
-  constructor(client) {
+	constructor(client) {
 		super(client, {
 			name: "translate",
 			group: "utility",
-      aliases: ["tr"],
+			aliases: ["tr"],
 			description: "Translates a text to English",
-      format: "<text-to-translate>",
+			format: "<text-to-translate>",
 			arguments: [
 				{
 					key: "text"
@@ -17,7 +17,7 @@ module.exports = class TranslateCommand extends Command {
 		});
 	}
 
-  async run(message, { text }) {
-    message.say(await translate.exec(text));
-  }
+	async run(message, { text }) {
+		message.say(await translate.exec(text));
+	}
 };

@@ -42,37 +42,29 @@ module.exports = class Command {
 		return true;
 	}
 
-	run(message, args) {
-		throw new Error(`${this.constructor.name} doesn't have a run() method.`);
-	}
-
 	onBlock(message, reason, data) {
 		switch(reason) {
-			case "guildOnly":
-				return message.reply(`the \`${ this.name }\` command can only be used in servers`);
-			case "nsfw":
-				return message.reply(`the \`${ this.name }\` command can only be used in NSFW channels`);
-			case "permission": {
-				if (data.response) return message.reply(data.response);
-				return message.reply(`You do not have permission to use the \`${ this.name }\` command`);
-			}
-			case "clientPermissions": {
-				if(data.missing.length === 1) {
-					return message.reply(
-						`I need the "${ data.missing[0].toLowerCase().replace(/_/g, " ") }" permission for the \`${ this.name }\` command to work`
-					);
-				}
-				return message.reply(`I need the following permissions to run the \`${ this.name }\` command: ${
-					data.missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(', ') }`);
-			}
-			case "throttling": {
-				return message.reply(`you may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
-			}
+		case "guildOnly":
+			return message.reply(`the \`${ this.name }\` command can only be used in servers`);
+		case "nsfw":
+			return message.reply(`the \`${ this.name }\` command can only be used in NSFW channels`);
+		case "permission": {
+			if (data.response) return message.reply(data.response);
+			return message.reply(`You do not have permission to use the \`${ this.name }\` command`);
 		}
-	}
-
-	onError(err, message, args, fromPattern, result) {
-		return message.reply(`\`${ err.name }: ${ err.message }\`\nPlease contact ${ this.client.owner } here: https://discordapp.com/invite/Bu8rPza`);
+		case "clientPermissions": {
+			if(data.missing.length === 1) {
+				return message.reply(
+					`I need the "${ data.missing[0].toLowerCase().replace(/_/g, " ") }" permission for the \`${ this.name }\` command to work`
+				);
+			}
+			return message.reply(`I need the following permissions to run the \`${ this.name }\` command: ${
+				data.missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(", ") }`);
+		}
+		case "throttling": {
+			return message.reply(`you may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
+		}
+		}
 	}
 
 	throttle(userID) {

@@ -23,7 +23,7 @@ module.exports = class Dispatcher {
 		}
 	}
 
-	cacheMessage(message, oldMessage) {
+	cacheMessage(message) {
 		this._editable.get(message.id)?.close();
 		this._editable.set(message.id, setTimeout(() => {
 			this._editable.delete(message.id);

@@ -11,7 +11,7 @@ module.exports = class EvalCommand extends Command {
 			description: "Executes JavaScript code",
 			format: "<script>",
 			ownerOnly: true,
-      hidden: true,
+			hidden: true,
 			arguments: [
 				{
 					key: "script"
@@ -23,13 +23,16 @@ module.exports = class EvalCommand extends Command {
 	}
 
 	run(message, { script }) {
-		const client = message.client;
+		/* eslint-disable no-unused-vars */
+		const client = this.client;
+		const registry = this.client.registry;
 		const lastResult = this.lastResult;
+		/* eslint-enable no-unused-vars */
 
 		try {
-      this.start = process.hrtime();
+			this.start = process.hrtime();
 			this.lastResult = eval(script);
-  		const result = getResult(this.lastResult, process.hrtime(this.start));
+			const result = getResult(this.lastResult, process.hrtime(this.start));
 			message.say(result);
 		} catch(error) {
 			message.say(`\`${ error }\``);
@@ -38,13 +41,13 @@ module.exports = class EvalCommand extends Command {
 };
 
 function getResult(result, time) {
-  const inspected = util.inspect(result, { depth: 0 }).replace(new RegExp(discordToken, "gi"), "--snip--");
-  let messageString = `\`\`\`js\n${ inspected }\n\`\`\`⏱ ${
-    time[0] ? `${ time[0] }.${ Math.floor(time[1] / 1000 / 1000) }s` : `${ time[1] / 1000 }µs`
-  }`;
-  return splitMessage(messageString, {
-    maxLength: 1900,
-    prepend: "```js\n",
-    append: "\n```"
-  });
+	const inspected = util.inspect(result, { depth: 0 }).replace(new RegExp(discordToken, "gi"), "--snip--");
+	let messageString = `\`\`\`js\n${ inspected }\n\`\`\`⏱ ${
+		time[0] ? `${ time[0] }.${ Math.floor(time[1] / 1000 / 1000) }s` : `${ time[1] / 1000 }µs`
+	}`;
+	return splitMessage(messageString, {
+		maxLength: 1900,
+		prepend: "```js\n",
+		append: "\n```"
+	});
 }

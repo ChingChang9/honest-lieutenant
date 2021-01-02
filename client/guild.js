@@ -32,5 +32,5 @@ module.exports = Structures.extend("Guild", Guild => {
 		isGroupEnabled(group) {
 			return this._groupsEnabled.get(group.id);
 		}
-	}
+	};
 });

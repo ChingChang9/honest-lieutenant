@@ -34,7 +34,7 @@ module.exports = class PrefixCommand extends Command {
 
 	run(message, { newPrefix }) {
 		if (!newPrefix && message.guild) {
-			return message.say(`My prefix in this server is \`${ message.guild.commandPrefix }\``)
+			return message.say(`My prefix in this server is \`${ message.guild.commandPrefix }\``);
 		} else if (!newPrefix) {
 			return message.say(`My global prefix is \`${ this.client.commandPrefix }\``);
 		}

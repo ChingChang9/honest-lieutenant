@@ -32,10 +32,10 @@ module.exports = class ReloadCommand extends Command {
 				}
 			]
 		});
-	};
+	}
 
 	run(message, { command }) {
 		command.reload();
-    message.say(`Reloaded the \`${ command.name }\` ${ !!command.group ? "command" : "group" }`);
-	};
+		message.say(`Reloaded the \`${ command.name }\` ${ command.group ? "command" : "group" }`);
+	}
 };

@@ -1,4 +1,4 @@
-const { Structures, splitMessage } = require("discord.js");
+const { Structures } = require("discord.js");
 
 module.exports = Structures.extend("Message", Message => {
 	return class extends Message {
@@ -36,8 +36,8 @@ module.exports = Structures.extend("Message", Message => {
 				if (!argsArray[index] && arg.default === null) {
 					return await this.reply(`the correct usage is \`${
 						this.guild.commandPrefix }${ this.command.name } ${ this.command.format
-						}\`. Use \`${ this.guild.commandPrefix }help ${ this.command.name
-						}\` for more information`);
+					}\`. Use \`${ this.guild.commandPrefix }help ${ this.command.name
+					}\` for more information`);
 				}
 
 				const argValue = argsArray[index] ? arg.parse(argsArray[index]) : arg.default;
@@ -82,7 +82,7 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		say(content) {
-			const message = this.response ? this.response.edit(content) : this.channel.send(content)
+			const message = this.response ? this.response.edit(content) : this.channel.send(content);
 			return message.then(response => {
 				this.response = response;
 				return response;
@@ -94,14 +94,15 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		code(content, lang = "") {
-			return this.say(`\`\`\`${ lang }\n${ content }\n\`\`\``); // TODO: REVISE THIS
-			// const prepend = `\`\`\`${ lang }\n`;
-			// const append = "\n```";
-			// splitMessage(`${ prepend }${ content }${ append }`, { prepend, append }).forEach((text) => this.say(text));
+			return this.say(`\`\`\`${ lang }\n${ content }\n\`\`\``); // TODO: USE splitMessage FROM DISCORD.JS
 		}
 
 		embed(embed) {
 			return this.say({embed});
 		}
-	}
+
+		error(error) {
+			this.reply(`\`${ error.name }: ${ error.message }\`\nPlease contact <@${ this.client.owner }> here: https://discordapp.com/invite/Bu8rPza`);
+		}
+	};
 });

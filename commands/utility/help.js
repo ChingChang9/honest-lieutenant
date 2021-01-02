@@ -20,7 +20,7 @@ module.exports = class HelpCommand extends Command {
 					explanation: "Shows a detailed menu for the `prefix` command"
 				}
 			],
-      guarded: true,
+			guarded: true,
 			arguments: [
 				{
 					key: "command",
@@ -30,44 +30,44 @@ module.exports = class HelpCommand extends Command {
 		});
 	}
 
-  run(message, { command }) {
+	run(message, { command }) {
 		const prefix = message.guild?.commandPrefix || this.client.commandPrefix;
 		if (!command) {
-      const fields = getCommands(this.client);
-      return message.channel.send({
-        files: [icon],
-        embed: {
-        	color: "#fefefe",
-        	author: {
-        		name: "Honest Lieutenant's Commands",
-        		icon_url: "attachment://icon.jpg",
-        		url: "https://www.chingchang.dev"
-        	},
-        	description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
-        	fields,
-        	footer: {
-        		text: "Ching Chang © 2020 All Rights Reserved",
-        		icon_url: "attachment://icon.jpg"
-        	}
-        }
-      });
+			const fields = getCommands(this.client);
+			return message.channel.send({
+				files: [icon],
+				embed: {
+					color: "#fefefe",
+					author: {
+						name: "Honest Lieutenant's Commands",
+						icon_url: "attachment://icon.jpg",
+						url: "https://www.chingchang.dev"
+					},
+					description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
+					fields,
+					footer: {
+						text: "Ching Chang © 2020 All Rights Reserved",
+						icon_url: "attachment://icon.jpg"
+					}
+				}
+			});
 		}
 
-    const commands = this.client.registry.findCommands(command);
+		const commands = this.client.registry.findCommands(command);
 
 		if (!commands) return message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
-    if (commands.length > 1) return message.reply(`please be more specific`);{
+		if (commands.length > 1) return message.reply("please be more specific");{
 
-		command = commands[0];
-		const fields = getDetails(command, prefix);
-    message.embed({
-      color: "#fefefe",
-      title: `${ prefix }${ command.name }`,
-      description: command.description,
-      fields
-    });
-    }
-  }
+			command = commands[0];
+			const fields = getDetails(command, prefix);
+			message.embed({
+				color: "#fefefe",
+				title: `${ prefix }${ command.name }`,
+				description: command.description,
+				fields
+			});
+		}
+	}
 };
 
 function getCommands(client) {
