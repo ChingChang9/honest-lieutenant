@@ -8,19 +8,19 @@ module.exports = class Dispatcher {
 	}
 
 	handleMessage(message, oldMessage) {
-		if (!message.author.bot && !message.partial && (!oldMessage || this._editable.has(oldMessage.id))) {
-			this.cacheMessage(message, oldMessage);
+		if (message.author.bot || message.partial || message.content === oldMessage?.content ||
+			oldMessage && !this._editable.has(oldMessage.id)) return;
 
-			const prefixRegex = this.getPrefixRegex(message.guild);
+		this.cacheMessage(message, oldMessage);
+		const prefixRegex = this.getPrefixRegex(message.guild);
 
-			const matches = message.content.match(prefixRegex);
-			if (!matches) return prefixless.run(message);
+		const matches = message.content.match(prefixRegex);
+		if (!matches) return prefixless.run(message);
 
-			const command = this.registry.findCommand(matches[2]);
-			if (!command) return;
-			const argString = message.content.slice(matches[0].length + 1);
-			message.initCommand(command, argString);
-		}
+		const command = this.registry.findCommand(matches[2]);
+		if (!command) return;
+		const argString = message.content.slice(matches[0].length + 1);
+		message.initCommand(command, argString);
 	}
 
 	cacheMessage(message) {

@@ -10,37 +10,39 @@ module.exports = {
 
 		dispatcher.on("start", async () => {
 			const repeat = await firebase.getItem(message.guild.id, "repeat");
-			if (repeat !== "one" && !seekTimestamp) message.embed({
-				color: "#fefefe",
-				author: {
-					name: queue[index].channel,
-					url: queue[index].channelUrl
-				},
-				title: queue[index].title,
-				url: queue[index].videoUrl,
-				thumbnail: {
-					url: queue[index].thumbnail
-				},
-				fields: [
-					{
-						name: "Duration",
-						value: queue[index].duration === "0" ? "Live" : formatTime.exec(queue[index].duration),
-						inline: true
+			if (repeat !== "one" && !seekTimestamp) message.channel.send({
+				embed: {
+					color: "#fefefe",
+					author: {
+						name: queue[index].channel,
+						url: queue[index].channelUrl
 					},
-					{
-						name: "Requested by",
-						value: queue[index].requester,
-						inline: true
+					title: queue[index].title,
+					url: queue[index].videoUrl,
+					thumbnail: {
+						url: queue[index].thumbnail
 					},
-					{
-						name: "Index",
-						value: index + 1,
-						inline: true
+					fields: [
+						{
+							name: "Duration",
+							value: queue[index].duration === "0" ? "Live" : formatTime.exec(queue[index].duration),
+							inline: true
+						},
+						{
+							name: "Requested by",
+							value: queue[index].requester,
+							inline: true
+						},
+						{
+							name: "Index",
+							value: index + 1,
+							inline: true
+						}
+					],
+					footer: {
+						text: "Ching Chang © 2020 All Rights Reserved",
+						icon_url: "attachment://icon.jpg"
 					}
-				],
-				footer: {
-					text: "Ching Chang © 2020 All Rights Reserved",
-					icon_url: "attachment://icon.jpg"
 				}
 			});
 

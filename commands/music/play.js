@@ -1,4 +1,5 @@
 const Command = require("@/client/command.js");
+const Message = require("@/client/message.js");
 const ytdl = require("ytdl-core");
 const { google } = require("googleapis");
 const { scrapePlaylist } = require("youtube-playlist-scraper");
@@ -58,16 +59,18 @@ module.exports = class PlayCommand extends Command {
 	}
 
 	async run(message, { song }) {
-		if (!message.member.voice.channel) return;
-
 		const songUrl = await getSongUrl(song);
 		if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬. Maybhaps give me the link?");
 		if (song.match(/^http.+playlist\?list=(.+)&?/)) return queuePlaylist(message, songUrl, song.split(" ")[1]);
 
 		const songInfo = await ytdl.getInfo(songUrl).catch(error => {
-			console.log(error);
-			return message.reply("this link is invalid");
+			if (error.message === "Not a YouTube domain") return message.reply("I can only play songs from Youtube");
+			if (error.message === "Video unavailable") return message.reply("the video is unavailable");
+			if (error.name === "TypeError") return message.reply("this link is invalid");
+			return message.error(error);
 		});
+
+		if (songInfo instanceof Message) return;
 
 		const trashMessage = checkTrash(songInfo.videoDetails.title.toLowerCase());
 		if (trashMessage) return message.reply(trashMessage);
@@ -78,6 +81,7 @@ module.exports = class PlayCommand extends Command {
 
 async function getSongUrl(song) {
 	if (song.match(/^http/)) return song;
+	if (song.match(/^<http/) && song.match(/>/)) return song.slice(1).replace(">", "");
 
 	const result = await youtube.search.list({
 		part: "snippet",
