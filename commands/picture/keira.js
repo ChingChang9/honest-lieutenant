@@ -16,7 +16,7 @@ module.exports = class KeiraCommand extends Command {
 		if (index === folderSize.length - 1) {
 			message.say("Ha! you thought!");
 		}
-		message.channel.send({
+		message.say({
 			files: [`./assets/keira/${ index }.jpg`]
 		});
 	}

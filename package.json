@@ -1,10 +1,11 @@
 {
   "name": "honest-lieutenant",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "lint": "npx eslint . --fix"
   },
   "repository": {
     "type": "git",

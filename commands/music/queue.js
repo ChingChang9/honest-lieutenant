@@ -97,7 +97,10 @@ async function getQueueString(guild, queue, page, played) {
 
 		let newLine = `${ isCurr ? "*" : " " }${ index + 1 }) ${ queue[index].title }`;
 		if (lengthInUtf8Bytes(newLine) > 54) {
-			newLine = newLine.slice(0, 53) + "…";
+			while (lengthInUtf8Bytes(newLine) > 53) {
+				newLine = newLine.slice(0, -1);
+			}
+			newLine += "…";
 		} else {
 			newLine += " ".repeat(54 - lengthInUtf8Bytes(newLine));
 		}
@@ -121,6 +124,7 @@ async function getDuration(guild, durationString, isCurr) {
 }
 
 function lengthInUtf8Bytes(string) {
+	string = string.replace(/[–’]/g, " ");
 	const matched = encodeURIComponent(string).match(/%[89ABab]/g);
-	return string.length + (matched ? matched.length / 3 : 0);
+	return string.length + (matched ? matched.length / 3 : 0) - (string.split(/[『』]/g).length - 1) * 0.5;
 }

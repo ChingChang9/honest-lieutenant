@@ -50,7 +50,7 @@ module.exports = class RemoveCommand extends Command {
 		index2 = index2 || index1;
 		Promise.all([
 			firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
-			getCurrentIndex(message.guild)
+			firebase.getItem(message.guild.id, "played")
 		]).then(result => {
 			const [queueRef, played] = result;
 			const queue = queueRef.val();
@@ -62,7 +62,7 @@ module.exports = class RemoveCommand extends Command {
 				return message.reply("the second index doesn't exist!");
 			}
 
-			if (index1 === index2 && index1 === played) {
+			if (index1 === index2 && index1 === played && message.guild.dispatcher) {
 				return message.reply("bruh I'm playing that right now. I can't delete the current track 🙄🙄");
 			}
 
@@ -71,14 +71,6 @@ module.exports = class RemoveCommand extends Command {
 		message.react("👍🏽");
 	}
 };
-
-function getCurrentIndex(guild) {
-	if (guild.dispatcher) {
-		return firebase.getItem(guild.id, "played");
-	}
-
-	return 0;
-}
 
 function removeRange(guildId, queue, timestamps, played, index1, index2) {
 	let count = 0;

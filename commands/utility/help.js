@@ -46,7 +46,7 @@ module.exports = class HelpCommand extends Command {
 					description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
 					fields,
 					footer: {
-						text: "Ching Chang © 2021 All Rights Reserved",
+						text: "© 2021 Ching Chang",
 						icon_url: "attachment://icon.jpg"
 					}
 				}

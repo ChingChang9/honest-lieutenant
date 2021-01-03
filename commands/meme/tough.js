@@ -34,7 +34,7 @@ module.exports = class ToughCommand extends Command {
 			wordWrap.exec(context, text[index], 224, 140 * index, 266, 135);
 		}
 		const attachment = new MessageAttachment(canvas.toBuffer(), "spongebob-getting-tough-meme.jpg");
-		message.channel.send(attachment);
+		message.say(attachment);
 	}
 };
 

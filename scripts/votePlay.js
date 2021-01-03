@@ -36,8 +36,8 @@ async function addReactions(message, emoji, connection, queue, currentIndex, toI
 	collector.on("collect", (reaction, user) => {
 		if (user.id === queue[currentIndex].requesterId || collector.size >= Math.ceil((connection.channel.members.size - 1) * 2 / 3)) {
 			play.exec(message, connection, queue, toIndex);
-			message.delete();
+			collector.stop();
 		}
 	});
-	collector.on("end", () => message.reactions.removeAll());
+	collector.on("end", () => message.delete());
 }

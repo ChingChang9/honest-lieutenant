@@ -39,7 +39,7 @@ module.exports = class GruCommand extends Command {
 		if (text[4]) wordWrap.exec(context, text[4], 280, 350, 115, 145);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "gru-presentation-meme.jpg");
-		message.channel.send(attachment);
+		message.say(attachment);
 	}
 };
 

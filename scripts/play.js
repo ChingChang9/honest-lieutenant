@@ -39,7 +39,7 @@ module.exports = {
 						}
 					],
 					footer: {
-						text: "Ching Chang © 2021 All Rights Reserved",
+						text: "© 2021 Ching Chang",
 						icon_url: "attachment://icon.jpg"
 					}
 				}

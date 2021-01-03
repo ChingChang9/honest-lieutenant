@@ -1,4 +1,4 @@
-const { Structures } = require("discord.js");
+const { Structures, MessageAttachment } = require("discord.js");
 
 module.exports = Structures.extend("Message", Message => {
 	return class extends Message {
@@ -82,11 +82,19 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		say(content) {
-			const message = this.response ? this.response.edit(content) : this.channel.send(content);
-			return message.then(response => {
-				this.response = response;
-				return response;
-			});
+			if (content instanceof MessageAttachment || content.files) {
+				this.response?.delete();
+				return this.channel.send(content).then(response => {
+					this.response = response;
+					return response;
+				});
+			} else {
+				const message = this.response ? this.response.edit(content) : this.channel.send(content);
+				return message.then(response => {
+					this.response = response;
+					return response;
+				});
+			}
 		}
 
 		reply(content) {

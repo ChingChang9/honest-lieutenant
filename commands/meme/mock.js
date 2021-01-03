@@ -63,7 +63,7 @@ module.exports = class MockCommand extends Command {
 		context.fillText(text2, (canvas.width - context.measureText(text2).width) / 2, 380);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "spongebob-mocking-meme.jpg");
-		message.channel.send(attachment);
+		message.say(attachment);
 	}
 };
 

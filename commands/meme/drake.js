@@ -51,7 +51,7 @@ module.exports = class DrakeCommand extends Command {
 		wordWrap.exec(context, text2, 332, canvas.height / 2, 300, canvas.height / 2);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "drake-meme.jpg");
-		message.channel.send(attachment);
+		message.say(attachment);
 	}
 };
 

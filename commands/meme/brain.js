@@ -42,7 +42,7 @@ module.exports = class BrainCommand extends Command {
 		}
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "big-brain-meme.jpg");
-		message.channel.send(attachment);
+		message.say(attachment);
 	}
 };
 

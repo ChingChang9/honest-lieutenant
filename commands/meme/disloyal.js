@@ -42,7 +42,7 @@ module.exports = class DisloyalCommand extends Command {
 		wordWrap.exec(context, text[2], 150, 200, 350, 200, true);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "man-looking-back-meme.jpg");
-		message.channel.send(attachment);
+		message.say(attachment);
 	}
 };
 
