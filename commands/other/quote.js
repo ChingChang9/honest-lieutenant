@@ -6,6 +6,7 @@ module.exports = class QuoteCommand extends Command {
 		super(client, {
 			name: "quote",
 			group: "other",
+			aliases: ["qod"],
 			description: "Sends a random quote"
 		});
 	}

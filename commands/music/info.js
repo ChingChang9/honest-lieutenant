@@ -53,7 +53,7 @@ module.exports = class InfoCommand extends Command {
 					}
 				],
 				footer: {
-					text: "© 2021 Ching Chang",
+					text: "Ching Chang © 2021 Some Rights Reserved",
 					icon_url: "attachment://icon.jpg"
 				}
 			});

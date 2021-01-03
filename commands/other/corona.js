@@ -72,6 +72,7 @@ module.exports = class CoronaCommand extends Command {
 					inline: true
 				}
 			]
-		}).then(() => message.say(messages[Math.floor(Math.random() * messages.length)]));
+		});
+		message.say(messages[Math.floor(Math.random() * messages.length)]);
 	}
 };

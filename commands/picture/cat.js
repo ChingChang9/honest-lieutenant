@@ -1,18 +1,19 @@
 const Command = require("@/client/command.js");
 const axios = require("axios");
+const { catAPIAuth } = require("@/config.json");
 
 module.exports = class CatCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: "cat",
 			group: "picture",
-			aliases: ["mao", "kitty", "neko"],
-			description: "Sends a random cat photo",
+			aliases: ["mao", "kitty"],
+			description: "Sends a cute cat",
 			format: "[breed-id]",
 			examples: [
 				{
 					input: "",
-					explanation: "Sends a random cat photo"
+					explanation: "Sends a random cat!"
 				},
 				{
 					input: "beng",
@@ -34,7 +35,11 @@ module.exports = class CatCommand extends Command {
 
 	async run(message, { breedId }) {
 		if (breedId === "breeds") {
-			const breedsArray = await axios("https://api.thecatapi.com/v1/breeds").then(response => response.data);
+			const breedsArray = await axios("https://api.thecatapi.com/v1/breeds", {
+				headers: {
+					"x-api-key": catAPIAuth
+				}
+			}).then(response => response.data);
 			return message.embed({
 				color: "#fefefe",
 				author: {
@@ -46,6 +51,11 @@ module.exports = class CatCommand extends Command {
 			breedId = `?breed_id=${ breedId }`;
 		}
 		const url = await axios(`https://api.thecatapi.com/v1/images/search${ breedId }`).then(response => response.data[0].url);
-		message.say(url);
+		message.embed({
+			image: { url },
+			footer: {
+				text: "Provided by TheCatAPI"
+			}
+		});
 	}
 };

@@ -14,8 +14,9 @@ const client = new DiscordClient({
 client.registry.registerGroups([
 	{ id: "utility", name: "⚙️ Utility", guarded: true },
 	{ id: "music", name: "🎵 Music" },
-	{ id: "meme", name: "🙃 Meme" },
 	{ id: "picture", name: "🖼️ Picture" },
+	{ id: "reaction", name: "<:tsundere:763493801301245975> Reaction" },
+	{ id: "meme", name: "🙃 Meme Maker" },
 	{ id: "other", name: "❓ Other" }
 ]).registerCommandsIn(`${ __dirname }/commands`);
 

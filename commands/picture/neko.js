@@ -1,0 +1,21 @@
+const Command = require("@/client/command.js");
+const randomImage = require("@/scripts/randomImage.js");
+
+module.exports = class NekoCommand extends Command {
+	constructor(client) {
+		super(client, {
+			name: "neko",
+			group: "picture",
+			aliases: ["catgirl"],
+			description: "Sends a neko (catgirl)",
+			throttling: {
+				usages: 5,
+				duration: 10
+			}
+		});
+	}
+
+	async run(message) {
+		message.embed(await randomImage.exec("neko", message.channel.nsfw));
+	}
+};

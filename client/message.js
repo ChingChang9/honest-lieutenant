@@ -82,19 +82,17 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		say(content) {
+			let message;
 			if (content instanceof MessageAttachment || content.files) {
+				message = this.channel.send(content);
 				this.response?.delete();
-				return this.channel.send(content).then(response => {
-					this.response = response;
-					return response;
-				});
 			} else {
-				const message = this.response ? this.response.edit(content) : this.channel.send(content);
-				return message.then(response => {
-					this.response = response;
-					return response;
-				});
+				message = this.response ? this.response.edit(content) : this.channel.send(content);
 			}
+			return message.then(response => {
+				this.response = response;
+				return response;
+			});
 		}
 
 		reply(content) {
