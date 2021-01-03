@@ -33,7 +33,7 @@ module.exports = class HelpCommand extends Command {
 	run(message, { command }) {
 		const prefix = message.guild?.commandPrefix || this.client.commandPrefix;
 		if (!command) {
-			const fields = getCommands(this.client);
+			const fields = getCommands(this.client, prefix);
 			return message.channel.send({
 				files: [icon],
 				embed: {
@@ -55,7 +55,7 @@ module.exports = class HelpCommand extends Command {
 
 		const commands = this.client.registry.findCommands(command);
 
-		if (!commands) return message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
+		if (!commands.length) return message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
 		if (commands.length > 1) return message.reply("please be more specific");{
 
 			command = commands[0];
@@ -70,14 +70,14 @@ module.exports = class HelpCommand extends Command {
 	}
 };
 
-function getCommands(client) {
+function getCommands(client, prefix) {
 	let fields = [];
 	client.registry.groups.forEach(group => {
 		fields.push({
 			name: group.name,
-			value: `\`${ client.commandPrefix }${ group.commands.map(command => {
+			value: `\`${ prefix }${ group.commands.map(command => {
 				if (!command.hidden) return command.name;
-			}).filter(Boolean).join(`\`, \`${ client.commandPrefix }`) }\``
+			}).filter(Boolean).join(`\`, \`${ prefix }`) }\``
 		});
 	});
 	return fields;
