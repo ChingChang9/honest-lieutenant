@@ -1,5 +1,8 @@
 const Command = require("@/client/command.js");
+const { MessageAttachment } = require("discord.js");
 const fs = require("fs");
+
+const folderSize = fs.readdirSync("./assets/keira").length;
 
 module.exports = class KeiraCommand extends Command {
 	constructor(client) {
@@ -11,13 +14,18 @@ module.exports = class KeiraCommand extends Command {
 	}
 
 	run(message) {
-		const folderSize = fs.readdirSync("./assets/keira").length;
 		const index = Math.floor(Math.random() * folderSize);
-		if (index === folderSize.length - 1) {
-			message.say("Ha! you thought!");
-		}
-		message.say({
-			files: [`./assets/keira/${ index }.jpg`]
+		const file = new MessageAttachment(`./assets/keira/${ index }.jpg`);
+
+		message.channel.send({
+			files: [file],
+			embed: {
+				color: "#fefefe",
+				image: {
+					url: `attachment://${ index }.jpg`
+				},
+				footer: index === folderSize.length - 1 ? { text: "Ha! you thought!" } : null
+			}
 		});
 	}
 };

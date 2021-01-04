@@ -7,7 +7,7 @@ module.exports = class UntilCommand extends Command {
 		super(client, {
 			name: "until",
 			group: "music",
-			aliases: ["ut", "time"],
+			aliases: ["time", "til", "ut"],
 			description: "Estimates the time until a song plays",
 			format: "<song-index>",
 			guildOnly: true,

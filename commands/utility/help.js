@@ -71,13 +71,14 @@ module.exports = class HelpCommand extends Command {
 };
 
 function getCommands(client, prefix) {
+	const displayPrefix = prefix.length === 1 ? prefix : "";
 	let fields = [];
 	client.registry.groups.forEach(group => {
 		fields.push({
 			name: group.name,
-			value: `\`${ prefix }${ group.commands.map(command => {
+			value: `\`${ displayPrefix }${ group.commands.map(command => {
 				if (!command.hidden) return command.name;
-			}).filter(Boolean).join(`\`, \`${ prefix }`) }\``
+			}).filter(Boolean).join(`\`, \`${ displayPrefix }`) }\``
 		});
 	});
 	return fields;

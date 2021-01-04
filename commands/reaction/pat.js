@@ -7,6 +7,7 @@ module.exports = class PatCommand extends Command {
 		super(client, {
 			name: "pat",
 			group: "reaction",
+			aliases: ["headrub"],
 			description: "Pats someone",
 			format: "[user/message]",
 			examples: [
@@ -31,8 +32,15 @@ module.exports = class PatCommand extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await randomImage.exec("pat");
-		const fullEmbed = mentionReact.exec(message, "pats @ on the head", imageEmbed);
+		let fullEmbed;
+		if (message.content.includes("headrub") || Math.random() < 0.5) {
+			const imageEmbed = await randomImage.exec("headrub");
+			fullEmbed = mentionReact.exec(message, "rubs @'s head", imageEmbed);
+		} else {
+			const imageEmbed = await randomImage.exec("pat");
+			fullEmbed = mentionReact.exec(message, "pats @ on the head", imageEmbed);
+		}
+
 		message.embed(fullEmbed);
 	}
 };

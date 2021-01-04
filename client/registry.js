@@ -17,17 +17,6 @@ module.exports = class Registry {
 		return this;
 	}
 
-	registerCommand(command) {
-		command = new command(this.client);
-		const group = this.groups.find(group => group.id === command.group);
-
-		command.group = group;
-		group.commands.set(command.name, command);
-		this.commands.set(command.name, command);
-
-		return this;
-	}
-
 	registerCommandsIn(options) {
 		const obj = require("require-all")(options);
 		for (const group of Object.values(obj)) {
@@ -37,7 +26,16 @@ module.exports = class Registry {
 		}
 
 		this.commandsPath = options;
-		return this;
+		return this.client;
+	}
+
+	registerCommand(command) {
+		command = new command(this.client);
+		const group = this.groups.find(group => group.id === command.group);
+
+		command.group = group;
+		group.commands.set(command.name, command);
+		this.commands.set(command.name, command);
 	}
 
 	findGroup(search) {
