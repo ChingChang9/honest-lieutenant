@@ -1,6 +1,7 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const fs = require("fs");
+const { embedColours } = require("@/config.json");
 
 const folderSize = fs.readdirSync("./assets/keira").length;
 
@@ -20,7 +21,7 @@ module.exports = class KeiraCommand extends Command {
 		message.channel.send({
 			files: [file],
 			embed: {
-				color: "#fefefe",
+				color: embedColours.default,
 				image: {
 					url: `attachment://${ index }.jpg`
 				},

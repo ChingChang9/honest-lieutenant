@@ -13,10 +13,10 @@ const client = new DiscordClient({
 }).registry.registerGroups([
 	{ id: "utility", name: "⚙️ Utility", guarded: true },
 	{ id: "music", name: "🎵 Music" },
-	{ id: "picture", name: "🖼️ Picture" },
 	{ id: "reaction", name: "<:tsundere:763493801301245975> Reaction" },
-	{ id: "reddit", name: "<:reddit:795548625761468416> Reddit" },
 	{ id: "weeb", name: "<:weeb:795670535471497238> Weeb" },
+	{ id: "picture", name: "🖼️ Picture" },
+	{ id: "reddit", name: "<:reddit:795548625761468416> Reddit" },
 	{ id: "meme", name: "🙃 Meme Maker" },
 	{ id: "other", name: "❓ Other" }
 ]).registerCommandsIn(`${ __dirname }/commands`);

@@ -41,7 +41,6 @@ module.exports = class CatCommand extends Command {
 				}
 			}).then(response => response.data);
 			return message.embed({
-				color: "#fefefe",
 				author: {
 					name: "List of Cat Breed IDs"
 				},

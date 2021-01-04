@@ -17,15 +17,15 @@ module.exports = class Registry {
 		return this;
 	}
 
-	registerCommandsIn(options) {
-		const obj = require("require-all")(options);
+	registerCommandsIn(path) {
+		const obj = require("require-all")(path);
 		for (const group of Object.values(obj)) {
 			for (const command of Object.values(group)) {
 				this.registerCommand(command);
 			}
 		}
 
-		this.commandsPath = options;
+		this.commandsPath = path;
 		return this.client;
 	}
 

@@ -5,7 +5,7 @@ module.exports = class NekoCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: "neko",
-			group: "picture",
+			group: "weeb",
 			aliases: ["catgirl"],
 			description: "Sends a neko (catgirl)",
 			throttling: {

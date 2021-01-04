@@ -24,7 +24,6 @@ module.exports = class CuteCommand extends Command {
 		}).then(response => response.data.image_url);
 
 		message.embed({
-			color: "#fefefe",
 			image: { url },
 			footer: {
 				text: "Provided by KSoft.Si"

@@ -34,7 +34,6 @@ module.exports = class CoronaCommand extends Command {
 		const description = $("#goa-grid28054").children().eq(-2).text();
 
 		message.embed({
-			color: "#fefefe",
 			author: {
 				name: "Cases in Edmonton",
 				url: "https://www.alberta.ca/covid-19-alberta-data.aspx#goa-grid28054"

@@ -29,7 +29,6 @@ module.exports = class InfoCommand extends Command {
 			const [elapsed, duration, ratio] = await getInfo(message.guild.id, dispatcher, queue[index].duration);
 
 			message.embed({
-				color: "#fefefe",
 				author: {
 					name: queue[index].channel,
 					url: queue[index].channelUrl

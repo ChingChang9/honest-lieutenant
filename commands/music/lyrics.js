@@ -68,7 +68,6 @@ module.exports = class LyricsCommand extends Command {
 				while (lyrics[--end] !== "\n");
 			}
 			message.embed({
-				color: "#fefefe",
 				title: start === 0 ? songTitle : null,
 				url: start === 0 ? videoUrl : null,
 				thumbnail: start === 0 ? { url: thumbnailUrl } : null,

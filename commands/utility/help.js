@@ -1,6 +1,7 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
 const icon = new MessageAttachment("./assets/icon.jpg");
+const { embedColours } = require("@/config.json");
 
 module.exports = class HelpCommand extends Command {
 	constructor(client) {
@@ -37,7 +38,7 @@ module.exports = class HelpCommand extends Command {
 			return message.channel.send({
 				files: [icon],
 				embed: {
-					color: "#fefefe",
+					color: embedColours.default,
 					author: {
 						name: "Honest Lieutenant's Commands",
 						icon_url: "attachment://icon.jpg",
@@ -61,7 +62,6 @@ module.exports = class HelpCommand extends Command {
 			command = commands[0];
 			const fields = getDetails(command, prefix);
 			message.embed({
-				color: "#fefefe",
 				title: `${ prefix }${ command.name }`,
 				description: command.description,
 				fields

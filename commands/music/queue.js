@@ -126,5 +126,5 @@ async function getDuration(guild, durationString, isCurr) {
 function lengthInUtf8Bytes(string) {
 	string = string.replace(/[–’]/g, " ");
 	const matched = encodeURIComponent(string).match(/%[89ABab]/g);
-	return string.length + (matched ? matched.length / 3 : 0) - (string.split(/[『』]/g).length - 1) * 0.5;
+	return string.length + (matched ? matched.length / 3 : 0) - (string.split(/[『』「」]/g).length - 1) * 0.5;
 }

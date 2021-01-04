@@ -1,4 +1,5 @@
 const { Structures, MessageAttachment } = require("discord.js");
+const { embedColours } = require("@/config.json");
 
 module.exports = Structures.extend("Message", Message => {
 	return class extends Message {
@@ -95,20 +96,29 @@ module.exports = Structures.extend("Message", Message => {
 			});
 		}
 
-		reply(content) {
-			return this.say(`<@${ this.author.id }>, ${ content }`);
-		}
-
 		code(content, lang = "") {
 			return this.say(`\`\`\`${ lang }\n${ content }\n\`\`\``); // TODO: USE splitMessage FROM DISCORD.JS
 		}
 
-		embed(embed) {
+		embed(embed, type = "default") {
+			embed.color = embedColours[type];
 			return this.say({embed});
 		}
 
+		reply(content) {
+			return this.embed({
+				description: `<@${ this.author.id }>, ${ content }`
+			}, "error");
+		}
+
 		error(error) {
-			this.reply(`\`${ error.name }: ${ error.message }\`\nPlease contact <@${ this.client.owner }> here: https://discordapp.com/invite/Bu8rPza`);
+			return this.embed({
+				author: {
+					name: "We don't know what happened 😬😬"
+				},
+				title: `${ error.name }: ${ error.message }`,
+				description: "Please contact `Ching Chang#9870` in [the support server](https://discordapp.com/invite/Bu8rPza)"
+			}, "error");
 		}
 	};
 });

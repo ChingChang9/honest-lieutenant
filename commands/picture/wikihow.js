@@ -23,7 +23,6 @@ module.exports = class WikihowCommand extends Command {
 		}).then(response => response.data);
 
 		message.embed({
-			color: "#fefefe",
 			author: {
 				name: data.title,
 				url: data.article_url

@@ -1,7 +1,7 @@
 const ytdl = require("ytdl-core");
 const formatTime = require("@/scripts/formatTime.js");
 const firebase = require("@/scripts/firebase.js");
-const { clientId } = require("@/config.json");
+const { clientId, embedColours } = require("@/config.json");
 
 module.exports = {
 	async exec(message, connection, queue, index, seekTimestamp = 0) {
@@ -11,7 +11,7 @@ module.exports = {
 			const repeat = await firebase.getItem(message.guild.id, "repeat");
 			if (repeat !== "one" && !seekTimestamp) message.channel.send({
 				embed: {
-					color: "#fefefe",
+					color: embedColours.default,
 					author: {
 						name: queue[index].channel,
 						url: queue[index].channelUrl

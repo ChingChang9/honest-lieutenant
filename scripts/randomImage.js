@@ -11,7 +11,6 @@ module.exports = {
 		}).then(response => response.data.url);
 
 		return {
-			color: "#fefefe",
 			image: { url },
 			footer: {
 				text: "Provided by KSoft.Si"
