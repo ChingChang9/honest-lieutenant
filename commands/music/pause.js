@@ -11,7 +11,7 @@ module.exports = class PauseCommand extends Command {
 	}
 
 	run(message) {
-		const dispatcher = message.guild.dispatcher;
+		const dispatcher = message.guild.voice?.dispatcher;
 		if (!dispatcher) {
 			return message.reply("I'm not playing anything!");
 		}

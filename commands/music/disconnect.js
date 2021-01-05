@@ -12,9 +12,11 @@ module.exports = class DisconnectCommand extends Command {
 	}
 
 	run(message) {
-		message.guild.dispatcher = null;
 		message.guild.timeout = null;
 		message.guild.voice?.channel?.leave();
+		if (message.guild.voice?.dispatcher) {
+			message.guild.voice.dispatcher = null;
+		}
 		message.react("👍🏽");
 	}
 };

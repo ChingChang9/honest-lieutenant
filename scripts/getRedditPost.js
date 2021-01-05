@@ -15,6 +15,7 @@ module.exports = {
 		}, "loading");
 
 		const posts = await fetchAndFilter(subreddits).catch(error => {
+			console.log(error);
 			if (error.response.status === 503) fetchAndFilter(subreddits);
 			options.message.error(error);
 		});
@@ -40,7 +41,9 @@ function resolveRandomPost(response) {
 }
 
 function resolvePostEmbed(post) {
-	if (post.url.startsWith("https://i.redd.it") || post.url.startsWith("https://preview.redd.it")) return {
+	// TODO: Array.includes?
+	if (post.url.startsWith("https://i.redd.it") || post.url.startsWith("https://preview.redd.it")
+	|| post.url.startsWith("https://i.imgur.com") || post.url.startsWith("https://cdn.awwni.me")) return {
 		author: {
 			name: post.title.slice(0, 256),
 			url: `https://www.reddit.com${ post.permalink }`

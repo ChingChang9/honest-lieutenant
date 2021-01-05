@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const firebase = require("@/scripts/firebase.js");
 const play = require("@/scripts/play.js");
 
 module.exports = class SeekCommand extends Command {
@@ -50,23 +49,17 @@ module.exports = class SeekCommand extends Command {
 		});
 	}
 
-	run(message, { timestamp }) {
-		Promise.all([
-			firebase.getQueue(message.guild.id),
-			firebase.getItem(message.guild.id, "played"),
-			message.member.voice.channel.join().then(connection => {
-				connection.voice.setSelfDeaf(true);
-				return connection;
-			})
-		]).then(result => {
-			const [queue, played, connection] = result;
-			const index = played - 1;
+	async run(message, { timestamp }) {
+		const queue = message.guild.queue;
+		const index = message.guild.played - 1;
 
-			if (timestamp >= queue[index].duration) {
-				return message.reply("the timestamp is past the duration of the song!");
-			}
+		const connection = await message.member.voice.channel.join();
+		connection.voice.setSelfDeaf(true);
 
-			play.exec(message, connection, queue, index, timestamp);
-		});
+		if (timestamp >= queue[index].duration) {
+			return message.reply("the timestamp is past the duration of the song!");
+		}
+
+		play.exec(message, connection, queue, index, timestamp);
 	}
 };

@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const firebase = require("@/scripts/firebase.js");
 
 module.exports = class RepeatCommand extends Command {
 	constructor(client) {
@@ -33,7 +32,7 @@ module.exports = class RepeatCommand extends Command {
 					key: "repeat",
 					default: "toggle",
 					validate: (_, message) => {
-						if (!message.guild.dispatcher) {
+						if (!message.guild.voice?.dispatcher) {
 							return "I'm not playing anything!";
 						}
 						return true;
@@ -43,32 +42,28 @@ module.exports = class RepeatCommand extends Command {
 		});
 	}
 
-	async run(message, { repeat })  {
-		repeat = await simplifyRepeat(message.guild.id, repeat);
+	run(message, { repeat })  {
+		repeat = simplifyRepeat(repeat, message.guild.voice.repeat);
 		if (!repeat) return message.reply("please enter one of `one`, `queue`, or `off`");
 
-		firebase.updateValue(`${ message.guild.id }/settings`, {
-			repeat
-		});
+		message.guild.voice.repeat = repeat;
 
 		switch (repeat) {
-		case "one": message.react("🔂"); break;
-		case "queue": message.react("🔁"); break;
-		case "off": message.react("🇽");
+			case "one": message.react("🔂"); break;
+			case "queue": message.react("🔁"); break;
+			case "off": message.react("🇽");
 		}
 	}
 };
 
-async function simplifyRepeat(guildId, repeat) {
+function simplifyRepeat(repeat, lastRepeat) {
 	if (repeat === "toggle") {
-		const lastRepeat = await firebase.getItem(guildId, "repeat");
-
 		switch (lastRepeat) {
-		case "one": return "queue";
-		case "queue": return "off";
-		case "off": return "one";
+			case "one": return "queue";
+			case "queue": return "off";
+			case "off": return "one";
 		}
-	} else if (["one", "song", "track", "enable"].includes(repeat)) {
+	} else if (["one", "on", "song", "track", "enable"].includes(repeat)) {
 		return "one";
 	} else if (["playlist", "all", "queue"].includes(repeat)) {
 		return "queue";

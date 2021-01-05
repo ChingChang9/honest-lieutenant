@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const firebase = require("@/scripts/firebase.js");
 const votePlay = require("@/scripts/votePlay.js");
 
 module.exports = class SkipCommand extends Command {
@@ -26,14 +25,9 @@ module.exports = class SkipCommand extends Command {
 	}
 
 	run(message, { skip }) {
-		Promise.all([
-			firebase.getQueue(message.guild.id),
-			firebase.getItem(message.guild.id, "played")
-		]).then(result => {
-			const [queue, played] = result;
-			const index = played - 1;
+		const queue = message.guild.queue;
+		const index = message.guild.played - 1;
 
-			votePlay.exec(message, queue, index, index + skip, `Vote on skipping \`${ queue[index].title }\``, "⏩");
-		});
+		votePlay.exec(message, queue, index, index + skip, `Vote on skipping \`${ queue[index].title }\``, "⏩");
 	}
 };

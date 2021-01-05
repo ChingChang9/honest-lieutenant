@@ -1,4 +1,5 @@
 const { Structures } = require("discord.js");
+const { database } = require("@/scripts/firebase.js");
 
 module.exports = Structures.extend("Guild", Guild => {
 	return class extends Guild {
@@ -7,8 +8,22 @@ module.exports = Structures.extend("Guild", Guild => {
 			this._commandPrefix = null;
 			this._commandsEnabled = new Map();
 			this._groupsEnabled = new Map();
-			this._timeout = null;
-			this._dispatcher = null;
+			this.queue = [];
+			this.queueKeys = [];
+			this.played = 0;
+
+			const queueRef = database.ref(`${ this.id }/queue`);
+			const playedRef = database.ref(`${ this.id }/played`);
+
+			this.queueRef = queueRef;
+			queueRef.on("value", snapshot => {
+				const queueVal = snapshot.val() || {};
+				this.queue = Object.values(queueVal);
+				this.queueKeys = Object.keys(queueVal);
+			});
+			playedRef.on("value", snapshot => {
+				this.played = snapshot.val();
+			});
 		}
 
 		get commandPrefix() {
@@ -17,22 +32,6 @@ module.exports = Structures.extend("Guild", Guild => {
 
 		set commandPrefix(prefix) {
 			this._commandPrefix = prefix;
-		}
-
-		get timeout() {
-			return this._timeout;
-		}
-
-		set timeout(value) {
-			this._timeout = value;
-		}
-
-		get dispatcher() {
-			return this._dispatcher;
-		}
-
-		set dispatcher(value) {
-			this._dispatcher = value;
 		}
 
 		setCommandEnabled(command, enabled) {

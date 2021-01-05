@@ -14,20 +14,16 @@ module.exports = class EmptyCommand extends Command {
 	}
 
 	run(message) {
-		if (!message.guild.dispatcher) {
+		if (!message.guild.voice?.dispatcher) {
 			firebase.updateValue(message.guild.id, emptyQueue);
 		} else {
-			Promise.all([
-				firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
-				firebase.getItem(message.guild.id, "played")
-			]).then(result => {
-				const [queue, played] = result;
-				let newQueue = {};
-				newQueue[Object.keys(queue.val())[played - 1]] = Object.values(queue.val())[played - 1];
-				firebase.database.ref(`${ message.guild.id }/queue`).set(newQueue);
-				firebase.updateValue(`${ message.guild.id }/settings`, {
-					played: 1
-				});
+			const played = message.guild.played;
+
+			let newQueue = {};
+			newQueue[message.guild.queueKeys[played - 1]] = message.guild.queue[played - 1];
+			firebase.updateValue(message.guild.id, {
+				newQueue,
+				played: 1
 			});
 		}
 		message.react("👍🏽");

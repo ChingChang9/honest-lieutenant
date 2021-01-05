@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const firebase = require("@/scripts/firebase.js");
 const votePlay = require("@/scripts/votePlay.js");
 
 module.exports = class BackCommand extends Command {
@@ -26,17 +25,12 @@ module.exports = class BackCommand extends Command {
 	}
 
 	run(message, { back }) {
-		Promise.all([
-			firebase.getQueue(message.guild.id),
-			firebase.getItem(message.guild.id, "played")
-		]).then(result => {
-			const [queue, played] = result;
-			const index = played - 1;
+		const queue = message.guild.queue;
+		const index = message.guild.played - 1;
 
-			if (!queue) message.reply("the queue is empty!");
+		if (!queue) message.reply("the queue is empty!");
 
-			const toIndex = Math.max(index - back, 0);
-			votePlay.exec(message, queue, index, toIndex, `Vote on rewinding to \`${ queue[toIndex].title }\``, "⏪");
-		});
+		const toIndex = Math.max(index - back, 0);
+		votePlay.exec(message, queue, index, toIndex, `Vote on rewinding to \`${ queue[toIndex].title }\``, "⏪");
 	}
 };

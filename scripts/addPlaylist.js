@@ -16,30 +16,28 @@ module.exports = {
 		} else {
 			number = parseInt(number) || urls.length;
 		}
-		const queueRef = await firebase.database.ref(`${ message.guild.id }/queue`);
 
 		Promise.all([
-			addPlaylist(message, queueRef, urls, number - 1),
+			addPlaylist(message, message.guild.queueRef, urls, number - 1),
 			message.member.voice.channel.join().then(connection => {
 				connection.voice.setSelfDeaf(true);
 				return connection;
 			})
-		]).then(async (result) => {
+		]).then(result => {
 			const [songs, connection] = result;
-			queueRef.update(songs);
+			message.guild.queueRef.update(songs);
 			const songLength = Object.keys(songs).length;
 			message.say(`Enqueued ${ songLength } songs`);
 
 			if (!connection.player.dispatcher) {
-				const queue = await queueRef.once("value");
-				const queueList = Object.values(queue.val());
-				play.exec(message, connection, queueList, queueList.length - songLength);
+				const queue = message.guild.queue;
+				play.exec(message, connection, queue, queue.length - songLength);
 			}
 		});
 	}
 };
 
-async function addPlaylist(message, queueRef, urls, number) {
+function addPlaylist(message, queueRef, urls, number) {
 	let songs = {};
 	let promises = [];
 

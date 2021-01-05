@@ -5,6 +5,7 @@ const firebase = require("@/scripts/firebase.js");
 const { emptyQueue } = require("@/config.json");
 require("@/client/guild.js");
 require("@/client/message.js");
+require("@/client/voice.js");
 
 module.exports = class extends Client {
 	constructor(options) {

@@ -1,5 +1,4 @@
 const Command = require("@/client/command.js");
-const firebase = require("@/scripts/firebase.js");
 const formatTime = require("@/scripts/formatTime.js");
 
 module.exports = class UntilCommand extends Command {
@@ -25,31 +24,27 @@ module.exports = class UntilCommand extends Command {
 	}
 
 	run(message, { untilIndex }) {
-		const dispatcher = message.guild.dispatcher;
+		const dispatcher = message.guild.voice?.dispatcher;
 		if (!dispatcher) {
 			return message.reply("I'm not playing anything!");
 		}
 
-		Promise.all([
-			firebase.getQueue(message.guild.id),
-			firebase.getItem(message.guild.id, "played")
-		]).then(result => {
-			const [queue, played] = result;
+		const queue = message.guild.queue;
+		const played = message.guild.played;
 
-			if (untilIndex < played) {
-				return message.reply("that song is already played");
-			} else if (untilIndex === played) {
-				return message.reply("I'm currently playing that song right now, duh 🙄");
-			} else if (!queue[untilIndex - 1]) {
-				return message.reply("the track doesn't exist");
-			}
+		if (untilIndex < played) {
+			return message.reply("that song is already played");
+		} else if (untilIndex === played) {
+			return message.reply("I'm currently playing that song right now, duh 🙄");
+		} else if (!queue[untilIndex - 1]) {
+			return message.reply("the track doesn't exist");
+		}
 
-			let timeLeft = queue[played - 1].duration - Math.floor(dispatcher.streamTime / 1000);
-			for (let counter = played; counter < untilIndex - 1; counter++) {
-				timeLeft += parseInt(queue[counter].duration);
-			}
+		let timeLeft = queue[played - 1].duration - message.guild.voice.songElapsed;
+		for (let counter = played; counter < untilIndex - 1; counter++) {
+			timeLeft += parseInt(queue[counter].duration);
+		}
 
-			message.say(`\`${ formatTime.exec(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
-		});
+		message.say(`\`${ formatTime.exec(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
 	}
 };

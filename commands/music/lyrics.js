@@ -1,6 +1,5 @@
 const Command = require("@/client/command.js");
 const axios = require("axios");
-const firebase = require("@/scripts/firebase.js");
 const { ksoftAuth } = require("@/config.json");
 const translate = require("@/scripts/translate.js");
 
@@ -28,7 +27,7 @@ module.exports = class LyricsCommand extends Command {
 					key: "language",
 					oneOf: ["original", "translate"],
 					validate: (_, message) => {
-						if (!message.guild.dispatcher) {
+						if (!message.guild.voice?.dispatcher) {
 							return "I'm not playing anything!";
 						}
 						return true;
@@ -40,7 +39,7 @@ module.exports = class LyricsCommand extends Command {
 	}
 
 	async run(message, { language }) {
-		const [videoTitle, videoUrl] = await getVideoInfo(message);
+		const [videoTitle, videoUrl] = getVideoInfo(message);
 
 		const data = await axios("https://api.ksoft.si/lyrics/search", {
 			headers: {
@@ -80,12 +79,7 @@ module.exports = class LyricsCommand extends Command {
 };
 
 function getVideoInfo(message) {
-	return Promise.all([
-		firebase.getQueue(message.guild.id),
-		firebase.getItem(message.guild.id, "played")
-	]).then(result => {
-		const [queue, played] = result;
-		const index = played - 1;
-		return [queue[index].title, queue[index].videoUrl];
-	});
+	const queue = message.guild.queue;
+	const index = message.guild.played - 1;
+	return [queue[index].title, queue[index].videoUrl];
 }

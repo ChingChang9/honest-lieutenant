@@ -44,26 +44,26 @@ module.exports = class Command {
 
 	onBlock(message, reason, data) {
 		switch(reason) {
-		case "guildOnly":
-			return message.reply(`the \`${ this.name }\` command can only be used in servers`);
-		case "nsfw":
-			return message.reply(`the \`${ this.name }\` command can only be used in NSFW channels`);
-		case "permission": {
-			if (data.response) return message.reply(data.response);
-			return message.reply(`You do not have permission to use the \`${ this.name }\` command`);
-		}
-		case "clientPermissions": {
-			if(data.missing.length === 1) {
-				return message.reply(
-					`I need the "${ data.missing[0].toLowerCase().replace(/_/g, " ") }" permission for the \`${ this.name }\` command to work`
-				);
+			case "guildOnly":
+				return message.reply(`the \`${ this.name }\` command can only be used in servers`);
+			case "nsfw":
+				return message.reply(`the \`${ this.name }\` command can only be used in NSFW channels`);
+			case "permission": {
+				if (data.response) return message.reply(data.response);
+				return message.reply(`You do not have permission to use the \`${ this.name }\` command`);
 			}
-			return message.reply(`I need the following permissions to run the \`${ this.name }\` command: ${
-				data.missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(", ") }`);
-		}
-		case "throttling": {
-			return message.reply(`you may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
-		}
+			case "clientPermissions": {
+				if (data.missing.length === 1) {
+					return message.reply(
+						`I need the "${ data.missing[0].toLowerCase().replace(/_/g, " ") }" permission for the \`${ this.name }\` command to work`
+					);
+				}
+				return message.reply(`I need the following permissions to run the \`${ this.name }\` command: ${
+					data.missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(", ") }`);
+			}
+			case "throttling": {
+				return message.reply(`you may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
+			}
 		}
 	}
 

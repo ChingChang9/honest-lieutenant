@@ -8,11 +8,14 @@ module.exports = {
 		}
 
 		if (toIndex >= queue.length) {
-			firebase.updateValue(`${ message.guild.id }/settings`, {
+			firebase.updateValue(message.guild.id, {
 				played: queue.length,
 			});
-			message.guild.dispatcher?.end();
-			return message.guild.dispatcher = null;
+			if (message.guild.voice?.dispatcher) {
+				message.guild.voice?.dispatcher.end();
+				message.guild.voice.dispatcher = null;
+			}
+			return;
 		}
 
 		const connection = await message.member.voice.channel.join();

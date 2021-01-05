@@ -46,40 +46,36 @@ module.exports = class RemoveCommand extends Command {
 		});
 	}
 
-	run(message, { index1, index2 }) {
+	async run(message, { index1, index2 }) {
 		index2 = index2 || index1;
-		Promise.all([
-			firebase.database.ref(`${ message.guild.id }/queue`).once("value"),
-			firebase.getItem(message.guild.id, "played")
-		]).then(result => {
-			const [queueRef, played] = result;
-			const queue = queueRef.val();
-			const timestamps = Object.keys(queue || {});
+		const played = message.guild.played;
+		const timestamps = message.guild.queueKeys;
+		const queueRef = await message.guild.queueRef.once("value");
+		const queue = queueRef.val();
 
-			if (index1 > timestamps.length) {
-				return message.reply("the first index doesn't exist!");
-			} else if (index2 > timestamps.length) {
-				return message.reply("the second index doesn't exist!");
-			}
+		if (index1 > timestamps.length) {
+			return message.reply("the first index doesn't exist!");
+		} else if (index2 > timestamps.length) {
+			return message.reply("the second index doesn't exist!");
+		}
 
-			if (index1 === index2 && index1 === played && message.guild.dispatcher) {
-				return message.reply("bruh I'm playing that right now. I can't delete the current track 🙄🙄");
-			}
+		if (index1 === index2 && index1 === played && message.guild.voice?.dispatcher) {
+			return message.reply("bruh I'm playing that right now. I can't delete the current track 🙄🙄");
+		}
 
-			removeRange(message.guild.id, queue, timestamps, played, Math.min(index1, index2), Math.max(index1, index2));
-		});
+		removeRange(message.guild, queue, timestamps, played, Math.min(index1, index2), Math.max(index1, index2));
 		message.react("👍🏽");
 	}
 };
 
-function removeRange(guildId, queue, timestamps, played, index1, index2) {
+function removeRange(guild, queue, timestamps, played, index1, index2) {
 	let count = 0;
 	for (let index = index1; index <= index2; index++) {
-		if (index !== played) queue[timestamps[index - 1]] = null;
-		if (index < played) count++;
+		if (index !== played || !guild.voice?.dispatcher) queue[timestamps[index - 1]] = null;
+		if (index <= played) count++;
 	}
-	firebase.updateValue(`${ guildId }/settings`, {
+	firebase.updateValue(guild.id, {
 		played: played - count
 	});
-	firebase.database.ref(`${ guildId }/queue`).set(queue);
+	guild.queueRef.set(queue);
 }

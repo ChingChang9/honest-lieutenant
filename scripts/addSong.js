@@ -34,8 +34,8 @@ async function addSong(message, songInfo) {
 		requester: message.member.displayName,
 		requesterId: message.member.id
 	});
-	const queue = await firebase.getQueue(message.guild.id);
 
+	const queue = message.guild.queue;
 	message.say(`Enqueued \`${ songInfo.videoDetails.title }\` at index \`${ queue.length }\``);
 
 	return queue;
