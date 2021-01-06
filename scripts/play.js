@@ -4,8 +4,8 @@ const firebase = require("@/scripts/firebase.js");
 const { clientId, embedColours } = require("@/config.json");
 
 module.exports = {
-	async exec(message, connection, queue, index, seekTimestamp = 0) {
-		const dispatcher = await playSong(connection, queue, index, seekTimestamp);
+	async exec(message, connection, queue, index, seekTimestamp = 0, changeFilter = false) {
+		const dispatcher = await playSong(connection, queue, index, seekTimestamp, message.guild.voice.filter);
 		const voiceState = message.guild.voice;
 
 		dispatcher.on("start", () => {
@@ -44,6 +44,9 @@ module.exports = {
 					}
 				}
 			});
+			if (changeFilter) {
+				voiceState.displayFilters(message);
+			}
 
 			firebase.updateValue(message.guild.id, {
 				played: index + 1
@@ -106,18 +109,19 @@ module.exports = {
 	}
 };
 
-async function playSong(connection, queue, index, seekTimestamp) {
-	return connection.play(
-		await ytdl(queue[index].videoUrl, {
-			filter: "audioonly", // TODO: CHANGE THIS TO "audio" IF STREAM ENDS UNEXPECTEDLY
-			highWaterMark: 256 * 1024,
-			opusEncoded: true,
-			seek: seekTimestamp
-		}), {
-			type: "opus",
-			volume: false,
-			bitrate: 64,
-			highWaterMark: 1
-		}
-	);
+async function playSong(connection, queue, index, seekTimestamp, filter) {
+	const stream = await ytdl(queue[index].videoUrl, {
+		filter: "audioonly", // TODO: CHANGE THIS TO "audio" IF STREAM ENDS UNEXPECTEDLY
+		highWaterMark: 256 * 1024,
+		opusEncoded: true,
+		seek: seekTimestamp,
+		encoderArgs: filter ? ["-af", filter] : null
+	});
+
+	return connection.play(stream, {
+		type: "opus",
+		volume: false,
+		bitrate: 64,
+		highWaterMark: 1
+	});
 }

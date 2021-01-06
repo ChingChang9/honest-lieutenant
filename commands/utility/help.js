@@ -93,7 +93,7 @@ function getDetails(command, prefix) {
 	});
 	fields.push({
 		name: "Default Value",
-		value: command.arguments?.args?.[0].default || command.default || "No default value",
+		value: command.arguments[0]?.default || command.default || "No default value",
 		inline: true
 	});
 	if (command.examples) {

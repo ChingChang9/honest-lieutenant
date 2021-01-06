@@ -13,6 +13,7 @@ const client = new DiscordClient({
 }).registry.registerGroups([
 	{ id: "utility", name: "⚙️ Utility", guarded: true },
 	{ id: "music", name: "🎵 Music" },
+	{ id: "filter", name: "🎚️ Music Filter" },
 	{ id: "reaction", name: "<:tsundere:763493801301245975> Reaction" },
 	{ id: "weeb", name: "<:weeb:795670535471497238> Weeb" },
 	{ id: "picture", name: "🖼️ Picture" },

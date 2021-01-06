@@ -114,7 +114,7 @@ function checkTrash(title) {
 function queuePlaylist(message, url, number) {
 	const id = url.match(/^http.+playlist\?list=(.+)&?/)[1];
 	scrapePlaylist(id).then(response => {
-		const urls = response.playlist.map((video) => video.url);
+		const urls = response.playlist.map(video => video.url);
 		addPlaylist.exec(message, urls, number);
 	});
 }

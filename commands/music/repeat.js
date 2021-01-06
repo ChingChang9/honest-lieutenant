@@ -44,7 +44,7 @@ module.exports = class RepeatCommand extends Command {
 
 	run(message, { repeat })  {
 		repeat = simplifyRepeat(repeat, message.guild.voice.repeat);
-		if (!repeat) return message.reply("please enter one of `one`, `queue`, or `off`");
+		if (!repeat) return message.reply("please enter one of `one`, `queue`, and `off`");
 
 		message.guild.voice.repeat = repeat;
 

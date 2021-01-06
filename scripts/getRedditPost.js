@@ -42,6 +42,7 @@ function resolveRandomPost(response) {
 
 function resolvePostEmbed(post) {
 	// TODO: Array.includes?
+	// TODO: https://discord.js.org/#/docs/main/stable/class/MessageEmbed?scrollTo=type
 	if (post.url.startsWith("https://i.redd.it") || post.url.startsWith("https://preview.redd.it")
 	|| post.url.startsWith("https://i.imgur.com") || post.url.startsWith("https://cdn.awwni.me")) return {
 		author: {
@@ -58,7 +59,7 @@ function resolvePostEmbed(post) {
 			name: post.title.slice(0, 256),
 			url: `https://www.reddit.com${ post.permalink }`
 		},
-		description: `[Censored](https://www.reddit.com${ post.permalink })`
+		description: `Can't embed this post. [Open in new tab](https://www.reddit.com${ post.permalink })`
 	};
 
 	return {
