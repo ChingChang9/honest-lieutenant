@@ -13,7 +13,7 @@ module.exports = class KaraokeCommand extends Command {
 
 	async run(message) {
 		if (!message.member.voice.channel) {
-			return message.reply("please only use this when you're in a voice channel")
+			return message.reply("please only use this when you're in a voice channel");
 		}
 
 		await message.member.voice.channel.join().then(connection => connection.voice.setSelfDeaf(true));

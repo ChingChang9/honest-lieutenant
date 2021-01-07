@@ -1,5 +1,4 @@
 const ytdl = require("ytdl-core");
-const firebase = require("@/scripts/firebase.js");
 const play = require("@/scripts/play.js");
 
 module.exports = {

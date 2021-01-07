@@ -62,7 +62,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			}
 		}
 
-		addFilter(filterName, newSpeed) {
+		addFilter(filterName) {
 			this.appliedFilterNames.add(filterName);
 			this.appliedFilters[filterName] = this.filters[filterName];
 		}
@@ -81,9 +81,9 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			const seekTimestamp = Math.max(0, this.songElapsed - 1.5);
 			this.speed = 1;
 			if (this.dispatcher) {
-				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, Math.max(0, this.songElapsed - 1.5), true);
+				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
 				message.embed({
-					title: `Removing all filters...`
+					title: "Removing all filters..."
 				}, "loading");
 			}
 		}

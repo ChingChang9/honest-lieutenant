@@ -22,7 +22,7 @@ module.exports = class EmptyCommand extends Command {
 			let newQueue = {};
 			newQueue[message.guild.queueKeys[played - 1]] = message.guild.queue[played - 1];
 			firebase.updateValue(message.guild.id, {
-				newQueue,
+				queue: newQueue,
 				played: 1
 			});
 		}
