@@ -1,6 +1,6 @@
 const { Client } = require("discord-rpc");
 const rpc = new Client({ transport: "ipc" });
-const { clientId, clientSecret } = require("@/config.json");
+const { clientId } = require("@/config.json");
 
 rpc.once("ready", () => {
 	rpc.setActivity({
@@ -13,4 +13,4 @@ rpc.once("ready", () => {
 	}).then(() => console.log("RPC has been set!"));
 });
 
-rpc.login({clientId, clientSecret});
+rpc.login({clientId});

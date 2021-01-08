@@ -31,7 +31,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 		}
 
 		applyFilter(message, filterName, { newSpeed = this.speed, newBass = this.bass } = {}) {
-			if (filterName !== "WTF") this.removeFilter("WTF");
+			if (filterName !== "WTF") this.removeFilter("WTF", false);
 
 			let action;
 			if (this.appliedFilterNames.has(filterName) &&
@@ -72,7 +72,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			delete this.appliedFilters[filterName];
 		}
 
-		clearAllFilters(message) {
+		clearAllFilters(message, showMessge = true) {
 			this.appliedFilterNames.clear();
 			this.appliedFilters = {};
 			this.filter = "";
@@ -82,7 +82,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			this.speed = 1;
 			if (this.dispatcher) {
 				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
-				message.embed({
+				if (showMessge) message.embed({
 					title: "Removing all filters..."
 				}, "loading");
 			}
