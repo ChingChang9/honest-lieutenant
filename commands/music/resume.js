@@ -14,8 +14,10 @@ module.exports = class ResumeCommand extends Command {
 	run(message) {
 		const dispatcher = message.guild.voice?.dispatcher;
 		if (!dispatcher) {
-			return message.reply("I wasn't playing anything!");
+			message.reply("I wasn't playing anything!");
+		} else {
+			dispatcher.resume();
+			process.emit("MUSICRESUME", message.guild);
 		}
-		dispatcher.resume();
 	}
 };

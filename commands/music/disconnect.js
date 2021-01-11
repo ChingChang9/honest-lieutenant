@@ -18,5 +18,6 @@ module.exports = class DisconnectCommand extends Command {
 			message.guild.voice.dispatcher = null;
 		}
 		message.react("👍🏽");
+		process.emit("MUSICSTOP");
 	}
 };

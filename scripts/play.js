@@ -9,7 +9,7 @@ module.exports = {
 		const voiceState = message.guild.voice;
 
 		dispatcher.on("start", () => {
-			process.emit("MUSICSTART", queue[index].title);
+			process.emit("MUSICSTART", queue[index].title, seekTimestamp);
 			if (voiceState.repeat !== "one" && !seekTimestamp) message.channel.send({
 				embed: {
 					color: embedColours.default,
@@ -78,12 +78,20 @@ module.exports = {
 		});
 
 		dispatcher.on("error", error => {
-			if (error.message === "opus stream: Video unavailable") {
-				message.reply("this video is not available in my country :(");
-			} else {
-				message.error(error);
-			}
+			message.error(error);
+
+			process.emit("MUSICSTOP");
+			const queue = message.guild.queue;
+			const played = message.guild.played;
 			voiceState.dispatcher = null;
+
+			if (played === queue.length && voiceState.repeat === "queue") {
+				this.exec(message, connection, queue, 0);
+			} else if (played === queue.length) {
+				this.disconnect(message);
+			} else {
+				this.exec(message, connection, queue, played);
+			}
 		});
 	},
 	disconnect(message) {
