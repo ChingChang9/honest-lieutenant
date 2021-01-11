@@ -2,15 +2,20 @@ const { Client } = require("discord-rpc");
 const rpc = new Client({ transport: "ipc" });
 const { clientId } = require("@/config.json");
 
-rpc.once("ready", () => {
+rpc.login({clientId});
+
+process.on("MUSICSTART", song => {
 	rpc.setActivity({
+		details: song,
 		startTimestamp: new Date().getTime(),
 		largeImageKey: "christmas",
 		largeImageText: "Honest Lieutenant#0383",
-		smallImageKey: "atom",
-		smallImageText: "Atom",
+		smallImageKey: "playing",
+		smallImageText: "Playing",
 		instance: false
-	}).then(() => console.log("RPC has been set!"));
+	});
 });
 
-rpc.login({clientId});
+process.on("MUSICSTOP", () => {
+	rpc.clearActivity();
+});

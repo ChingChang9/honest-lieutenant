@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const addPlaylist = require("@/scripts/addPlaylist.js");
+const addSong = require("@/scripts/addSong.js");
 const votePlay = require("@/scripts/votePlay.js");
 
 module.exports = class GotoCommand extends Command {
@@ -26,7 +26,7 @@ module.exports = class GotoCommand extends Command {
 
 	run(message, { index })  {
 		if (index === "farewell") {
-			return addPlaylist.exec(message, ["https://www.youtube.com/watch?v=3zbGMcsCtjg"], 1);
+			return addSong.exec(message, "https://www.youtube.com/watch?v=3zbGMcsCtjg");
 		}
 
 		const queue = message.guild.queue;

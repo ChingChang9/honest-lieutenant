@@ -53,9 +53,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 				const seekTimestamp = Math.max(0, this.songElapsed - 1.5 * newSpeed);
 				this.speed = newSpeed;
 				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
-				message.embed({
-					title: `${ action } ${ filterName } Filter...`
-				}, "loading");
+				message.embed(`${ action } ${ filterName } Filter...`, "loading");
 			} else {
 				this.speed = newSpeed;
 				this.displayFilters(message);
@@ -82,9 +80,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			this.speed = 1;
 			if (this.dispatcher) {
 				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
-				if (showMessge) message.embed({
-					title: "Removing all filters..."
-				}, "loading");
+				if (showMessge) message.embed("Removing all filters...", "loading");
 			}
 		}
 
@@ -100,9 +96,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 					}).join("\n")
 				});
 			} else {
-				message.embed({
-					title: "No Filters Applied"
-				});
+				message.embed("No Filters Applied");
 			}
 		}
 	};

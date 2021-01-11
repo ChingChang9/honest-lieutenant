@@ -1,11 +1,33 @@
-const firebase = require("@/scripts/firebase.js");
+const ytdl = require("ytdl-core");
 const play = require("@/scripts/play.js");
+const firebase = require("@/scripts/firebase.js");
+const Message = require("@/client/message.js");
+
+const trashes = [
+	"100 gecs",
+	"ppcocaine"
+];
 
 module.exports = {
-	exec(message, songInfo) {
+	async exec(message, songUrl) {
 		if (!message.member.voice.channel) {
 			return message.reply("please only use this when you're in a voice channel");
 		}
+
+		const songInfo = await ytdl.getBasicInfo(songUrl).catch(error => {
+			switch (error.message) {
+				case "Not a youtube domain": return message.reply("I can only play songs from Youtube");
+				case "Video unavailable": return message.reply("the video is unavailable");
+				case "This is a private video. Please sign in to verify that you may see it.": return message.reply("this video is private");
+			}
+
+			if (error.name === "TypeError") return message.reply("this link is invalid");
+			return message.error(error);
+		});
+		if (songInfo instanceof Message) return;
+
+		const trashMessage = checkTrash(songInfo.videoDetails.title.toLowerCase());
+		if (trashMessage) return message.reply(trashMessage);
 
 		Promise.all([
 			addSong(message, songInfo),
@@ -39,4 +61,20 @@ async function addSong(message, songInfo) {
 	message.say(`Enqueued \`${ songInfo.videoDetails.title }\` at index \`${ queue.length }\``);
 
 	return queue;
+}
+
+function checkTrash(title) {
+	const trash = trashes.some(trash => {
+		if (title.includes(trash)) return trash;
+	});
+
+	if (trash) {
+		const refusal = [
+			`no ${ trash } please!`,
+			`I refuse to queue ${ trash }`,
+			`nah bro, not ${ trash }`,
+			`${ trash }... this ain't it chief`
+		];
+		return refusal[Math.floor(Math.random() * refusal.length)];
+	}
 }

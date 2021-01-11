@@ -101,8 +101,17 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		embed(embed, type = "default") {
-			embed.color = embedColours[type];
-			return this.say({embed});
+			if (typeof embed === "string") {
+				return this.say({
+					embed: {
+						author: { name: embed },
+						color: embedColours[type]
+					}
+				});
+			} else {
+				embed.color = embedColours[type];
+				return this.say({embed});
+			}
 		}
 
 		reply(content) {

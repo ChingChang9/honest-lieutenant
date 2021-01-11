@@ -33,7 +33,6 @@ const subredditsNSFW = [
 	"DreamyAnimeEyes",
 	"silverhair"
 ];
-
 const subredditsSFW = [
 	"massivefangs",
 	"AnimeBlush",

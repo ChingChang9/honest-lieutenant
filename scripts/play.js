@@ -9,6 +9,7 @@ module.exports = {
 		const voiceState = message.guild.voice;
 
 		dispatcher.on("start", () => {
+			process.emit("MUSICSTART", queue[index].title);
 			if (voiceState.repeat !== "one" && !seekTimestamp) message.channel.send({
 				embed: {
 					color: embedColours.default,
@@ -59,6 +60,7 @@ module.exports = {
 		});
 
 		dispatcher.on("finish", () => {
+			process.emit("MUSICSTOP");
 			const queue = message.guild.queue;
 			const played = message.guild.played;
 			const repeat = voiceState.repeat;
@@ -111,7 +113,7 @@ module.exports = {
 
 async function playSong(connection, queue, index, seekTimestamp, filter) {
 	const stream = await ytdl(queue[index].videoUrl, {
-		filter: "audioonly", // TODO: CHANGE THIS TO "audio" IF STREAM ENDS UNEXPECTEDLY
+		filter: "audio",
 		highWaterMark: 256 * 1024,
 		opusEncoded: true,
 		seek: seekTimestamp,

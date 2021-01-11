@@ -4,10 +4,12 @@ const getRedditPost = require("@/scripts/getRedditPost.js");
 
 const subreddits = [
 	"ecchi",
+	"Lewd_Not_Hentai",
 	"AzurLewd",
 	"pantsu",
 	"Nekomimi",
-	"Sukebei"
+	"Sukebei",
+	"BikiniMoe"
 ];
 
 module.exports = class EcchiCommand extends Command {

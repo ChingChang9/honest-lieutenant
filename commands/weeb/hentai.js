@@ -2,7 +2,12 @@ const Command = require("@/client/command.js");
 const getRedditPost = require("@/scripts/getRedditPost.js");
 
 const subreddits = [
-	"hentai"
+	"hentai",
+	"EmbarrassedHentai",
+	"CumHentai",
+	"PublicHentai",
+	"MasturbationHentai",
+	"Animemasturbation"
 ];
 
 module.exports = class HentaiCommand extends Command {

@@ -37,9 +37,7 @@ module.exports = class FiltersCommand extends Command {
 			return message.guild.voice?.clearAllFilters(message);
 		}
 
-		if (!message.guild.voice) return message.embed({
-			title: "No Filters Applied"
-		});
+		if (!message.guild.voice) return message.embed("No Filters Applied");
 
 		message.guild.voice.displayFilters(message);
 	}
