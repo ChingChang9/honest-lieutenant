@@ -10,7 +10,7 @@ const subredditsSFW = [
 	"AzureLane"
 ];
 
-module.exports = class AzurLaneCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "azurlane",

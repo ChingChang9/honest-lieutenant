@@ -2,7 +2,7 @@ const Command = require("@/client/command.js");
 const addSong = require("@/scripts/addSong.js");
 const votePlay = require("@/scripts/votePlay.js");
 
-module.exports = class GotoCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "goto",

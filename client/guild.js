@@ -1,5 +1,6 @@
 const { Structures } = require("discord.js");
-const { database } = require("@/scripts/firebase.js");
+const { database } = require("@/workers/firebase.js");
+const { clientId } = require("@/config.json");
 
 module.exports = Structures.extend("Guild", Guild => {
 	return class extends Guild {
@@ -24,6 +25,10 @@ module.exports = Structures.extend("Guild", Guild => {
 			playedRef.on("value", snapshot => {
 				this.played = snapshot.val();
 			});
+		}
+
+		get clientName() {
+			return this.members.cache.get(clientId).displayName;
 		}
 
 		get commandPrefix() {

@@ -2,7 +2,7 @@ const Command = require("@/client/command.js");
 const randomImage = require("@/scripts/randomImage.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
-module.exports = class ClapCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "clap",

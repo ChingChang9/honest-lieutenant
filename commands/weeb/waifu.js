@@ -31,7 +31,8 @@ const subredditsNSFW = [
 	"twintails",
 	"TwoDeeArt",
 	"DreamyAnimeEyes",
-	"silverhair"
+	"silverhair",
+	"AnimeLounging"
 ];
 const subredditsSFW = [
 	"massivefangs",
@@ -56,10 +57,11 @@ const subredditsSFW = [
 	"Tsunderes",
 	"TwoDeeArt",
 	"DreamyAnimeEyes",
-	"silverhair"
+	"silverhair",
+	"AnimeLounging"
 ];
 
-module.exports = class WaifuCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "waifu",

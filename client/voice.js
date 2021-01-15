@@ -42,6 +42,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 				this.removeFilter(filterName);
 				action = "Removing";
 			} else {
+				if (filterName === "WTF") this.clearAllFilters(message, false);
 				this.addFilter(filterName);
 				action = "Applying";
 			}

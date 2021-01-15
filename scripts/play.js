@@ -1,7 +1,7 @@
 const ytdl = require("discord-ytdl-core");
 const formatTime = require("@/scripts/formatTime.js");
-const firebase = require("@/scripts/firebase.js");
-const { clientId, embedColours } = require("@/config.json");
+const firebase = require("@/workers/firebase.js");
+const { embedColours } = require("@/config.json");
 
 module.exports = {
 	async exec(message, connection, queue, index, seekTimestamp = 0, changeFilter = false) {
@@ -107,7 +107,7 @@ module.exports = {
 				"Alright, cya",
 				"Goto. Farewell",
 				"I'll go sell all my land",
-				`For LOHS TV, I am ${ message.guild.members.cache.get(clientId).displayName }, and just remember: BE LEGENDARY!`
+				`For LOHS TV, I am ${ message.guild.clientName }, and just remember: BE LEGENDARY!`
 			];
 
 			message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);

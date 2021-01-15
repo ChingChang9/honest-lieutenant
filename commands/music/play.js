@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
-const { google } = require("googleapis");
-const { youtubeAuth } = require("@/config.json");
+let { google } = require("googleapis");
+let { youtubeAuth } = require("@/config.json");
 const addSong = require("@/scripts/addSong.js");
 const addPlaylist = require("@/scripts/addPlaylist.js");
 
@@ -8,8 +8,11 @@ const youtube = google.youtube({
 	version: "v3",
 	auth: youtubeAuth
 });
+google = null;
+youtubeAuth = null;
+delete require.cache[require.resolve("googleapis")];
 
-module.exports = class PlayCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "play",

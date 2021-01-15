@@ -5,7 +5,7 @@ const subreddits = [
 	"Genshin_Impact"
 ];
 
-module.exports = class GenshinCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "genshin",

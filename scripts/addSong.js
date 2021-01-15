@@ -1,6 +1,6 @@
 const ytdl = require("ytdl-core");
 const play = require("@/scripts/play.js");
-const firebase = require("@/scripts/firebase.js");
+const firebase = require("@/workers/firebase.js");
 const Message = require("@/client/message.js");
 
 const trashes = [

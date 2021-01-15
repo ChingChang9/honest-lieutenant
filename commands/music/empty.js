@@ -1,8 +1,8 @@
 const Command = require("@/client/command.js");
 const { emptyQueue } = require("@/config.json");
-const firebase = require("@/scripts/firebase.js");
+const firebase = require("@/workers/firebase.js");
 
-module.exports = class EmptyCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "empty",

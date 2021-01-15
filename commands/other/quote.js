@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const axios = require("axios");
 
-module.exports = class QuoteCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "quote",

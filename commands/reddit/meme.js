@@ -9,7 +9,7 @@ const subreddits = [
 	"Discordmemes"
 ];
 
-module.exports = class MemeCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "meme",
@@ -23,8 +23,6 @@ module.exports = class MemeCommand extends Command {
 	}
 
 	async run(message) {
-		const embed = await getRedditPost.exec(subreddits);
-
-		message.embed(embed);
+		message.embed(await getRedditPost.exec(subreddits));
 	}
 };

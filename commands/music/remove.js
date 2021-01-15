@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
-const firebase = require("@/scripts/firebase.js");
+const firebase = require("@/workers/firebase.js");
 
-module.exports = class RemoveCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "remove",

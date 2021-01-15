@@ -10,7 +10,7 @@ const subreddits = [
 	"Animemasturbation"
 ];
 
-module.exports = class HentaiCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "hentai",

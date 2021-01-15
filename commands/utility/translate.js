@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const translate = require("@/scripts/translate.js");
 
-module.exports = class TranslateCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "translate",

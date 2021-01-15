@@ -11,7 +11,7 @@ const messages = [
 	"Wear your mask!"
 ];
 
-module.exports = class CoronaCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "corona",

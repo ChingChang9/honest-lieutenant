@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 
-module.exports = class DisconnectCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "disconnect",

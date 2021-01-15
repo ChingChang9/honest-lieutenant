@@ -6,7 +6,7 @@ const subreddits = [
 	"hololivememes"
 ];
 
-module.exports = class HoloLiveCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "hololive",

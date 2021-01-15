@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const votePlay = require("@/scripts/votePlay.js");
 
-module.exports = class SkipCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "skip",

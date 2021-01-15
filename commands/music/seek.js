@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const play = require("@/scripts/play.js");
 
-module.exports = class SeekCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "seek",

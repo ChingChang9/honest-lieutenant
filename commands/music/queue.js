@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const formatTime = require("@/scripts/formatTime.js");
 
-module.exports = class QueueCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "queue",
@@ -42,7 +42,7 @@ async function sendQueue(message, page) {
 
 	if (!queue[0]) {
 		message.reactions.removeAll();
-		return message.reply("the queue is empty!");
+		return message.reply("this queue empty! YEET!");
 	}
 
 	const queueString = getQueueString(message.guild, page);

@@ -3,7 +3,7 @@ const axios = require("axios");
 const { ksoftAuth } = require("@/config.json");
 const translate = require("@/scripts/translate.js");
 
-module.exports = class LyricsCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "lyrics",

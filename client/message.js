@@ -88,6 +88,7 @@ module.exports = Structures.extend("Message", Message => {
 				message = this.channel.send(content);
 				this.response?.delete();
 			} else {
+				if (typeof content === "string") content = { content, embed: null };
 				message = this.response ? this.response.edit(content) : this.channel.send(content);
 			}
 			return message.then(response => {
@@ -104,8 +105,8 @@ module.exports = Structures.extend("Message", Message => {
 			if (typeof embed === "string") {
 				return this.say({
 					embed: {
-						author: { name: embed },
-						color: embedColours[type]
+						color: embedColours[type],
+						author: { name: embed }
 					}
 				});
 			} else {

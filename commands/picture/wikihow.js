@@ -2,7 +2,7 @@ const Command = require("@/client/command.js");
 const axios = require("axios");
 const { ksoftAuth } = require("@/config.json");
 
-module.exports = class WikihowCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "wikihow",

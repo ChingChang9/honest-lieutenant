@@ -7,21 +7,35 @@ module.exports = class Registry {
 		this.commands = new Collection();
 		this.groups = new Collection();
 		this.commandsPath = null;
+		this.registerGroups([
+			{ id: "utility", name: "⚙️ Utility", guarded: true },
+			{ id: "music", name: "🎵 Music" },
+			{ id: "filter", name: "🎚️ Music Filter" },
+			{ id: "reaction", name: "<:tsundere:763493801301245975> Reaction" },
+			{ id: "weeb", name: "<:weeb:795670535471497238> Weeb" },
+			{ id: "picture", name: "🖼️ Picture" },
+			{ id: "reddit", name: "<:reddit:795548625761468416> Reddit" },
+			{ id: "meme", name: "🙃 Meme Maker" },
+			{ id: "other", name: "❓ Other" }
+		]);
 	}
 
-	registerGroups(infos) {
-		infos.forEach(info => {
-			const group = new CommandGroup(this.client, info);
+	registerGroups(folders) {
+		folders.forEach(folder => {
+			const group = new CommandGroup(this.client, folder);
 			this.groups.set(group.id, group);
 		});
 		return this;
 	}
 
 	registerCommandsIn(path) {
-		const obj = require("require-all")(path);
-		for (const group of Object.values(obj)) {
-			for (const command of Object.values(group)) {
-				this.registerCommand(command);
+		const obj = require("require-all")({
+			dirname: path,
+			excludeDirs: "prefixless"
+		});
+		for (const folder of Object.values(obj)) {
+			for (const file of Object.values(folder)) {
+				this.registerCommand(file);
 			}
 		}
 
@@ -29,8 +43,8 @@ module.exports = class Registry {
 		return this.client;
 	}
 
-	registerCommand(command) {
-		command = new command(this.client);
+	registerCommand(file) {
+		const command = new file(this.client);
 		const group = this.groups.find(group => group.id === command.group);
 
 		command.group = group;

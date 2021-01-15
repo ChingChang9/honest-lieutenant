@@ -12,7 +12,7 @@ const subreddits = [
 	"BikiniMoe"
 ];
 
-module.exports = class EcchiCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "ecchi",

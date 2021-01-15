@@ -5,7 +5,7 @@ const subreddits = [
 	"silverhair"
 ];
 
-module.exports = class SilverCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "silver",

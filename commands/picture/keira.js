@@ -1,11 +1,13 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
-const fs = require("fs");
 const { embedColours } = require("@/config.json");
 
-const folderSize = fs.readdirSync("./assets/keira").length;
+let { readdirSync } = require("fs");
+const folderSize = readdirSync("./assets/keira").length;
+readdirSync = null;
+delete require.cache[require.resolve("fs")];
 
-module.exports = class KeiraCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "keira",
@@ -18,7 +20,7 @@ module.exports = class KeiraCommand extends Command {
 		const index = Math.floor(Math.random() * folderSize);
 		const file = new MessageAttachment(`./assets/keira/${ index }.jpg`);
 
-		message.channel.send({
+		message.say({
 			files: [file],
 			embed: {
 				color: embedColours.default,

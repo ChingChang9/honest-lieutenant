@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const CommandGroup = require("@/client/commandGroup.js");
 
-module.exports = class DisableCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "disable",

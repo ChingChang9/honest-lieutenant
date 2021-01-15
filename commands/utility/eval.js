@@ -3,7 +3,7 @@ const { splitMessage } = require("discord.js");
 const util = require("util");
 const { discordToken } = require("@/config.json");
 
-module.exports = class EvalCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "eval",

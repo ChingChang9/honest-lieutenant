@@ -1,4 +1,4 @@
-const prefixless = require("@/prefixless.js");
+const prefixless = require("@/commands/prefixless/index.js");
 
 module.exports = class Dispatcher {
 	constructor(client, registry) {

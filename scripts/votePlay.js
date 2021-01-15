@@ -1,5 +1,5 @@
 const play = require("@/scripts/play.js");
-const firebase = require("@/scripts/firebase.js");
+const firebase = require("@/workers/firebase.js");
 
 module.exports = {
 	async exec(message, queue, currentIndex, toIndex, text, emoji) {

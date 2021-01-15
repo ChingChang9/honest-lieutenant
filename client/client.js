@@ -1,7 +1,7 @@
 const { Client } = require("discord.js");
 const Registry = require("@/client/registry.js");
 const Dispatcher = require("@/client/dispatcher.js");
-const firebase = require("@/scripts/firebase.js");
+const firebase = require("@/workers/firebase.js");
 const { emptyQueue } = require("@/config.json");
 require("@/client/guild.js");
 require("@/client/message.js");
@@ -17,7 +17,6 @@ module.exports = class extends Client {
 
 		this.once("ready", () => {
 			this.user.setActivity("with myself | .help");
-			this.users.fetch(this.owner);
 			console.log(`Logged in as ${ this.user.tag }!`);
 		});
 

@@ -2,7 +2,7 @@ const Command = require("@/client/command.js");
 const getRedditPost = require("@/scripts/getRedditPost.js");
 const axios = require("axios");
 
-module.exports = class SubRedditCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "subreddit",

@@ -2,7 +2,7 @@ const Command = require("@/client/command.js");
 const axios = require("axios");
 const { catAPIAuth } = require("@/config.json");
 
-module.exports = class CatCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "cat",

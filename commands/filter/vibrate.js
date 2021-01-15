@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 
-module.exports = class VaporwaveCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "vibrate",

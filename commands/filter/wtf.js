@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 
-module.exports = class WtfCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "wtf",
@@ -17,7 +17,6 @@ module.exports = class WtfCommand extends Command {
 
 		await message.member.voice.channel.join().then(connection => connection.voice.setSelfDeaf(true));
 
-		message.guild.voice.clearAllFilters(message);
 		message.guild.voice.applyFilter(message, "WTF");
 	}
 };

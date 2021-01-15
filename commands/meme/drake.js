@@ -8,7 +8,7 @@ const versions = [
 	"chika"
 ];
 
-module.exports = class DrakeCommand extends Command {
+module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
 			name: "drake",
