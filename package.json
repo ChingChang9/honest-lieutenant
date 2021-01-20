@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.10.0",
+  "version": "3.11.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,6 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "@firebase/database": "^0.8.2",
-    "axios": "^0.21.1",
     "better-sqlite3": "^7.1.2",
     "bufferutil": "^4.0.3",
     "canvas": "^2.6.1",

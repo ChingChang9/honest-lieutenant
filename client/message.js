@@ -1,4 +1,4 @@
-const { Structures, MessageAttachment } = require("discord.js");
+const { Structures, MessageAttachment, splitMessage } = require("discord.js");
 const { embedColours } = require("@/config.json");
 
 module.exports = Structures.extend("Message", Message => {
@@ -97,8 +97,17 @@ module.exports = Structures.extend("Message", Message => {
 			});
 		}
 
-		code(content, lang = "") {
-			return this.say(`\`\`\`${ lang }\n${ content }\n\`\`\``); // TODO: USE splitMessage FROM DISCORD.JS
+		code(content, lang = "", lastAppend = "\n```") {
+			const contents = splitMessage(`\`\`\`${ lang }\n${ content }${ lastAppend }`, {
+				maxLength: 1800,
+				prepend: `\`\`\`${ lang }\n`,
+				append: "\n```"
+			});
+			for (let i = 0; i < contents.length - 1; i++) {
+				this.say(contents[i]);
+			}
+
+			return this.say(contents[contents.length - 1]);
 		}
 
 		embed(embed, type = "default") {

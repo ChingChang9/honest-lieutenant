@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const axios = require("axios");
+const request = require("@/workers/request.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -12,7 +12,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const url = await axios("https://dog.ceo/api/breeds/image/random").then(response => response.data.message);
+		const url = await request("https://dog.ceo/api/breeds/image/random").then(response => response.data.message);
 		message.embed({
 			image: { url },
 			footer: {

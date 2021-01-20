@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const axios = require("axios");
+const request = require("@/workers/request.js");
 const { ksoftAuth } = require("@/config.json");
 
 module.exports = class extends Command {
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const data = await axios("https://api.ksoft.si/images/random-wikihow", {
+		const data = await request("https://api.ksoft.si/images/random-wikihow", {
 			headers: {
 				Authorization: `Bearer ${ ksoftAuth }`
 			}

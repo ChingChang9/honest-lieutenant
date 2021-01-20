@@ -1,13 +1,11 @@
-const axios = require("axios");
+const request = require("@/workers/request.js");
 const { v4: uuidv4 } = require("uuid");
 const { azurAuth } = require("@/config.json");
 
 module.exports = {
 	exec(text) {
-		return axios({
-			baseURL: "https://api.cognitive.microsofttranslator.com",
-			url: "/translate",
-			method: "post",
+		return request("https://api.cognitive.microsofttranslator.com/translate", {
+			method: "POST",
 			headers: {
 				"Ocp-Apim-Subscription-Key": azurAuth,
 				"Ocp-Apim-Subscription-Region": "global",
@@ -19,10 +17,7 @@ module.exports = {
 				to: "en",
 				toScript: "latn"
 			},
-			data: [{
-				text
-			}],
-			responseType: "json"
+			body: [{ text }]
 		}).then(response => response.data[0].translations[0].text);
 	}
 };

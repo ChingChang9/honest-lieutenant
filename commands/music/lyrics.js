@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const axios = require("axios");
+const request = require("@/workers/request.js");
 const { ksoftAuth } = require("@/config.json");
 const translate = require("@/scripts/translate.js");
 
@@ -41,7 +41,7 @@ module.exports = class extends Command {
 	async run(message, { language }) {
 		const [videoTitle, videoUrl] = getVideoInfo(message);
 
-		const data = await axios("https://api.ksoft.si/lyrics/search", {
+		const data = await request("https://api.ksoft.si/lyrics/search", {
 			headers: {
 				Authorization: `Bearer ${ ksoftAuth }`
 			},

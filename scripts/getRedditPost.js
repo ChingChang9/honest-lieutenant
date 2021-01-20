@@ -1,8 +1,8 @@
-const axios = require("axios");
+const request = require("@/workers/request.js");
 
 module.exports = {
 	async exec(subreddits, options = { nsfw: true, message: null }) {
-		if (options.nsfw) return await axios(`https://www.reddit.com/r/${ subreddits.join("+") }/random.json`).then(response => {
+		if (options.nsfw) return await request(`https://www.reddit.com/r/${ subreddits.join("+") }/random.json`).then(response => {
 			const post = resolveRandomPost(response);
 			return resolvePostEmbed(post);
 		});
@@ -72,7 +72,7 @@ function resolvePostEmbed(post) {
 }
 
 function fetchAndFilter(subreddits) {
-	return axios(`https://www.reddit.com/r/${ subreddits.join("+") }.json`, {
+	return request(`https://www.reddit.com/r/${ subreddits.join("+") }.json`, {
 		params: {
 			limit: 64,
 			sort: "hot",

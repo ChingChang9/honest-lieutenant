@@ -1,6 +1,7 @@
 const Command = require("@/client/command.js");
-const axios = require("axios");
+const request = require("@/workers/request.js");
 const cheerio = require("cheerio");
+
 const messages = [
 	"Stay strong guys!",
 	"Take care!",
@@ -22,7 +23,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const html = await axios("https://www.alberta.ca/covid-19-alberta-data.aspx").then(response => response.data);
+		const html = await request("https://www.alberta.ca/covid-19-alberta-data.aspx").then(response => response.data);
 		const $ = await cheerio.load(html);
 		const table = $(".goa-table > table > tbody").children().eq(3).children();
 		const confirmed = table.eq(1).text();

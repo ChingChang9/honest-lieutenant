@@ -1,9 +1,9 @@
-const axios = require("axios");
+const request = require("@/workers/request.js");
 const { ksoftAuth } = require("@/config.json");
 
 module.exports = {
 	async exec(tag, nsfw = false) {
-		const url = await axios("https://api.ksoft.si/images/random-image", {
+		const url = await request("https://api.ksoft.si/images/random-image", {
 			headers: {
 				Authorization: `Bearer ${ ksoftAuth }`
 			},

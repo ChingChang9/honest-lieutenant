@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const axios = require("axios");
+const request = require("@/workers/request.js");
 const { catAPIAuth } = require("@/config.json");
 
 module.exports = class extends Command {
@@ -35,7 +35,7 @@ module.exports = class extends Command {
 
 	async run(message, { breedId }) {
 		if (breedId === "breeds") {
-			const breedsArray = await axios("https://api.thecatapi.com/v1/breeds", {
+			const breedsArray = await request("https://api.thecatapi.com/v1/breeds", {
 				headers: {
 					"x-api-key": catAPIAuth
 				}
@@ -49,7 +49,7 @@ module.exports = class extends Command {
 		} else if (breedId) {
 			breedId = `?breed_id=${ breedId }`;
 		}
-		const url = await axios(`https://api.thecatapi.com/v1/images/search${ breedId }`).then(response => response.data[0].url);
+		const url = await request(`https://api.thecatapi.com/v1/images/search${ breedId }`).then(response => response.data[0].url);
 		message.embed({
 			image: { url },
 			footer: {
