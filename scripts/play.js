@@ -25,7 +25,7 @@ module.exports = {
 					fields: [
 						{
 							name: "Duration",
-							value: queue[index].duration === "0" ? "Live" : formatTime.exec(queue[index].duration),
+							value: queue[index].duration === "0" ? "Live" : formatTime(queue[index].duration),
 							inline: true
 						},
 						{

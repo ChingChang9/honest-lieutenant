@@ -12,6 +12,6 @@ module.exports = class extends Command {
 	}
 
 	run() {
-		require("@/rpcClient.js");
+		require("@/workers/rpc.js");
 	}
 };

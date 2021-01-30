@@ -76,9 +76,9 @@ module.exports = class extends Command {
 
 	async run(message) {
 		if (message.channel.nsfw) {
-			message.embed(await getRedditPost.exec(subredditsNSFW));
+			message.embed(await getRedditPost(subredditsNSFW));
 		} else {
-			const embed = await getRedditPost.exec(subredditsSFW, {
+			const embed = await getRedditPost(subredditsSFW, {
 				nsfw: message.channel.nsfw,
 				message
 			});

@@ -18,6 +18,6 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { text }) {
-		message.say(await translate.exec(text));
+		message.say(await translate(text));
 	}
 };

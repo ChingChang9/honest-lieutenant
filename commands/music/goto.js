@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
 	run(message, { index })  {
 		if (index === "farewell") {
-			return addSong.exec(message, "https://www.youtube.com/watch?v=3zbGMcsCtjg");
+			return addSong(message, "https://www.youtube.com/watch?v=3zbGMcsCtjg");
 		}
 
 		const queue = message.guild.queue;
@@ -34,6 +34,6 @@ module.exports = class extends Command {
 
 		if (!queue[index]) return message.reply("the track doesn't exist");
 
-		votePlay.exec(message, queue, message.guild.played - 1, index, `Vote on jumping to \`${ queue[index].title }\``, "☑️");
+		votePlay(message, queue, message.guild.played - 1, index, `Vote on jumping to \`${ queue[index].title }\``, "☑️");
 	}
 };

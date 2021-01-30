@@ -32,11 +32,11 @@ module.exports = class extends Command {
 		context.font = "bold 40px Arial";
 		context.fillStyle = "#000000";
 
-		wordWrap.exec(context, text[0], 130, 25, 100, 135);
-		wordWrap.exec(context, text[1], 395, 30, 90, 130);
-		wordWrap.exec(context, text[2], 135, 195, 95, 125);
-		wordWrap.exec(context, text[3], 395, 195, 95, 120);
-		if (text[4]) wordWrap.exec(context, text[4], 280, 350, 115, 145);
+		wordWrap(context, text[0], 130, 25, 100, 135);
+		wordWrap(context, text[1], 395, 30, 90, 130);
+		wordWrap(context, text[2], 135, 195, 95, 125);
+		wordWrap(context, text[3], 395, 195, 95, 120);
+		if (text[4]) wordWrap(context, text[4], 280, 350, 115, 145);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "gru-presentation-meme.jpg");
 		message.say(attachment);

@@ -36,7 +36,7 @@ module.exports = class extends Command {
 			return message.reply("this subreddit is age restricted and this is a SFW channel");
 		}
 
-		const embed = await getRedditPost.exec([subreddit], {
+		const embed = await getRedditPost([subreddit], {
 			nsfw: message.channel.nsfw,
 			message
 		});

@@ -13,7 +13,6 @@ module.exports = class extends Command {
 			format: "[command]",
 			examples: [
 				{
-					input: "",
 					explanation: "Lists all my commands"
 				},
 				{

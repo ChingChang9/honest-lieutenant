@@ -12,7 +12,6 @@ module.exports = class extends Command {
 			format: "[breed-id]",
 			examples: [
 				{
-					input: "",
 					explanation: "Sends a random cat!"
 				},
 				{

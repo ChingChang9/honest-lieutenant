@@ -11,7 +11,6 @@ module.exports = class extends Command {
 			format: "[user/message]",
 			examples: [
 				{
-					input: "",
 					explanation: "You lick someone"
 				},
 				{
@@ -31,8 +30,8 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await randomImage.exec("lick");
-		const fullEmbed = mentionReact.exec(message, "licks", imageEmbed);
+		const imageEmbed = await randomImage("lick");
+		const fullEmbed = mentionReact(message, "licks", imageEmbed);
 		message.embed(fullEmbed);
 	}
 };

@@ -29,9 +29,9 @@ module.exports = class extends Command {
 
 	async run(message) {
 		if (Math.random() < 0.1) {
-			message.embed(await randomImage.exec("hentai", true));
+			message.embed(await randomImage("hentai", true));
 		} else {
-			message.embed(await getRedditPost.exec(subreddits));
+			message.embed(await getRedditPost(subreddits));
 		}
 	}
 };

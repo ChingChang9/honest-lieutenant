@@ -47,8 +47,8 @@ module.exports = class extends Command {
 		context.font = "bold 40px Arial";
 		context.fillStyle = "#000000";
 
-		wordWrap.exec(context, text1, 332, 0, 300, canvas.height / 2);
-		wordWrap.exec(context, text2, 332, canvas.height / 2, 300, canvas.height / 2);
+		wordWrap(context, text1, 332, 0, 300, canvas.height / 2);
+		wordWrap(context, text2, 332, canvas.height / 2, 300, canvas.height / 2);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "drake-meme.jpg");
 		message.say(attachment);

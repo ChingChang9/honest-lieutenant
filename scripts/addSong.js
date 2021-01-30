@@ -8,41 +8,39 @@ const trashes = [
 	"ppcocaine"
 ];
 
-module.exports = {
-	async exec(message, songUrl) {
-		if (!message.member.voice.channel) {
-			return message.reply("please only use this when you're in a voice channel");
+module.exports = async (message, songUrl) => {
+	if (!message.member.voice.channel) {
+		return message.reply("please only use this when you're in a voice channel");
+	}
+
+	const songInfo = await ytdl.getBasicInfo(songUrl).catch(error => {
+		switch (error.message) {
+			case "Not a youtube domain": return message.reply("I can only play songs from Youtube");
+			case "Video unavailable": return message.reply("the video is unavailable");
+			case "This is a private video. Please sign in to verify that you may see it.": return message.reply("this video is private");
 		}
 
-		const songInfo = await ytdl.getBasicInfo(songUrl).catch(error => {
-			switch (error.message) {
-				case "Not a youtube domain": return message.reply("I can only play songs from Youtube");
-				case "Video unavailable": return message.reply("the video is unavailable");
-				case "This is a private video. Please sign in to verify that you may see it.": return message.reply("this video is private");
-			}
+		if (error.name === "TypeError") return message.reply("this link is invalid");
+		return message.error(error);
+	});
+	if (songInfo instanceof Message) return;
 
-			if (error.name === "TypeError") return message.reply("this link is invalid");
-			return message.error(error);
-		});
-		if (songInfo instanceof Message) return;
+	const trashMessage = checkTrash(songInfo.videoDetails.title.toLowerCase());
+	if (trashMessage) return message.reply(trashMessage);
 
-		const trashMessage = checkTrash(songInfo.videoDetails.title.toLowerCase());
-		if (trashMessage) return message.reply(trashMessage);
+	Promise.all([
+		addSong(message, songInfo),
+		message.member.voice.channel.join().then(connection => {
+			connection.voice.setSelfDeaf(true);
+			return connection;
+		})
+	]).then(result => {
+		const [queue, connection] = result;
 
-		Promise.all([
-			addSong(message, songInfo),
-			message.member.voice.channel.join().then(connection => {
-				connection.voice.setSelfDeaf(true);
-				return connection;
-			})
-		]).then(result => {
-			const [queue, connection] = result;
-
-			if (!connection.player.dispatcher) {
-				play.exec(message, connection, queue, queue.length - 1);
-			}
-		});
-	}
+		if (!connection.player.dispatcher) {
+			play.exec(message, connection, queue, queue.length - 1);
+		}
+	});
 };
 
 async function addSong(message, songInfo) {

@@ -24,6 +24,6 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		message.embed(await getRedditPost.exec(subreddits));
+		message.embed(await getRedditPost(subreddits));
 	}
 };

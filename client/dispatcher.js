@@ -9,7 +9,7 @@ module.exports = class Dispatcher {
 
 	handleMessage(message, oldMessage) {
 		if (message.author.bot || message.partial || message.content === oldMessage?.content ||
-			oldMessage && !this._editable.has(oldMessage.id)) return;
+			oldMessage && !this._editable.has(oldMessage.id) || message.webhookID) return;
 
 		this.cacheMessage(message, oldMessage);
 		const prefixRegex = this.getPrefixRegex(message.guild);

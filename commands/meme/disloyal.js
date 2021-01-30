@@ -37,9 +37,9 @@ module.exports = class extends Command {
 		context.shadowBlur = 6;
 		context.lineWidth = 3;
 
-		wordWrap.exec(context, text[0], 490, 100, 350, 200, true);
-		wordWrap.exec(context, text[1], 820, 200, 350, 200, true);
-		wordWrap.exec(context, text[2], 150, 200, 350, 200, true);
+		wordWrap(context, text[0], 490, 100, 350, 200, true);
+		wordWrap(context, text[1], 820, 200, 350, 200, true);
+		wordWrap(context, text[2], 150, 200, 350, 200, true);
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "man-looking-back-meme.jpg");
 		message.say(attachment);

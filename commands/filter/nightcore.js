@@ -10,7 +10,6 @@ module.exports = class extends Command {
 			format: "[on/off/number]",
 			examples: [
 				{
-					input: "",
 					explanation: "Toggles nightcore on and off"
 				},
 				{

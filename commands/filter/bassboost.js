@@ -11,7 +11,6 @@ module.exports = class extends Command {
 			format: "[on/off/number]",
 			examples: [
 				{
-					input: "",
 					explanation: "Toggles bassboost on and off"
 				},
 				{

@@ -1,36 +1,34 @@
 const request = require("@/workers/request.js");
 
-module.exports = {
-	async exec(subreddits, options = { nsfw: true, message: null }) {
-		if (options.nsfw) return await request(`https://www.reddit.com/r/${ subreddits.join("+") }/random.json`).then(response => {
-			const post = resolveRandomPost(response);
-			return resolvePostEmbed(post);
-		});
+module.exports = async (subreddits, options = { nsfw: true, message: null }) => {
+	if (options.nsfw) return await request(`https://www.reddit.com/r/${ subreddits.join("+") }/random.json`).then(response => {
+		const post = resolveRandomPost(response);
+		return resolvePostEmbed(post);
+	});
 
-		options.message.embed({
-			author: {
-				name: "Filtering NSFW content..."
-			},
-			description: "Use in a NSFW channel to remove the filter and speed me up"
-		}, "loading");
+	options.message.embed({
+		author: {
+			name: "Filtering NSFW content..."
+		},
+		description: "Use in a NSFW channel to remove the filter and speed me up"
+	}, "loading");
 
-		const posts = await fetchAndFilter(subreddits).catch(error => {
-			console.log(error);
-			if (error.response.status === 503) fetchAndFilter(subreddits);
-			options.message.error(error);
-		});
+	const posts = await fetchAndFilter(subreddits).catch(error => {
+		console.log(error);
+		if (error.response.status === 503) fetchAndFilter(subreddits);
+		options.message.error(error);
+	});
 
-		const post = posts[Math.floor(Math.random() * posts.length)];
-		return {
-			author: {
-				name: post.title,
-				url: post.url
-			},
-			image: {
-				url: post.imageUrl
-			}
-		};
-	}
+	const post = posts[Math.floor(Math.random() * posts.length)];
+	return {
+		author: {
+			name: post.title,
+			url: post.url
+		},
+		image: {
+			url: post.imageUrl
+		}
+	};
 };
 
 function resolveRandomPost(response) {

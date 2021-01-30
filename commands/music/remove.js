@@ -54,7 +54,7 @@ module.exports = class extends Command {
 		const queue = queueRef.val();
 
 		if (index1 > timestamps.length) {
-			return message.reply("the first index doesn't exist!");
+			return message.reply(`the ${ index2 === index1 ? "" : "first " }index doesn't exist!`);
 		} else if (index2 > timestamps.length) {
 			return message.reply("the second index doesn't exist!");
 		}

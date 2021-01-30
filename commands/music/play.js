@@ -28,7 +28,7 @@ module.exports = class extends Command {
 					input: "<song-link>"
 				},
 				{
-					input: "<playlist-link>", // TODO: Default now 100
+					input: "<playlist-link>", // TODO: Default now 100. Also update addPlaylist to work with "all"
 					explanation: "Queues the first 10 songs in the playlist"
 				},
 				{
@@ -59,9 +59,9 @@ module.exports = class extends Command {
 		if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬. Maybhaps give me the link?");
 
 		const playlistId = song.match(/^http.+playlist\?list=(.+)&?/)?.[1];
-		if (playlistId) return addPlaylist.exec(message, playlistId, song.split(" ")[1]);
+		if (playlistId) return addPlaylist(message, playlistId, song.split(" ")[1]);
 
-		addSong.exec(message, songUrl);
+		addSong(message, songUrl);
 	}
 };
 

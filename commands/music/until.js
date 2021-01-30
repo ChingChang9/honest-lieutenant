@@ -45,6 +45,6 @@ module.exports = class extends Command {
 			timeLeft += parseInt(queue[counter].duration);
 		}
 
-		message.say(`\`${ formatTime.exec(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
+		message.say(`\`${ formatTime(timeLeft) }\` until \`${ queue[untilIndex - 1].title }\` plays`);
 	}
 };

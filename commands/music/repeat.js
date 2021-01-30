@@ -10,7 +10,6 @@ module.exports = class extends Command {
 			format: "[one/queue/off]",
 			examples: [
 				{
-					input: "",
 					explanation: "Toggles between repeat one, queue, and off"
 				},
 				{

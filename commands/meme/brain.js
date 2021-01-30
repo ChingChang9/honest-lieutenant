@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		context.fillStyle = "#000000";
 
 		for (let index = 0; index < text.length; index++) {
-			wordWrap.exec(context, text[index], 10, 16 + 249 * index, 380, 249);
+			wordWrap(context, text[index], 10, 16 + 249 * index, 380, 249);
 		}
 
 		const attachment = new MessageAttachment(canvas.toBuffer(), "big-brain-meme.jpg");

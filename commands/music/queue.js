@@ -80,17 +80,17 @@ function getDuration(voice, durationString, isCurr) {
 	if (durationString === "0") {
 		return `∞ ${ isPlaying ? "left" : "    " }`;
 	} else if (isPlaying) {
-		return `${ formatTime.exec(durationString - voice.songElapsed) } left`;
+		return `${ formatTime(durationString - voice.songElapsed) } left`;
 	} else {
-		return `${ formatTime.exec(durationString) }     `;
+		return `${ formatTime(durationString) }     `;
 	}
 }
 
 function lengthInUtf8Bytes(string) {
-	string = string.replace(/[–’❤♡]/g, " ");
 	const matched = encodeURIComponent(string).match(/%[89ABab]/g);
 	return string.length + (matched ? matched.length / 3 : 0)
-	- (string.split(/[『』「」【】]/g).length - 1) * 0.5;
+	+ (string.split(/[’❤♡│・]/g).length - 1)
+	- (string.split(/[『』「」【】♫–]/g).length - 1) * 0.5;
 }
 
 async function startCollector(oldMessage, newMessage, queue, page) {

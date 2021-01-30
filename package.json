@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,10 @@
   "keywords": [
     "discord",
     "music",
-    "meme"
+    "meme",
+    "ffmpeg",
+    "firebase",
+    "rpc"
   ],
   "author": "Ching Chang",
   "contributors": [
@@ -35,7 +38,6 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "@firebase/database": "^0.8.2",
     "better-sqlite3": "^7.1.2",
     "bufferutil": "^4.0.3",
     "canvas": "^2.6.1",
@@ -51,11 +53,10 @@
     "node-gyp": "^7.1.2",
     "register-scheme": "github:devsnek/node-register-scheme",
     "require-all": "^3.0.0",
-    "snoowrap": "^1.22.0",
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.4",
     "uuid": "^8.3.2",
-    "ytdl-core": "^4.4.3",
+    "ytdl-core": "^4.4.5",
     "ytpl": "^2.0.4",
     "zlib-sync": "^0.1.7"
   },

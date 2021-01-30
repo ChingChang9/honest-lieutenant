@@ -20,7 +20,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const embed = await getRedditPost.exec(subreddits, {
+		const embed = await getRedditPost(subreddits, {
 			nsfw: message.channel.nsfw,
 			message
 		});

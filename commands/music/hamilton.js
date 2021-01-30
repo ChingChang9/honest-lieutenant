@@ -25,6 +25,6 @@ module.exports = class extends Command {
 	run(message, { version }) {
 		const playList = version === "original" ? "https://www.youtube.com/playlist?list=PLeLze2eDTIzM0wJ4Oe-FRgZCpkmn9Y8o3" :
 			"https://www.youtube.com/playlist?list=PL3e0JLen9XhaNicHQRYvSGNwehFRllN8T";
-		addPlaylist.exec(message, playList);
+		addPlaylist(message, playList);
 	}
 };

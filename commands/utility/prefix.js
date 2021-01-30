@@ -9,7 +9,6 @@ module.exports = class extends Command {
 			format: "[prefix/default]",
 			examples: [
 				{
-					input: "",
 					explanation: "Shows my prefix in this server"
 				},
 				{

@@ -10,7 +10,6 @@ module.exports = class extends Command {
 			format: "[clear]",
 			examples: [
 				{
-					input: "",
 					explanation: "Displays the applied filters"
 				},
 				{

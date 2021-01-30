@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		context.fillStyle = "#000000";
 
 		for (let index = 0; index < text.length; index++) {
-			wordWrap.exec(context, text[index], 224, 140 * index, 266, 135);
+			wordWrap(context, text[index], 224, 140 * index, 266, 135);
 		}
 		const attachment = new MessageAttachment(canvas.toBuffer(), "spongebob-getting-tough-meme.jpg");
 		message.say(attachment);

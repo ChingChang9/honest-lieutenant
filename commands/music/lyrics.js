@@ -13,7 +13,6 @@ module.exports = class extends Command {
 			format: "[original/translate]",
 			examples: [
 				{
-					input: "",
 					explanation: "Displays the lyrics in its language"
 				},
 				{
@@ -56,7 +55,7 @@ module.exports = class extends Command {
 		const thumbnailUrl = data.album_art;
 
 		if (language === "translate") {
-			lyrics = await translate.exec(lyrics);
+			lyrics = await translate(lyrics);
 		}
 
 		let start = 0;

@@ -17,6 +17,6 @@ module.exports = class extends Command {
 
 	// TODO: r/Nekomimi
 	async run(message) {
-		message.embed(await randomImage.exec("neko", message.channel.nsfw));
+		message.embed(await randomImage("neko", message.channel.nsfw));
 	}
 };

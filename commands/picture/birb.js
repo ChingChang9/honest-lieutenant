@@ -16,6 +16,6 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		message.embed(await randomImage.exec("birb"));
+		message.embed(await randomImage("birb"));
 	}
 };

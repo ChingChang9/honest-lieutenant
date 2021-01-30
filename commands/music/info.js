@@ -57,5 +57,5 @@ module.exports = class extends Command {
 function getInfo(elapsedTimestamp, duration) {
 	const ratio = duration === "0" ? 9 : Math.floor(elapsedTimestamp / duration * 10);
 
-	return [formatTime.exec(elapsedTimestamp), formatTime.exec(duration), ratio];
+	return [formatTime(elapsedTimestamp), formatTime(duration), ratio];
 }

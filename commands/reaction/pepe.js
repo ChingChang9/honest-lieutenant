@@ -16,8 +16,8 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await randomImage.exec("pepe");
-		const fullEmbed = mentionReact.exec(message, "", imageEmbed);
+		const imageEmbed = await randomImage("pepe");
+		const fullEmbed = mentionReact(message, "", imageEmbed);
 		message.embed(fullEmbed);
 	}
 };

@@ -28,6 +28,6 @@ module.exports = class extends Command {
 		const queue = message.guild.queue;
 		const index = message.guild.played - 1;
 
-		votePlay.exec(message, queue, index, index + skip, `Vote on skipping \`${ queue[index].title }\``, "⏩");
+		votePlay(message, queue, index, index + skip, `Vote on skipping \`${ queue[index].title }\``, "⏩");
 	}
 };
