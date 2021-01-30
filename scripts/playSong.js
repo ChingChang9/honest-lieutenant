@@ -3,7 +3,9 @@ const formatTime = require("@/scripts/formatTime.js");
 const firebase = require("@/workers/firebase.js");
 const { embedColours } = require("@/config.json");
 
-module.exports = async (message, connection, queue, index, seekTimestamp = 0, changeFilter = false) => {
+module.exports = playSong;
+
+async function playSong(message, connection, queue, index, seekTimestamp = 0, changeFilter = false) {
 	const dispatcher = await startSong(connection, queue, index, seekTimestamp, message.guild.voice.filter);
 	const voiceState = message.guild.voice;
 
@@ -66,13 +68,13 @@ module.exports = async (message, connection, queue, index, seekTimestamp = 0, ch
 		voiceState.dispatcher = null;
 
 		if (repeat === "one") {
-			this.exec(message, connection, queue, played - 1);
+			playSong(message, connection, queue, played - 1);
 		} else if (played === queue.length && repeat === "queue") {
-			this.exec(message, connection, queue, 0);
+			playSong(message, connection, queue, 0);
 		} else if (played === queue.length) {
 			disconnect(message);
 		} else {
-			this.exec(message, connection, queue, played);
+			playSong(message, connection, queue, played);
 		}
 	});
 
@@ -85,11 +87,11 @@ module.exports = async (message, connection, queue, index, seekTimestamp = 0, ch
 		voiceState.dispatcher = null;
 
 		if (played === queue.length && voiceState.repeat === "queue") {
-			this.exec(message, connection, queue, 0);
+			playSong(message, connection, queue, 0);
 		} else if (played === queue.length) {
 			disconnect(message);
 		} else {
-			this.exec(message, connection, queue, played);
+			playSong(message, connection, queue, played);
 		}
 	});
 };
