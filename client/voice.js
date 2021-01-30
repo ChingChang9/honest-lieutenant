@@ -1,5 +1,5 @@
 const { Structures } = require("discord.js");
-const play = require("@/scripts/play.js");
+const playSong = require("@/scripts/playSong.js");
 
 module.exports = Structures.extend("VoiceState", VoiceState => {
 	return class extends VoiceState {
@@ -53,7 +53,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			if (this.dispatcher) {
 				const seekTimestamp = Math.max(0, this.songElapsed - 1.5 * newSpeed);
 				this.speed = newSpeed;
-				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
+				playSong(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
 				message.embed(`${ action } ${ filterName } Filter...`, "loading");
 			} else {
 				this.speed = newSpeed;
@@ -80,7 +80,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			const seekTimestamp = Math.max(0, this.songElapsed - 1.5);
 			this.speed = 1;
 			if (this.dispatcher) {
-				play.exec(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
+				playSong(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
 				if (showMessge) message.embed("Removing all filters...", "loading");
 			}
 		}

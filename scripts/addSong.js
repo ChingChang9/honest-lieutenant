@@ -1,5 +1,5 @@
 const ytdl = require("ytdl-core");
-const play = require("@/scripts/play.js");
+const playSong = require("@/scripts/playSong.js");
 const firebase = require("@/workers/firebase.js");
 const Message = require("@/client/message.js");
 
@@ -38,7 +38,7 @@ module.exports = async (message, songUrl) => {
 		const [queue, connection] = result;
 
 		if (!connection.player.dispatcher) {
-			play.exec(message, connection, queue, queue.length - 1);
+			playSong(message, connection, queue, queue.length - 1);
 		}
 	});
 };

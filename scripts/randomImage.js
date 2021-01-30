@@ -1,7 +1,7 @@
 const request = require("@/workers/request.js");
 const { ksoftAuth } = require("@/config.json");
 
-module.exports = (tag, nsfw = false) => {
+module.exports = async (tag, nsfw = false) => {
 	const url = await request("https://api.ksoft.si/images/random-image", {
 		headers: {
 			Authorization: `Bearer ${ ksoftAuth }`

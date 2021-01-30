@@ -1,5 +1,5 @@
 const ytpl = require("ytpl");
-const play = require("@/scripts/play.js");
+const playSong = require("@/scripts/playSong.js");
 
 module.exports = (message, playlistId, number = 101) => {
 	if (!message.member.voice.channel) {
@@ -25,7 +25,7 @@ module.exports = (message, playlistId, number = 101) => {
 
 		if (!connection.player.dispatcher) {
 			const queue = message.guild.queue;
-			play.exec(message, connection, queue, queue.length - songLength);
+			playSong(message, connection, queue, queue.length - songLength);
 		}
 	});
 };

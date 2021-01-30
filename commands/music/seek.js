@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const play = require("@/scripts/play.js");
+const playSong = require("@/scripts/playSong.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -60,6 +60,6 @@ module.exports = class extends Command {
 			return message.reply("the timestamp is past the duration of the song!");
 		}
 
-		play.exec(message, connection, queue, index, timestamp);
+		playSong(message, connection, queue, index, timestamp);
 	}
 };
