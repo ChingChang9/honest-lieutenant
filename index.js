@@ -13,7 +13,7 @@ const client = new DiscordClient({
 	messageCacheLifetime: 60,
 	messageSweepInterval: 5 * 60,
 	ws: { intents }
-}).registry.registerCommandsIn(`${ __dirname }/commands`);
+}).registry.registerCommandsIn(__dirname, "commands");
 
 client.login(discordToken);
 

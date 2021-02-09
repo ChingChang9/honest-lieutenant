@@ -1,5 +1,12 @@
 const request = require("@/workers/request.js");
 
+const allowedOrigins = [
+	"i.redd.it",
+	"preview.redd.it",
+	"https://i.imgur.com",
+	"https://cdn.awwni.me"
+];
+
 module.exports = async (subreddits, options = { nsfw: true, message: null }) => {
 	if (options.nsfw) return await request(`https://www.reddit.com/r/${ subreddits.join("+") }/random.json`).then(response => {
 		const post = resolveRandomPost(response);
@@ -39,10 +46,7 @@ function resolveRandomPost(response) {
 }
 
 function resolvePostEmbed(post) {
-	// TODO: Array.includes?
-	// TODO: https://discord.js.org/#/docs/main/stable/class/MessageEmbed?scrollTo=type
-	if (post.url.startsWith("https://i.redd.it") || post.url.startsWith("https://preview.redd.it")
-	|| post.url.startsWith("https://i.imgur.com") || post.url.startsWith("https://cdn.awwni.me")) return {
+	if (allowedOrigins.some(origin => post.url.startsWith(`https://${ origin }`))) return {
 		author: {
 			name: post.title.slice(0, 256),
 			url: `https://www.reddit.com${ post.permalink }`
@@ -65,7 +69,7 @@ function resolvePostEmbed(post) {
 			name: post.title.slice(0, 256),
 			url: `https://www.reddit.com${ post.permalink }`
 		},
-		description: post.selftext.slice(0, 2048) || post.url_overridden_by_dest
+		description: post.selftext.replace(/&amp;#x200B;/g, "").slice(0, 2048) || post.url_overridden_by_dest
 	};
 }
 

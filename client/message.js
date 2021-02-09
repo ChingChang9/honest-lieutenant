@@ -82,7 +82,7 @@ module.exports = Structures.extend("Message", Message => {
 			return true;
 		}
 
-		say(content) {
+		say(content, cache = true) {
 			let message;
 			if (content instanceof MessageAttachment || content.files) {
 				message = this.channel.send(content);
@@ -92,7 +92,7 @@ module.exports = Structures.extend("Message", Message => {
 				message = this.response ? this.response.edit(content) : this.channel.send(content);
 			}
 			return message.then(response => {
-				this.response = response;
+				this.response = cache ? response : null;
 				return response;
 			});
 		}
@@ -104,7 +104,7 @@ module.exports = Structures.extend("Message", Message => {
 				append: "\n```"
 			});
 			for (let i = 0; i < contents.length - 1; i++) {
-				this.say(contents[i]);
+				this.say(contents[i], false);
 			}
 
 			return this.say(contents[contents.length - 1]);

@@ -11,7 +11,7 @@ module.exports = (message, content) => {
 		if (content.includes(triggerWord)) {
 			if (triggerWord === "am" && (!content[content.indexOf(triggerWord) - 1] ||
         content[content.indexOf(triggerWord) - 1] !== "i") ||
-        Math.random() < 0.76) return;
+        Math.random() < 0.75) return;
 
 			const sonName = content.slice(content.indexOf(triggerWord) + 1).join(" ");
 			if (!sonName && message.author.id == "195217084974759936") return message.reply("stop doing that 🙄");

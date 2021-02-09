@@ -12,6 +12,8 @@ module.exports = class extends Command {
 	}
 
 	run() {
-		require("@/workers/rpc.js");
+		const path = `${ this.client.registry.root }/workers/rpc.js`;
+		delete require.cache[path];
+		require(path);
 	}
 };

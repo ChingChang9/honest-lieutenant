@@ -7,6 +7,7 @@ module.exports = class Registry {
 		this.commands = new Collection();
 		this.groups = new Collection();
 		this.commandsPath = null;
+		this.root = null;
 		this.registerGroups([
 			{ id: "utility", name: "⚙️ Utility", guarded: true },
 			{ id: "music", name: "🎵 Music" },
@@ -28,9 +29,9 @@ module.exports = class Registry {
 		return this;
 	}
 
-	registerCommandsIn(path) {
+	registerCommandsIn(root, dir) {
 		const obj = require("require-all")({
-			dirname: path,
+			dirname: `${ root }/${ dir }`,
 			excludeDirs: "prefixless"
 		});
 		for (const folder of Object.values(obj)) {
@@ -39,7 +40,8 @@ module.exports = class Registry {
 			}
 		}
 
-		this.commandsPath = path;
+		this.commandsPath = `${ root }/${ dir }`;
+		this.root = root;
 		return this.client;
 	}
 

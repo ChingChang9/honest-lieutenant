@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		this.lastResult = null;
 	}
 
-	run(message, { script }) {
+	async run(message, { script }) {
 		/* eslint-disable no-unused-vars */
 		const client = this.client;
 		const guild = message.guild;
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 
 		try {
 			this.start = process.hrtime();
-			this.lastResult = eval(script);
+			this.lastResult = await eval(script);
 			const result = getResult(this.lastResult, process.hrtime(this.start));
 			message.code(result, "js", "");
 		} catch (error) {

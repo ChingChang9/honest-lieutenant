@@ -77,11 +77,14 @@ module.exports = Structures.extend("VoiceState", VoiceState => {
 			this.filter = "";
 			this.bass = 0;
 
-			const seekTimestamp = Math.max(0, this.songElapsed - 1.5);
-			this.speed = 1;
 			if (this.dispatcher) {
+				const seekTimestamp = Math.max(0, this.songElapsed - 1.5);
+				this.speed = 1;
 				playSong(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
 				if (showMessge) message.embed("Removing all filters...", "loading");
+			} else {
+				this.speed = 1;
+				message.react("👍🏽");
 			}
 		}
 

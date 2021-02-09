@@ -33,7 +33,7 @@ module.exports = class extends Command {
 
 	run(message, { input }) {
 		if (input === "clear" || input === "reset") {
-			return message.guild.voice?.clearAllFilters(message);
+			return message.guild.voice?.clearAllFilters(message) || message.react("👍🏽");
 		}
 
 		if (!message.guild.voice) return message.embed("No Filters Applied");

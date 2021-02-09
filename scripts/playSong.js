@@ -94,12 +94,12 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 			playSong(message, connection, queue, played);
 		}
 	});
-};
+}
 
 async function startSong(connection, queue, index, seekTimestamp, filter) {
 	const stream = await ytdl(queue[index].videoUrl, {
 		filter: "audio",
-		highWaterMark: 256 * 1024,
+		highWaterMark: 512 * 1024,
 		opusEncoded: true,
 		seek: seekTimestamp,
 		encoderArgs: filter ? ["-af", filter] : null

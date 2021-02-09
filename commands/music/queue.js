@@ -87,10 +87,9 @@ function getDuration(voice, durationString, isCurr) {
 }
 
 function lengthInUtf8Bytes(string) {
+	string = string.replace(/[’❤♡│♫–À-ÿ]/g, " ");
 	const matched = encodeURIComponent(string).match(/%[89ABab]/g);
-	return string.length + (matched ? matched.length / 3 : 0)
-	+ (string.split(/[’❤♡│・]/g).length - 1)
-	- (string.split(/[『』「」【】♫–]/g).length - 1) * 0.5;
+	return string.length + (matched ? matched.length / 3 : 0);
 }
 
 async function startCollector(oldMessage, newMessage, queue, page) {

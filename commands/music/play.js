@@ -29,7 +29,7 @@ module.exports = class extends Command {
 				},
 				{
 					input: "<playlist-link>", // TODO: Default now 100. Also update addPlaylist to work with "all"
-					explanation: "Queues the first 10 songs in the playlist"
+					explanation: "Queues the first 100 songs in the playlist"
 				},
 				{
 					input: " <playlist-link> 4",
@@ -56,7 +56,7 @@ module.exports = class extends Command {
 
 	async run(message, { song }) {
 		const songUrl = await getSongUrl(song);
-		if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬. Maybhaps give me the link?");
+		if (!songUrl) return message.reply("sorry I couldn't find this song 😬😬\nMaybhaps give me the link?");
 
 		const playlistId = song.match(/^http.+playlist\?list=(.+)&?/)?.[1];
 		if (playlistId) return addPlaylist(message, playlistId, song.split(" ")[1]);
@@ -76,7 +76,7 @@ async function getSongUrl(song) {
 		maxResults: 1
 	});
 
-	if (result.data.items) {
+	if (result.data.items[0]) {
 		return `https://www.youtube.com/watch?v=${ result.data.items[0].id.videoId }`;
 	}
 }

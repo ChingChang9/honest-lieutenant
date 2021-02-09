@@ -8,22 +8,23 @@ module.exports = class extends Command {
 			group: "music",
 			aliases: ["ham"],
 			description: "Queues the entire Hamilton soundtrack!! 😃😃",
-			format: "[original/cut]",
+			format: "[original/outtakes/instrumental]",
 			guildOnly: true,
 			arguments: [
 				{
 					key: "version",
 					prompt: "What version do you want?",
 					type: "string",
-					oneOf: ["original", "cut"],
-					default: "original"
+					oneOf: ["original", "outtakes", "instrumental"],
+					default: "outtakes"
 				}
 			]
 		});
 	}
 
 	run(message, { version }) {
-		const playList = version === "original" ? "https://www.youtube.com/playlist?list=PLeLze2eDTIzM0wJ4Oe-FRgZCpkmn9Y8o3" :
+		const playList = version === "outtakes" ? "https://www.youtube.com/playlist?list=PLeLze2eDTIzM0wJ4Oe-FRgZCpkmn9Y8o3" :
+			version === "instrumental" ? "https://www.youtube.com/playlist?list=PL4QruBuFRA69zo9ycMNxZ_PtqgJHAqZuS" :
 			"https://www.youtube.com/playlist?list=PL3e0JLen9XhaNicHQRYvSGNwehFRllN8T";
 		addPlaylist(message, playList);
 	}
