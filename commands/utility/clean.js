@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "clean",
 			group: "utility",
-			aliases: ["sweep"],
+			aliases: ["sweep", "purge"],
 			description: "Delete a number of the most recent messages",
 			format: "[#-of-messages]",
 			guildOnly: true,

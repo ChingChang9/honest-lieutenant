@@ -71,7 +71,7 @@ module.exports = class Command {
 		if(!this.throttling || this.client.isOwner(userID)) return null;
 
 		let throttle = this._throttles.get(userID);
-		if(!throttle) {
+		if (!throttle) {
 			throttle = {
 				start: Date.now(),
 				usages: 0,

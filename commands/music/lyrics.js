@@ -50,13 +50,7 @@ module.exports = class extends Command {
 			}
 		}).then(response => response.data.data[0]);
 
-		let lyrics = data.lyrics;
-		const songTitle = data.name;
-		const thumbnailUrl = data.album_art;
-
-		if (language === "translate") {
-			lyrics = await translate(lyrics);
-		}
+		const lyrics = language === "translate" ? await translate(data.lyrics) : data.lyrics;
 
 		let start = 0;
 		let end = 0;
@@ -66,9 +60,9 @@ module.exports = class extends Command {
 				while (lyrics[--end] !== "\n");
 			}
 			message.embed({
-				title: start === 0 ? songTitle : null,
+				title: start === 0 ? data.name : null,
 				url: start === 0 ? videoUrl : null,
-				thumbnail: start === 0 ? { url: thumbnailUrl } : null,
+				thumbnail: start === 0 ? { url: data.album_art } : null,
 				description: lyrics.slice(start, end),
 				footer: end >= lyrics.length ? { text: "Lyrics provided by KSoft.Si" } : null
 			});

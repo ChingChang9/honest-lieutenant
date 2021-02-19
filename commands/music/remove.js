@@ -47,31 +47,29 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { index1, index2 }) {
-		index2 = index2 || index1;
 		const played = message.guild.played;
-		const timestamps = message.guild.queueKeys;
+		const queueKeys = message.guild.queueKeys;
 		const queueRef = await message.guild.queueRef.once("value");
 		const queue = queueRef.val();
 
-		if (index1 > timestamps.length) {
-			return message.reply(`the ${ index2 === index1 ? "" : "first " }index doesn't exist!`);
-		} else if (index2 > timestamps.length) {
-			return message.reply("the second index doesn't exist!");
+		if (index1 > queueKeys.length) {
+			return message.reply(`the ${ index2 ? "" : "first " }index doesn't exist!`);
 		}
+		index2 = Math.min(index2 || index1, queueKeys.length);
 
 		if (index1 === index2 && index1 === played && message.guild.voice?.dispatcher) {
 			return message.reply("bruh I'm playing that right now. I can't delete the current track 🙄🙄");
 		}
 
-		removeRange(message.guild, queue, timestamps, played, Math.min(index1, index2), Math.max(index1, index2));
+		removeRange(message.guild, queue, queueKeys, played, Math.min(index1, index2), Math.max(index1, index2));
 		message.react("👍🏽");
 	}
 };
 
-function removeRange(guild, queue, timestamps, played, index1, index2) {
+function removeRange(guild, queue, queueKeys, played, index1, index2) {
 	let count = 0;
 	for (let index = index1; index <= index2; index++) {
-		if (index !== played || !guild.voice?.dispatcher) queue[timestamps[index - 1]] = null;
+		if (index !== played || !guild.voice?.dispatcher) queue[queueKeys[index - 1]] = null;
 		if (index <= played) count++;
 	}
 	firebase.updateValue(guild.id, {

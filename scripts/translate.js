@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const { azurAuth } = require("@/config.json");
 
 module.exports = text => {
+	return text; // TODO: tell users this is deprecated
 	return request("https://api.cognitive.microsofttranslator.com/translate", {
 		method: "POST",
 		headers: {

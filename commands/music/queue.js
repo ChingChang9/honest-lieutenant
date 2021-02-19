@@ -22,15 +22,21 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { page }) {
+		const maxPage = Math.ceil(message.guild.queue.length / 10);
 		if (page === "auto") {
 			page = Math.ceil(message.guild.played / 10);
-		} else if (page > Math.ceil(message.guild.queue.length / 10)) {
+		} else if (page > maxPage) {
 			return message.reply("the page doesn't exist");
 		}
 
 		const newMessage = await sendQueue(message, page);
 
-		if (Math.ceil(message.guild.queue.length / 10) > 1) {
+		if (maxPage > 5) {
+			newMessage.react("⏪");
+			newMessage.react("⬅️");
+			newMessage.react("➡️");
+			newMessage.react("⏩");
+		} else if (maxPage > 1) {
 			newMessage.react("⬅️");
 			newMessage.react("➡️");
 		}
@@ -51,6 +57,25 @@ async function sendQueue(message, page) {
 	startCollector(message, newMessage, queue, page);
 
 	return newMessage;
+}
+
+async function startCollector(oldMessage, newMessage, queue, page) {
+	const collector = await newMessage.createReactionCollector((reaction, user) => ["⏪", "⬅️", "➡️", "⏩"].includes(reaction.emoji.name) && !user.bot, {
+		max: 1,
+		idle: 30 * 1000
+	});
+
+	const lastPage = Math.ceil(queue.length / 10);
+	collector.on("collect", (reaction, user) => {
+		reaction.users.remove(user.id);
+		if (reaction.emoji.name === "⏪") return sendQueue(oldMessage, 1 || lastPage);
+		if (reaction.emoji.name === "⬅️") return sendQueue(oldMessage, (lastPage + page - 1) % lastPage || lastPage);
+		if (reaction.emoji.name === "➡️") return sendQueue(oldMessage, (lastPage + page + 1) % lastPage || lastPage);
+		if (reaction.emoji.name === "⏩") return sendQueue(oldMessage, lastPage || lastPage);
+	});
+	collector.on("end", () => {
+		if (!collector.endReason()) newMessage.reactions.removeAll();
+	});
 }
 
 function getQueueString(guild, page) {
@@ -90,21 +115,4 @@ function lengthInUtf8Bytes(string) {
 	string = string.replace(/[’❤♡│♫–À-ÿ]/g, " ");
 	const matched = encodeURIComponent(string).match(/%[89ABab]/g);
 	return string.length + (matched ? matched.length / 3 : 0);
-}
-
-async function startCollector(oldMessage, newMessage, queue, page) {
-	const collector = await newMessage.createReactionCollector((reaction, user) => ["⬅️", "➡️"].includes(reaction.emoji.name) && !user.bot, {
-		max: 1,
-		idle: 30 * 1000
-	});
-
-	const lastPage = Math.ceil(queue.length / 10);
-	collector.on("collect", (reaction, user) => {
-		reaction.users.remove(user.id);
-		if (reaction.emoji.name === "⬅️") return sendQueue(oldMessage, (lastPage + page - 1) % lastPage || lastPage);
-		if (reaction.emoji.name === "➡️") return sendQueue(oldMessage, (lastPage + page + 1) % lastPage || lastPage);
-	});
-	collector.on("end", () => {
-		if (!collector.endReason()) newMessage.reactions.removeAll();
-	});
 }

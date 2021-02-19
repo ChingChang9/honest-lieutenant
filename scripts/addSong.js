@@ -16,7 +16,7 @@ module.exports = async (message, songUrl) => {
 	const songInfo = await ytdl.getBasicInfo(songUrl).catch(error => {
 		switch (error.message) {
 			case "Not a youtube domain": return message.reply("I can only play songs from Youtube");
-			case "Video unavailable": return message.reply("the video is unavailable");
+			case "Video unavailable": return message.reply("this video doesn't exist. Has it been deleted?");
 			case "This is a private video. Please sign in to verify that you may see it.": return message.reply("this video is private");
 		}
 

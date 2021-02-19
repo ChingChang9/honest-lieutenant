@@ -3,8 +3,8 @@ const request = require("@/workers/request.js");
 const allowedOrigins = [
 	"i.redd.it",
 	"preview.redd.it",
-	"https://i.imgur.com",
-	"https://cdn.awwni.me"
+	"i.imgur.com",
+	"cdn.awwni.me"
 ];
 
 module.exports = async (subreddits, options = { nsfw: true, message: null }) => {
@@ -61,7 +61,7 @@ function resolvePostEmbed(post) {
 			name: post.title.slice(0, 256),
 			url: `https://www.reddit.com${ post.permalink }`
 		},
-		description: `Can't embed this post. [Open in new tab](https://www.reddit.com${ post.permalink })`
+		description: `Can't embed this post. [Open it in new tab](https://www.reddit.com${ post.permalink })`
 	};
 
 	return {
