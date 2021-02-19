@@ -28,19 +28,13 @@ module.exports = class extends Command {
 				{
 					key: "index1",
 					parse: index1 => parseInt(index1),
-					validate: index1 => {
-						if (isNaN(index1)) return "please enter a number!";
-						return true;
-					}
+					validate: index1 => !isNaN(index1) || "please enter a number"
 				},
 				{
 					key: "index2",
 					default: 0,
 					parse: index2 => parseInt(index2),
-					validate: index2 => {
-						if (isNaN(index2)) return "the second index is not a number!";
-						return true;
-					}
+					validate: index2 => !isNaN(index2) || "the second index is not a number!"
 				}
 			]
 		});

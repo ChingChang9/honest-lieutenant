@@ -45,10 +45,7 @@ module.exports = class extends Command {
 			arguments: [
 				{
 					key: "song",
-					validate: (_, message) => {
-						if (!message.member.voice.channel) return "please only use this when you're in a voice channel";
-						return true;
-					}
+					validate: (_, message) => message.member.voice.channel || "please only use this when you're in a voice channel"
 				}
 			]
 		});

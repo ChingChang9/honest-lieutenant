@@ -15,10 +15,7 @@ module.exports = class extends Command {
 					key: "skip",
 					default: 1,
 					parse: skip => parseInt(skip),
-					validate: skip => {
-						if (isNaN(skip)) return "please enter a number!";
-						return true;
-					}
+					validate: skip => !isNaN(skip) || "please enter a number!"
 				}
 			]
 		});

@@ -25,12 +25,7 @@ module.exports = class extends Command {
 				{
 					key: "language",
 					oneOf: ["original", "translate"],
-					validate: (_, message) => {
-						if (!message.guild.voice?.dispatcher) {
-							return "I'm not playing anything!";
-						}
-						return true;
-					},
+					validate: (_, message) => message.guild.voice?.dispatcher || "I'm not playing anything!",
 					default: "original"
 				}
 			]

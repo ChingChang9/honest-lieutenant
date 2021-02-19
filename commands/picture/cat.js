@@ -50,7 +50,7 @@ module.exports = class extends Command {
 		}
 		const url = await request(`https://api.thecatapi.com/v1/images/search${ breedId }`)
 			.then(response => response.data[0].url)
-			.catch(error => message.reply("invalid cat ID\nUse `.cat breeds` for a list of cat IDs"));
+			.catch(() => message.reply("invalid cat ID\nUse `.cat breeds` for a list of cat IDs"));
 		message.embed({
 			image: { url },
 			footer: {

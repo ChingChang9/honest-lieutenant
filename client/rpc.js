@@ -26,7 +26,7 @@ module.exports = class extends Client {
 					]
 				}
 			});
-		}
+		};
 		this.pauseMusicStatus = song => {
 			this.request("SET_ACTIVITY", {
 				pid: process.pid,
@@ -47,7 +47,7 @@ module.exports = class extends Client {
 					]
 				}
 			});
-		}
+		};
 		this.verbose = true;
 	}
 };

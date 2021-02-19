@@ -4,6 +4,7 @@ const { azurAuth } = require("@/config.json");
 
 module.exports = text => {
 	return text; // TODO: tell users this is deprecated
+	/* eslint-disable no-unreachable */
 	return request("https://api.cognitive.microsofttranslator.com/translate", {
 		method: "POST",
 		headers: {
@@ -19,4 +20,5 @@ module.exports = text => {
 		},
 		body: [{ text }]
 	}).then(response => response.data[0].translations[0].text);
+	/* eslint-enable no-unreachable */
 };

@@ -14,10 +14,7 @@ module.exports = class extends Command {
 				{
 					key: "untilIndex",
 					parse: untilIndex => parseInt(untilIndex),
-					validate: untilIndex => {
-						if (isNaN(untilIndex)) return "please enter a number!";
-						return true;
-					}
+					validate: untilIndex => !isNaN(untilIndex) || "please enter a number!"
 				}
 			]
 		});

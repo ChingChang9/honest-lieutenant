@@ -29,7 +29,7 @@ module.exports = class extends Command {
 			this.client.rpc = require(path);
 			if (message.guild.voice?.dispatcher) {
 				this.client.rpc.on("ready", () => {
-						this.client.rpc.startMusicStatus(message.guild.queue[message.guild.played - 1], message.guild.voice.songElapsed);
+					this.client.rpc.startMusicStatus(message.guild.queue[message.guild.played - 1], message.guild.voice.songElapsed);
 				});
 			}
 		}

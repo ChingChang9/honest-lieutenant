@@ -16,9 +16,7 @@ module.exports = class extends Command {
 					key: "number",
 					default: 10,
 					parse: number => parseInt(number),
-					validate: number => {
-						return number > 0 && number < 100 || "please enter a number between 1 and 99 (inclusive)";
-					}
+					validate: number => number > 0 && number < 100 || "please enter a number between 1 and 99 (inclusive)"
 				}
 			]
 		});

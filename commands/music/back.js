@@ -15,10 +15,7 @@ module.exports = class extends Command {
 					key: "back",
 					default: 1,
 					parse: back => parseInt(back),
-					validate: back => {
-						if (isNaN(back)) return "please enter a number!";
-						return true;
-					}
+					validate: back => !isNaN(back) || "please enter a number!"
 				}
 			]
 		});

@@ -15,10 +15,7 @@ module.exports = class extends Command {
 				{
 					key: "index",
 					parse: index => index === "farewell" ? index : parseInt(index),
-					validate: index => {
-						if (isNaN(index) && index !== "farewell") return "please enter a number!";
-						return true;
-					}
+					validate: index => !isNaN(index) || index === "farewell" || "please enter a number!"
 				}
 			]
 		});
