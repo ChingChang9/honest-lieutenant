@@ -17,7 +17,9 @@ module.exports = class extends Command {
 			message.reply("I wasn't playing anything!");
 		} else {
 			dispatcher.resume();
-			process.emit("MUSICRESUME", message.guild);
+			if (this.client.rpc.verbose) {
+				this.client.rpc.startMusicStatus(message.guild.queue[message.guild.played - 1], message.guild.voice.songElapsed);
+			}
 		}
 	}
 };

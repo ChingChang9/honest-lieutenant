@@ -1,8 +1,9 @@
 const { Client } = require("discord.js");
 const Registry = require("@/client/registry.js");
 const Dispatcher = require("@/client/dispatcher.js");
+const RPCClient = require("@/client/rpc.js");
 const firebase = require("@/workers/firebase.js");
-const { emptyQueue } = require("@/config.json");
+const { emptyQueue, clientId } = require("@/config.json");
 require("@/client/guild.js");
 require("@/client/message.js");
 require("@/client/voice.js");
@@ -12,8 +13,11 @@ module.exports = class extends Client {
 		super(options);
 		this.commandPrefix = ".";
 		this.owner = "371129637725798400";
+		this.rpc = new RPCClient({ transport: "ipc" });
 		this.registry = new Registry(this);
 		this.dispatcher = new Dispatcher(this, this.registry);
+
+		this.rpc.login({clientId}).catch(console.error);
 
 		this.once("ready", () => {
 			this.user.setActivity("with myself | .help");

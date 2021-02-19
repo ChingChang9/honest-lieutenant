@@ -10,7 +10,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 	const voiceState = message.guild.voice;
 
 	dispatcher.on("start", () => {
-		process.emit("MUSICSTART", queue[index].title, seekTimestamp);
+		if (message.client.rpc.verbose) message.client.rpc.startMusicStatus(queue[index], seekTimestamp);
 		if (voiceState.repeat !== "one" && !seekTimestamp) message.channel.send({
 			embed: {
 				color: embedColours.default,
@@ -61,7 +61,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 	});
 
 	dispatcher.on("finish", () => {
-		process.emit("MUSICSTOP");
+		message.client.rpc.clearActivity();
 		const queue = message.guild.queue;
 		const played = message.guild.played;
 		const repeat = voiceState.repeat;
@@ -81,7 +81,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 	dispatcher.on("error", error => {
 		message.error(error);
 
-		process.emit("MUSICSTOP");
+		message.client.rpc.clearActivity();
 		const queue = message.guild.queue;
 		const played = message.guild.played;
 		voiceState.dispatcher = null;

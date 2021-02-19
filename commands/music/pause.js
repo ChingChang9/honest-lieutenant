@@ -16,7 +16,9 @@ module.exports = class extends Command {
 			message.reply("I'm not playing anything!");
 		} else {
 			dispatcher.pause();
-			process.emit("MUSICPAUSE", message.guild);
+			if (this.client.rpc.verbose) {
+				this.client.rpc.pauseMusicStatus(message.guild.queue[message.guild.played - 1]);
+			}
 		}
 	}
 };

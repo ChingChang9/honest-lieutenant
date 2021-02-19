@@ -18,6 +18,6 @@ module.exports = class extends Command {
 			message.guild.voice.dispatcher = null;
 		}
 		message.react("👍🏽");
-		process.emit("MUSICSTOP");
+		this.client.rpc.clearActivity();
 	}
 };
