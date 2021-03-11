@@ -7,7 +7,7 @@ module.exports = async (message, queue, currentIndex, toIndex, text, emoji) => {
 	}
 
 	if (toIndex >= queue.length) {
-		firebase.updateValue(message.guild.id, {
+		firebase.updateGuildValue(message.guild.id, {
 			played: queue.length,
 		});
 		if (message.guild.voice?.dispatcher) {
@@ -40,5 +40,5 @@ async function addReactions(message, emoji, connection, queue, currentIndex, toI
 			collector.stop();
 		}
 	});
-	collector.on("end", () => message.delete());
+	collector.once("end", message.delete);
 }

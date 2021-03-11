@@ -65,7 +65,7 @@ module.exports = Structures.extend("Message", Message => {
 				return this.command.onBlock(this, "permission", { response: typeof hasPermission === "string" ? hasPermission : undefined });
 			}
 
-			if (this.command.clientPermissions) {
+			if (this.command.clientPermissions && this.channel.type !== "dm") {
 				const missing = this.channel.permissionsFor(this.client.user).missing(this.command.clientPermissions);
 				if (missing.length) {
 					return this.command.onBlock(this, "clientPermissions", { missing });
@@ -126,7 +126,7 @@ module.exports = Structures.extend("Message", Message => {
 
 		reply(content) {
 			return this.embed({
-				description: `<@${ this.author.id }>, ${ content }`
+				description: `[<@${ this.author.id }>] ${ content }`
 			}, "error");
 		}
 

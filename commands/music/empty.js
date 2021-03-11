@@ -15,13 +15,13 @@ module.exports = class extends Command {
 
 	run(message) {
 		if (!message.guild.voice?.dispatcher) {
-			firebase.updateValue(message.guild.id, emptyQueue);
+			firebase.updateGuildValue(message.guild.id, emptyQueue);
 		} else {
 			const played = message.guild.played;
 
 			let newQueue = {};
 			newQueue[message.guild.queueKeys[played - 1]] = message.guild.queue[played - 1];
-			firebase.updateValue(message.guild.id, {
+			firebase.updateGuildValue(message.guild.id, {
 				queue: newQueue,
 				played: 1
 			});

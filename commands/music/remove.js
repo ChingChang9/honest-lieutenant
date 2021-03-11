@@ -66,7 +66,7 @@ function removeRange(guild, queue, queueKeys, played, index1, index2) {
 		if (index !== played || !guild.voice?.dispatcher) queue[queueKeys[index - 1]] = null;
 		if (index <= played) count++;
 	}
-	firebase.updateValue(guild.id, {
+	firebase.updateGuildValue(guild.id, {
 		played: played - count
 	});
 	guild.queueRef.set(queue);

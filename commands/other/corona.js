@@ -3,7 +3,7 @@ const request = require("@/workers/request.js");
 const cheerio = require("cheerio");
 
 const messages = [
-	"Stay strong guys!",
+	"Stay strong!",
 	"Take care!",
 	"Stay safe!",
 	"Stay healthy!",
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 		const hospital = table.eq(4).text();
 		const intensive = table.eq(5).text();
 		const deaths = table.eq(6).text();
-		const description = $("#goa-grid28054").children().eq(-2).text();
+		const description = $("#goa-grid28054 .goa-callout ul li").text().replace(".", ".\n");
 
 		message.embed({
 			author: {

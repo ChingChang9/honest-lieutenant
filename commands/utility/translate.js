@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const translate = require("@/scripts/translate.js");
+// const translate = require("@/scripts/translate.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -18,6 +18,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { text }) {
-		message.say(await translate(text));
+		message.reply("This command is deprecated :(");
+		// message.say(await translate(text));
 	}
 };

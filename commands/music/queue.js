@@ -73,7 +73,7 @@ async function startCollector(oldMessage, newMessage, queue, page) {
 		if (reaction.emoji.name === "➡️") return sendQueue(oldMessage, (lastPage + page + 1) % lastPage || lastPage);
 		if (reaction.emoji.name === "⏩") return sendQueue(oldMessage, lastPage || lastPage);
 	});
-	collector.on("end", () => {
+	collector.once("end", () => {
 		if (!collector.endReason()) newMessage.reactions.removeAll();
 	});
 }

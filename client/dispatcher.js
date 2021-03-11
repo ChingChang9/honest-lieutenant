@@ -33,6 +33,6 @@ module.exports = class Dispatcher {
 	getPrefixRegex(guild) {
 		const prefix = guild?.commandPrefix || this.client.commandPrefix;
 		const escapedPrefix = prefix.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
-		return new RegExp(`^(<@${ this.client.user.id }>\\s*(?:${ escapedPrefix }\\s*)?|${ escapedPrefix }\\s*)([^\\s]+)`, "i");
+		return new RegExp(`^(<@!?${ this.client.user.id }>\\s*(?:${ escapedPrefix }\\s*)?|${ escapedPrefix }\\s*)([^\\s]+)`, "i");
 	}
 };

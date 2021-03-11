@@ -1,6 +1,5 @@
 const ytdl = require("ytdl-core");
 const playSong = require("@/scripts/playSong.js");
-const firebase = require("@/workers/firebase.js");
 const Message = require("@/client/message.js");
 
 const trashes = [
@@ -44,7 +43,7 @@ module.exports = async (message, songUrl) => {
 };
 
 async function addSong(message, songInfo) {
-	await firebase.database.ref(`${ message.guild.id }/queue`).push({
+	await message.guild.queueRef.push({
 		title: songInfo.videoDetails.title,
 		videoUrl: songInfo.videoDetails.video_url,
 		thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,

@@ -9,7 +9,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 	const dispatcher = await startSong(connection, queue, index, seekTimestamp, message.guild.voice.filter);
 	const voiceState = message.guild.voice;
 
-	dispatcher.on("start", () => {
+	dispatcher.once("start", () => {
 		if (message.client.rpc.verbose) message.client.rpc.startMusicStatus(queue[index], seekTimestamp);
 		if (voiceState.repeat !== "one" && !seekTimestamp) message.channel.send({
 			embed: {
@@ -50,7 +50,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 			voiceState.displayFilters(message);
 		}
 
-		firebase.updateValue(message.guild.id, {
+		firebase.updateGuildValue(message.guild.id, {
 			played: index + 1
 		});
 
@@ -60,7 +60,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 		voiceState.timeout = null;
 	});
 
-	dispatcher.on("finish", () => {
+	dispatcher.once("finish", () => {
 		message.client.rpc.clearActivity();
 		const queue = message.guild.queue;
 		const played = message.guild.played;
@@ -78,7 +78,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 		}
 	});
 
-	dispatcher.on("error", error => {
+	dispatcher.once("error", error => {
 		message.error(error);
 
 		message.client.rpc.clearActivity();
@@ -99,7 +99,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 async function startSong(connection, queue, index, seekTimestamp, filter) {
 	const stream = await ytdl(queue[index].videoUrl, {
 		filter: "audio",
-		highWaterMark: 512 * 1024,
+		highWaterMark: 256 * 1024,
 		opusEncoded: true,
 		seek: seekTimestamp,
 		encoderArgs: filter ? ["-af", filter] : null

@@ -17,7 +17,7 @@ module.exports = class extends Client {
 		this.registry = new Registry(this);
 		this.dispatcher = new Dispatcher(this, this.registry);
 
-		this.rpc.login({clientId}).catch(console.error);
+		this.rpc.login({ clientId }).catch(console.error);
 
 		this.once("ready", () => {
 			this.user.setActivity("with myself | .help");
@@ -27,8 +27,8 @@ module.exports = class extends Client {
 		this.on("message", message => this.dispatcher.handleMessage(message));
 		this.on("messageUpdate", (oldMessage, newMessage) => this.dispatcher.handleMessage(newMessage, oldMessage));
 
-		this.on("guildCreate", guild => firebase.updateValue(guild.id, emptyQueue));
-		this.on("guildDelete", guild => firebase.database.ref(guild.id).remove());
+		this.on("guildCreate", guild => firebase.updateGuildValue(guild.id, emptyQueue));
+		this.on("guildDelete", guild => firebase.database.ref(`guilds/${ guild.id }`).remove());
 
 		this.on("error", error => console.error("Websocket connection error: ", error));
 	}

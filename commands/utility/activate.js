@@ -11,7 +11,8 @@ module.exports = class extends Command {
 		});
 	}
 
-	run() {
+	run(message) {
 		this.client.user.setActivity("with myself | .help");
+		message.delete();
 	}
 };

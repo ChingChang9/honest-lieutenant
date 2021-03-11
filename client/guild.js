@@ -13,8 +13,8 @@ module.exports = Structures.extend("Guild", Guild => {
 			this.queueKeys = [];
 			this.played = 0;
 
-			const queueRef = database.ref(`${ this.id }/queue`);
-			const playedRef = database.ref(`${ this.id }/played`);
+			const queueRef = database.ref(`guilds/${ this.id }/queue`);
+			const playedRef = database.ref(`guilds/${ this.id }/played`);
 
 			this.queueRef = queueRef;
 			queueRef.on("value", snapshot => {

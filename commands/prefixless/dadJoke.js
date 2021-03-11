@@ -5,6 +5,7 @@ delete require.cache[require.resolve("fs")];
 
 const dadTriggerWords = ["am", "i'm", "im", "i’m"];
 const emojis = ["😂", "😇", "🙃", "😉", "😏", "😘", "😝", "😎", "🤗", "🤣"];
+const vowels = ["a", "e", "i", "o", "u", "honest"];
 
 module.exports = (message, content) => {
 	for (const triggerWord of dadTriggerWords) {
@@ -33,7 +34,8 @@ module.exports = (message, content) => {
 				"so funny",
 				"dad",
 				message.guild.clientName,
-				`something of a ${ message.guild.clientName } myself`,
+				`something of a${ vowels.some(vowel => message.guild.clientName.toLowerCase().startsWith(vowel)) ? "n" : "" } ${
+					message.guild.clientName } myself`,
 				`your friendly neighbourhood ${ message.guild.clientName }`,
 				"gonna put some dirt in your eye"
 			];

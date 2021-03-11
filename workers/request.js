@@ -18,7 +18,7 @@ function makeRequest(url, { method = "GET", headers = {}, params = {}, body = {}
 				let chunks = [];
 
 				response.on("data", chunk => chunks.push(chunk));
-				response.on("end", () => {
+				response.once("end", () => {
 					const responseBody = Buffer.concat(chunks).toString();
 					chunks = null;
 					if (responseBody.startsWith("<!DOCTYPE")) {
@@ -27,7 +27,7 @@ function makeRequest(url, { method = "GET", headers = {}, params = {}, body = {}
 						resolve(JSON.parse(`{ "data":${ responseBody } }`));
 					}
 				});
-				response.on("error", error => reject(`Error: ${ error.message }`));
+				response.once("error", error => reject(`Error: ${ error.message }`));
 			} else {
 				reject(`Error ${ response.statusCode }: ${ response.statusMessage }`);
 			}
@@ -35,6 +35,6 @@ function makeRequest(url, { method = "GET", headers = {}, params = {}, body = {}
 
 		if (method === "POST") client.write(body);
 		client.end();
-		client.on("error", error => reject(error));
+		client.once("error", reject);
 	});
 }

@@ -13,7 +13,10 @@ delete require.cache[require.resolve("firebase-admin")];
 
 module.exports = {
 	database,
-	async updateValue(path, value) {
-		await database.ref(path).update(value);
+	async updateGuildValue(guildId, value) {
+		await database.ref(`guilds/${ guildId }`).update(value);
+	},
+	async updateUserValue(userId, value) {
+		await database.ref(`users/${ userId }`).update(value);
 	}
 };

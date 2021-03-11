@@ -28,7 +28,7 @@ module.exports = class extends Command {
 					input: "<song-link>"
 				},
 				{
-					input: "<playlist-link>", // TODO: Default now 100. Also update addPlaylist to work with "all"
+					input: "<playlist-link>",
 					explanation: "Queues the first 100 songs in the playlist"
 				},
 				{
