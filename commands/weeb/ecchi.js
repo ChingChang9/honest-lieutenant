@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const randomImage = require("@/scripts/randomImage.js");
+const kSoftImage = require("@/scripts/kSoftImage.js");
 const getRedditPost = require("@/scripts/getRedditPost.js");
 
 const subreddits = [
@@ -29,7 +29,7 @@ module.exports = class extends Command {
 
 	async run(message) {
 		if (Math.random() < 0.1) {
-			message.embed(await randomImage("hentai", true));
+			message.embed(await kSoftImage("hentai", true));
 		} else {
 			message.embed(await getRedditPost(subreddits));
 		}

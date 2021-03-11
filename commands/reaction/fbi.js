@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const randomImage = require("@/scripts/randomImage.js");
+const kSoftImage = require("@/scripts/kSoftImage.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
 module.exports = class extends Command {
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await randomImage("fbi");
+		const imageEmbed = await kSoftImage("fbi");
 		const fullEmbed = mentionReact(message, "calls the FBI on", imageEmbed);
 		message.embed(fullEmbed);
 	}

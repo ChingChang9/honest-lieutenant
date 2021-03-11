@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const randomImage = require("@/scripts/randomImage.js");
+const kSoftImage = require("@/scripts/kSoftImage.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -15,6 +15,6 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		message.embed(await randomImage("doge"));
+		message.embed(await kSoftImage("doge"));
 	}
 };

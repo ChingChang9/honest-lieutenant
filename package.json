@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.15.1",
+  "version": "3.15.2",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,9 @@
     "meme",
     "ffmpeg",
     "firebase",
-    "rpc"
+    "rpc",
+    "reddit",
+    "weeb"
   ],
   "author": "Ching Chang",
   "contributors": [
@@ -37,18 +39,18 @@
     "@": "."
   },
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
+    "@discordjs/opus": "^0.4.0",
     "better-sqlite3": "^7.1.2",
     "bufferutil": "^4.0.3",
-    "canvas": "^2.6.1",
+    "canvas": "^2.7.0",
     "cheerio": "^1.0.0-rc.5",
-    "discord-rpc": "^3.1.4",
-    "discord-ytdl-core": "^5.0.0",
+    "discord-rpc": "^3.2.0",
+    "discord-ytdl-core": "^5.0.1",
     "discord.js": "^12.3.1",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^4.2.7",
-    "firebase-admin": "^9.4.2",
-    "googleapis": "^67.0.0",
+    "firebase-admin": "^9.5.0",
+    "googleapis": "^67.1.1",
     "module-alias": "^2.2.2",
     "node-gyp": "^7.1.2",
     "register-scheme": "github:devsnek/node-register-scheme",
@@ -56,11 +58,11 @@
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.4",
     "uuid": "^8.3.2",
-    "ytdl-core": "^4.4.5",
-    "ytpl": "^2.0.4",
+    "ytdl-core": "^4.5.0",
+    "ytpl": "^2.0.5",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.17.0"
+    "eslint": "^7.21.0"
   }
 }

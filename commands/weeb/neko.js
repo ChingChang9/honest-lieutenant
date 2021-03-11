@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const randomImage = require("@/scripts/randomImage.js");
+const kSoftImage = require("@/scripts/kSoftImage.js");
 const getRedditPost = require("@/scripts/getRedditPost.js");
 
 const subreddits = [
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 
 	async run(message) {
 		if (Math.random() < 1 / (subreddits.length + 1)) {
-			return message.embed(await randomImage("neko", message.channel.nsfw));
+			return message.embed(await kSoftImage("neko", message.channel.nsfw));
 		}
 
 		const embed = await getRedditPost(subreddits, {
