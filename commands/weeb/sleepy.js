@@ -2,16 +2,15 @@ const Command = require("@/client/command.js");
 const getRedditPost = require("@/scripts/getRedditPost.js");
 
 const subreddits = [
-	"Gesugao"
+	"SleepyMoe"
 ];
 
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: "gesugao",
+			name: "sleepy",
 			group: "weeb",
-			description: "Send a gesugao (the bot creator's favourite!)",
-			nsfw: true,
+			description: "Send a sleepy anime character",
 			throttling: {
 				usages: 5,
 				duration: 10
@@ -20,6 +19,10 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		message.embed(await getRedditPost(subreddits));
+		const embed = await getRedditPost(subreddits, {
+			nsfw: message.channel.nsfw,
+			message
+		});
+		message.embed(embed);
 	}
 };

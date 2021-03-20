@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "activate",
 			group: "utility",
-			description: "Sets the bot activity",
+			description: "Set the bot activity",
 			ownerOnly: true,
 			hidden: true
 		});

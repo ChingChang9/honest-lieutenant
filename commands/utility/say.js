@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "say",
 			group: "utility",
-			description: "Says something in a channel",
+			description: "Say something in a channel",
 			format: "[channel] <text>",
 			default: "this channel",
 			examples: [

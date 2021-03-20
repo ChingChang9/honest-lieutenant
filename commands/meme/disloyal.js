@@ -8,7 +8,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "disloyal",
 			group: "meme",
-			description: "Makes a disloyal guy meme",
+			description: "Make a disloyal guy meme",
 			format: "<guy> : <ex> : <girl> : [\"weeb\"]",
 			examples: [
 				{

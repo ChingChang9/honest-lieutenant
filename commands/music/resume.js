@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "resume",
 			group: "music",
 			aliases: ["continue"],
-			description: "Resumes the music",
+			description: "Resume the track",
 			guildOnly: true
 		});
 	}

@@ -13,7 +13,7 @@ module.exports = class extends Command {
 			name: "animeme",
 			group: "weeb",
 			aliases: ["animemes", "animememe", "animememes"],
-			description: "Sends an anime meme (Might contain spoilers)",
+			description: "Send an anime meme (Might contain spoilers)",
 			throttling: {
 				usages: 5,
 				duration: 10

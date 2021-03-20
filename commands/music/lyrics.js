@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			name: "lyrics",
 			group: "music",
 			aliases: ["ly"],
-			description: "Displays the lyrics of the current song",
+			description: "Display the lyrics of the current track",
 			format: "[original/translate]",
 			examples: [
 				{

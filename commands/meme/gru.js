@@ -8,7 +8,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "gru",
 			group: "meme",
-			description: "Makes a gru presentation meme",
+			description: "Make a gru presentation meme",
 			format: "<step-1> : <2> : <3> : [4] : [5]",
 			arguments: [
 				{

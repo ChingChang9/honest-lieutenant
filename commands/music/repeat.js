@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "repeat",
 			group: "music",
 			aliases: ["loop"],
-			description: "Toggles repeat",
+			description: "Toggle repeat",
 			format: "[one/queue/off]",
 			examples: [
 				{

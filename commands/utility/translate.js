@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "translate",
 			group: "utility",
 			aliases: ["tr"],
-			description: "Translates a text to English",
+			description: "Translate a text into English",
 			format: "<text-to-translate>",
 			arguments: [
 				{

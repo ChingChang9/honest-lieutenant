@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "info",
 			group: "music",
 			aliases: ["np", "current"],
-			description: "Displays information of the current song",
+			description: "Display information of the current track",
 			guildOnly: true
 		});
 	}

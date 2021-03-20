@@ -32,7 +32,8 @@ const subredditsNSFW = [
 	"TwoDeeArt",
 	"DreamyAnimeEyes",
 	"silverhair",
-	"AnimeLounging"
+	"AnimeLounging",
+	"SleepyMoe"
 ];
 const subredditsSFW = [
 	"massivefangs",
@@ -58,7 +59,8 @@ const subredditsSFW = [
 	"TwoDeeArt",
 	"DreamyAnimeEyes",
 	"silverhair",
-	"AnimeLounging"
+	"AnimeLounging",
+	"SleepyMoe"
 ];
 
 module.exports = class extends Command {
@@ -66,7 +68,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "waifu",
 			group: "weeb",
-			description: "Sends a waifu (might be a husbando) from Reddit",
+			description: "Send a waifu (might be a husbando) from Reddit",
 			throttling: {
 				usages: 5,
 				duration: 10

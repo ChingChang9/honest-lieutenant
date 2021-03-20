@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "vibrate",
 			group: "filter",
 			aliases: ["vibrato"],
-			description: "Toggles the vibration filter",
+			description: "Toggle the vibration filter",
 			guildOnly: true
 		});
 	}

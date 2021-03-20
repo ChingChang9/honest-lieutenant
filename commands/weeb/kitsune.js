@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "kitsune",
 			group: "weeb",
 			aliases: ["foxgirl", "kitsunemimi"],
-			description: "Sends a kitsunemimi (fox girl)",
+			description: "Send a kitsunemimi (fox girl)",
 			throttling: {
 				usages: 5,
 				duration: 10

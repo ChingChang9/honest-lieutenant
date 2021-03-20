@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "cat",
 			group: "picture",
 			aliases: ["mao", "kitty"],
-			description: "Sends a cute cat",
+			description: "Send a cute cat",
 			format: "[breed-id]",
 			examples: [
 				{

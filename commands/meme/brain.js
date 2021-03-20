@@ -8,7 +8,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "brain",
 			group: "meme",
-			description: "Makes an expanding brain meme",
+			description: "Make an expanding brain meme",
 			format: "<text1> : <text2> : [...]*",
 			examples: [
 				{

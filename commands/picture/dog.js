@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "dog",
 			group: "picture",
 			aliases: ["puppy"],
-			description: "Sends a cute dog"
+			description: "Send a cute dog"
 		});
 	}
 

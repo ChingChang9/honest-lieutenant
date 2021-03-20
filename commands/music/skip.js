@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "skip",
 			group: "music",
 			aliases: ["s", "sk", "next", "forward"],
-			description: "Skips to the next song",
+			description: "Skip to the next track",
 			format: "[#-of-songs-to-skip]",
 			guildOnly: true,
 			arguments: [

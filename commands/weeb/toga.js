@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "toga",
 			group: "weeb",
 			aliases: ["himiko"],
-			description: "Sends a Reddit thread related to Himiko Toga from \"Boku no Hero Academia\"",
+			description: "Send a Reddit thread related to Himiko Toga from \"Boku no Hero Academia\"",
 			throttling: {
 				usages: 5,
 				duration: 10

@@ -6,7 +6,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "reload",
 			group: "utility",
-			description: "Reloads a command or command group",
+			description: "Reload a command or command group",
 			format: "<command/group>",
 			examples: [
 				{

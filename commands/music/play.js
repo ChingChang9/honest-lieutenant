@@ -18,7 +18,7 @@ module.exports = class extends Command {
 			name: "play",
 			group: "music",
 			aliases: ["p", "add", "a"],
-			description: "Adds music to the music queue",
+			description: "Add track(s) to the music queue",
 			format: "<song/playlist> [playlist-length]",
 			examples: [
 				{

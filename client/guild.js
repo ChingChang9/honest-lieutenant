@@ -48,11 +48,11 @@ module.exports = Structures.extend("Guild", Guild => {
 		}
 
 		setGroupEnabled(group, enabled) {
-			this._groupsEnabled.set(group.id, enabled);
+			this._groupsEnabled.set(group.name, enabled);
 		}
 
 		isGroupEnabled(group) {
-			return this._groupsEnabled.get(group.id);
+			return this._groupsEnabled.get(group.name);
 		}
 	};
 });

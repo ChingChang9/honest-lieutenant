@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "filters",
 			group: "filter",
 			aliases: ["filter", "f"],
-			description: "Displays the applied filters",
+			description: "Display the applied filters",
 			format: "[clear]",
 			examples: [
 				{

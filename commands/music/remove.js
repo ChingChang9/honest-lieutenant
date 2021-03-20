@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "remove",
 			group: "music",
 			aliases: ["rm", "delete"],
-			description: "Removes a song from the queue",
+			description: "Remove a track from the queue",
 			format: "<song-index> [song-index]",
 			examples: [
 				{

@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "genshin",
 			group: "weeb",
 			aliases: ["genshin-impact", "genshinimpact"],
-			description: "Sends a Genshin Impact-related post from Reddit",
+			description: "Send a Genshin Impact-related post from Reddit",
 			throttling: {
 				usages: 5,
 				duration: 10

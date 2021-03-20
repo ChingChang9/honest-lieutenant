@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "edit",
 			group: "utility",
-			description: "Edits a message sent by the bot",
+			description: "Edit a message sent by the bot",
 			format: "<message-link> <new-text>",
 			guildOnly: true,
 			ownerOnly: true,

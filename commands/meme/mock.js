@@ -7,7 +7,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "mock",
 			group: "meme",
-			description: "Makes a spongebob mocking meme",
+			description: "Make a spongebob mocking meme",
 			format: "<text-to-mock>",
 			arguments: [
 				{

@@ -16,7 +16,7 @@ module.exports = class extends Command {
 			name: "azurlane",
 			group: "weeb",
 			aliases: ["azur"],
-			description: "Sends an Azur Lane waifu",
+			description: "Send an Azur Lane waifu",
 			throttling: {
 				usages: 5,
 				duration: 10

@@ -13,7 +13,7 @@ module.exports = class extends Command {
 			examples: [
 				{
 					input: "discordapp",
-					explanation: "Sends a post from r/discordapp"
+					explanation: "Send a post from r/discordapp"
 				}
 			],
 			throttling: {

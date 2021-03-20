@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "kaguya",
 			group: "weeb",
 			aliases: ["liw", "kaguya-sama", "love-is-war"],
-			description: "Sends a Reddit thread related to \"Kaguya-Sama: Love is War\"",
+			description: "Send a Reddit thread related to \"Kaguya-Sama: Love is War\"",
 			throttling: {
 				usages: 5,
 				duration: 10

@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "hug",
 			group: "reaction",
 			aliases: ["cuddle"],
-			description: "Hugs someone",
+			description: "Hug someone",
 			format: "[user/message]",
 			examples: [
 				{

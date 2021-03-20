@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "queue",
 			group: "music",
 			aliases: ["que", "q", "cue"],
-			description: "Displays the music queue",
+			description: "Display the music queue",
 			format: "[page]",
 			clientPermissions: ["MANAGE_MESSAGES"],
 			guildOnly: true,

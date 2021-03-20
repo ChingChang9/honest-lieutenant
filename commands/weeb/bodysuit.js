@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "bodysuit",
 			group: "weeb",
 			aliases: ["bodysuits"],
-			description: "Sends an anime girl in bodysuit",
+			description: "Send an anime girl in bodysuit",
 			nsfw: true,
 			throttling: {
 				usages: 5,

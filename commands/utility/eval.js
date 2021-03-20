@@ -6,7 +6,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "eval",
 			group: "utility",
-			description: "Executes JavaScript code",
+			description: "Execute JavaScript code",
 			format: "<script>",
 			ownerOnly: true,
 			hidden: true,

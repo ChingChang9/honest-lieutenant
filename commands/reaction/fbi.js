@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "fbi",
 			group: "reaction",
 			aliases: ["police"],
-			description: "Calls the FBI",
+			description: "Call the FBI",
 			format: "[message/user]",
 			examples: [
 				{

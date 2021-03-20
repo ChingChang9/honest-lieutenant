@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "empty",
 			group: "music",
 			aliases: ["clear"],
-			description: "Clears all entries in the queue",
+			description: "Clear all entries in the queue",
 			guildOnly: true
 		});
 	}

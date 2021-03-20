@@ -9,22 +9,22 @@ module.exports = class Registry {
 		this.commandsPath = null;
 		this.root = null;
 		this.registerGroups([
-			{ id: "utility", name: "⚙️ Utility", guarded: true },
-			{ id: "music", name: "🎵 Music" },
-			{ id: "filter", name: "🎚️ Music Filter" },
-			{ id: "reaction", name: "<:tsundere:763493801301245975> Reaction" },
-			{ id: "weeb", name: "<:weeb:795670535471497238> Weeb" },
-			{ id: "picture", name: "🖼️ Picture" },
-			{ id: "reddit", name: "<:reddit:795548625761468416> Reddit" },
-			{ id: "meme", name: "🙃 Meme Maker" },
-			{ id: "other", name: "❓ Other" }
+			{ name: "utility", displayName: "⚙️ Utility", guarded: true },
+			{ name: "music", displayName: "🎵 Music" },
+			{ name: "filter", displayName: "🎚️ Music Filter" },
+			{ name: "reaction", displayName: "<:tsundere:763493801301245975> Reaction" },
+			{ name: "weeb", displayName: "<:weeb:795670535471497238> Weeb" },
+			{ name: "picture", displayName: "🖼️ Picture" },
+			{ name: "reddit", displayName: "<:reddit:795548625761468416> Reddit" },
+			{ name: "meme", displayName: "🙃 Meme Maker" },
+			{ name: "other", displayName: "❓ Other" }
 		]);
 	}
 
 	registerGroups(folders) {
 		folders.forEach(folder => {
 			const group = new CommandGroup(this.client, folder);
-			this.groups.set(group.id, group);
+			this.groups.set(group.name, group);
 		});
 		return this;
 	}
@@ -47,7 +47,7 @@ module.exports = class Registry {
 
 	registerCommand(file) {
 		const command = new file(this.client);
-		const group = this.groups.find(group => group.id === command.group);
+		const group = this.groups.find(group => group.name === command.group);
 
 		command.group = group;
 		group.commands.set(command.name, command);
@@ -56,7 +56,7 @@ module.exports = class Registry {
 
 	findGroup(search) {
 		search = search.toLowerCase();
-		return this.groups.find(group => group.id === search || group.name.toLowerCase() === search);
+		return this.groups.find(group => group.name === search || group.displayName.toLowerCase() === search);
 	}
 
 	findGroups(search) {
@@ -65,9 +65,9 @@ module.exports = class Registry {
 		let matchedGroups = [];
 
 		for (const group of this.groups.values()) {
-			if (group.name.toLowerCase() === search || group.id === search) return [group];
+			if (group.displayName.toLowerCase() === search || group.name === search) return [group];
 
-			if (group.id.includes(search) || group.name.toLowerCase().includes(search)) {
+			if (group.name.includes(search) || group.displayName.toLowerCase().includes(search)) {
 				matchedGroups.push(group);
 			}
 		}

@@ -95,7 +95,7 @@ module.exports = class Command {
 	}
 
 	reload() {
-		const path = `${ this.client.registry.commandsPath }/${ this.group.id }/${ this.name }.js`;
+		const path = `${ this.client.registry.commandsPath }/${ this.group.name }/${ this.name }.js`;
 		delete require.cache[path];
 		const command = require(path);
 

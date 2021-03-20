@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "pause",
 			group: "music",
-			description: "Pauses the music in the voice channel",
+			description: "Pause the track",
 			guildOnly: true
 		});
 	}

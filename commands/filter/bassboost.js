@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "bassboost",
 			group: "filter",
 			aliases: ["bass", "bb"],
-			description: "Toggles or sets the amount of bass boost on a scale of 0 to 1 (inclusive)",
+			description: "Toggle or set the amount of bass boost on a scale of 0 to 1 (inclusive)",
 			guildOnly: true,
 			format: "[on/off/number]",
 			examples: [

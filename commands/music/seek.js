@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "seek",
 			group: "music",
 			aliases: ["jump"],
-			description: "Jumps to a timestamp of the current song",
+			description: "Jump to a timestamp of the current track",
 			format: "<timestamp>",
 			examples: [
 				{

@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "disconnect",
 			group: "music",
 			aliases: ["disc", "dc", "leave", "stop", "quit"],
-			description: "Disconnects me from the voice channel",
+			description: "Disconnect the bot from the voice channel",
 			guildOnly: true
 		});
 	}

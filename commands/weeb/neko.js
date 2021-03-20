@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			name: "neko",
 			group: "weeb",
 			aliases: ["catgirl", "nekomimi"],
-			description: "Sends a nekomimi (catgirl)",
+			description: "Send a nekomimi (catgirl)",
 			throttling: {
 				usages: 5,
 				duration: 10

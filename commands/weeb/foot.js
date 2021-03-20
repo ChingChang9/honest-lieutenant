@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			name: "foot",
 			group: "weeb",
 			aliases: ["feet"],
-			description: "Sends anime feet",
+			description: "Send anime feet",
 			nsfw: true,
 			throttling: {
 				usages: 5,

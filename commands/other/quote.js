@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "quote",
 			group: "other",
 			aliases: ["qod"],
-			description: "Sends a random quote"
+			description: "Send a random quote"
 		});
 	}
 

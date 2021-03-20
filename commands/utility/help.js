@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			name: "help",
 			group: "utility",
 			aliases: ["h", "alias", "aliases", "command", "commands"],
-			description: "Lists all of my commands or details about a specific command",
+			description: "List all of my commands or details about a specific command",
 			format: "[command]",
 			examples: [
 				{
@@ -74,7 +74,7 @@ function getCommands(client, prefix) {
 	let fields = [];
 	client.registry.groups.forEach(group => {
 		fields.push({
-			name: group.name,
+			name: group.displayName,
 			value: `\`${ displayPrefix }${ group.commands.map(command => {
 				if (!command.hidden) return command.name;
 			}).filter(Boolean).join(`\`, \`${ displayPrefix }`) }\``

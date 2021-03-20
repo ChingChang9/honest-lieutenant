@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "birb",
 			group: "picture",
 			aliases: ["bird", "berb"],
-			description: "Sends a birb",
+			description: "Send a birb",
 			throttling: {
 				usages: 5,
 				duration: 10

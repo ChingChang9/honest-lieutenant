@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "cute",
 			group: "picture",
 			aliases: ["aww"],
-			description: "Sends a cute photo (likely an animal)",
+			description: "Send a cute photo (likely an animal)",
 			throttling: {
 				usages: 5,
 				duration: 10

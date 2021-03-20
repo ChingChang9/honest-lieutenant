@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "hamilton",
 			group: "music",
 			aliases: ["ham"],
-			description: "Queues the entire Hamilton soundtrack!! 😃😃",
+			description: "Queue the entire Hamilton soundtrack!! 😃😃",
 			format: "[original/outtakes/instrumental]",
 			guildOnly: true,
 			arguments: [

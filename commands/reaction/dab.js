@@ -7,7 +7,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "dab",
 			group: "reaction",
-			description: "Dabs on someone",
+			description: "Dab on someone",
 			format: "[message/user]",
 			examples: [
 				{

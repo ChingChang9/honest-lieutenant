@@ -10,7 +10,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "manga",
 			group: "weeb",
-			description: "Sends an manga-related post from Reddit",
+			description: "Send a manga-related post from Reddit",
 			throttling: {
 				usages: 5,
 				duration: 10

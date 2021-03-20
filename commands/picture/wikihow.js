@@ -7,7 +7,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "wikihow",
 			group: "picture",
-			description: "Sends a weird WikiHow image",
+			description: "Send a weird WikiHow image",
 			throttling: {
 				usages: 5,
 				duration: 10

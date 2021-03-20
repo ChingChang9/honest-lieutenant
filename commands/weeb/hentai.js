@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "hentai",
 			group: "weeb",
-			description: "Sauces hentai",
+			description: "Sauce hentai",
 			nsfw: true,
 			throttling: {
 				usages: 5,

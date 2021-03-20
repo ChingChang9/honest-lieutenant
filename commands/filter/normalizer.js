@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "normalizer",
 			group: "filter",
 			aliases: ["normalize"],
-			description: "Toggles audio normalizer",
+			description: "Toggle audio normalizer",
 			guildOnly: true
 		});
 	}

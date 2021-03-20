@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "karaoke",
 			group: "filter",
 			aliases: ["instrumental"],
-			description: "Toggles karaoke mode (Removes vocals from the song)",
+			description: "Toggle karaoke mode (Remove vocals from the song)",
 			guildOnly: true
 		});
 	}

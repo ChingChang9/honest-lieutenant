@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "back",
 			group: "music",
 			aliases: ["b", "previous", "prev"],
-			description: "Plays the previous song",
+			description: "Play the previous track",
 			format: "[#-of-songs-to-back]",
 			guildOnly: true,
 			arguments: [

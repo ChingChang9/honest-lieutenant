@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "drake",
 			group: "meme",
-			description: "Makes a drake meme",
+			description: "Make a drake meme",
 			format: "<bad> : <good> : [version]",
 			examples: [
 				{

@@ -12,7 +12,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "keira",
 			group: "picture",
-			description: "Sends a photo of Keira Knightley"
+			description: "Send a photo of Keira Knightley"
 		});
 	}
 

@@ -18,7 +18,7 @@ module.exports = class extends Command {
 			name: "corona",
 			group: "other",
 			aliases: ["covid", "coronavirus", "virus", "stats"],
-			description: "Displays the coronavirus stats in Edmonton"
+			description: "Display the coronavirus stats in Edmonton"
 		});
 	}
 

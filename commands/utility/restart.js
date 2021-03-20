@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "restart",
 			group: "utility",
 			aliases: ["reboot", "ff"],
-			description: "Restarts the bot",
+			description: "Restart the bot",
 			ownerOnly: true,
 			hidden: true
 		});

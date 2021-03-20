@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "lifeprotips",
 			group: "reddit",
 			aliases: ["lifeprotip", "lpt"],
-			description: "Sends a post from r/LifeProTips",
+			description: "Send a post from r/LifeProTips",
 			throttling: {
 				usages: 5,
 				duration: 10

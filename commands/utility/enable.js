@@ -6,7 +6,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "enable",
 			group: "utility",
-			description: "Enables a command or command group",
+			description: "Enable a command or command group",
 			format: "<command/group>",
 			examples: [
 				{
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		const group = command.group;
 		if (group) {
 			message.say(`Enabled the \`${ command.name }\` command${
-				group.isEnabledIn(message.guild) === false ? `, but the \`${ group.name }\` group is disabled, so it still can't be used` : ""
+				group.isEnabledIn(message.guild) === false ? `, but the \`${ group.displayName }\` group is disabled, so it still can't be used` : ""
 			}`);
 		} else {
 			message.say(`Enabled all commands in \`${ command.name }\``);

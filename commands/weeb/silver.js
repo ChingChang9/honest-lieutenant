@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "silver",
 			group: "weeb",
 			aliases: ["silver-hair", "silverhair"],
-			description: "Sends a silver hair waifu",
+			description: "Send a silver hair waifu",
 			throttling: {
 				usages: 5,
 				duration: 10

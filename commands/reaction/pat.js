@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "pat",
 			group: "reaction",
 			aliases: ["headrub"],
-			description: "Pats someone",
+			description: "Pat someone",
 			format: "[user/message]",
 			examples: [
 				{

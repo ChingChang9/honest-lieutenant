@@ -5,7 +5,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "prefix",
 			group: "utility",
-			description: "Shows or sets the command prefix",
+			description: "Show or set the command prefix",
 			format: "[prefix/default]",
 			examples: [
 				{

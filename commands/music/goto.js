@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			name: "goto",
 			group: "music",
 			aliases: ["gt"],
-			description: "Plays a specific song in the queue",
+			description: "Play a specific track in the queue",
 			format: "<song-index>",
 			guildOnly: true,
 			arguments: [

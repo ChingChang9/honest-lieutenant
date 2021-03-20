@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "until",
 			group: "music",
 			aliases: ["time", "til", "ut"],
-			description: "Estimates the time until a song plays",
+			description: "Estimate the time until a track plays",
 			format: "<song-index>",
 			guildOnly: true,
 			arguments: [

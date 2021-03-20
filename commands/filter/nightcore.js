@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "nightcore",
 			group: "filter",
 			aliases: ["nc"],
-			description: "Toggles or sets nightcore on a scale of 0 to 1 (inclusive)",
+			description: "Toggle or set nightcore on a scale of 0 to 1 (inclusive)",
 			format: "[on/off/number]",
 			examples: [
 				{

@@ -6,7 +6,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "disable",
 			group: "utility",
-			description: "Disables a command or command group",
+			description: "Disable a command or command group",
 			format: "<command/group>",
 			examples: [
 				{

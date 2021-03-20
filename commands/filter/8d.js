@@ -6,7 +6,7 @@ module.exports = class extends Command {
 			name: "8d",
 			group: "filter",
 			aliases: ["surround"],
-			description: "Toggles 8D audio",
+			description: "Toggle 8D audio",
 			guildOnly: true
 		});
 	}

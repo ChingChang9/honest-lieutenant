@@ -18,7 +18,7 @@ module.exports = class extends Command {
 			name: "ecchi",
 			group: "weeb",
 			aliases: ["lewd"],
-			description: "Sends an ecchi anime picture",
+			description: "Send an ecchi anime picture",
 			nsfw: true,
 			throttling: {
 				usages: 5,

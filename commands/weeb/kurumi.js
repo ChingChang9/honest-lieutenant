@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: "kurumi",
 			group: "weeb",
 			aliases: ["tokisaki"],
-			description: "Sends a Reddit thread related to Kurumi Tokisaki from \"Date a Live\"",
+			description: "Send a Reddit thread related to Kurumi Tokisaki from \"Date a Live\"",
 			throttling: {
 				usages: 5,
 				duration: 10
