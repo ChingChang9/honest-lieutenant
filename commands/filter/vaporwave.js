@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			group: "filter",
 			aliases: ["vw"],
 			description: "Toggle or set vaporwave on a scale of 0 to 1 (inclusive)",
-			guildOnly: true,
+			voiceOnly: true,
 			format: "[on/off/number]",
 			examples: [
 				{
@@ -32,10 +32,6 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { vaporwave }) {
-		if (!message.member.voice.channel) {
-			return message.reply("Please only use this when you're in a voice channel");
-		}
-
 		await message.member.voice.channel.join().then(connection => connection.voice.setSelfDeaf(true));
 		const voiceState = message.guild.voice;
 		vaporwave = calculateVaporwave(voiceState, vaporwave);

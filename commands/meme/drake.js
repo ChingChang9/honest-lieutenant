@@ -30,9 +30,9 @@ module.exports = class extends Command {
 					parse: text => text.split(" : "),
 					validate: textArray => {
 						const [, text2, text3] = textArray;
-						if (!text2) return "you didn't provide the second argument!";
+						if (!text2) return "You didn't provide the second argument!";
 						if (text3 && !versions.includes(text3)) {
-							return `invalid version! Please enter one of: \`${ versions.join("`, `") }\``;
+							return `Invalid version! Please enter one of: \`${ versions.join("`, `") }\``;
 						}
 						return true;
 					}

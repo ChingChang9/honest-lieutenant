@@ -9,13 +9,13 @@ module.exports = class extends Command {
 			aliases: ["b", "previous", "prev"],
 			description: "Play the previous track",
 			format: "[#-of-songs-to-back]",
-			guildOnly: true,
+			voiceOnly: true,
 			arguments: [
 				{
 					key: "back",
 					default: 1,
 					parse: back => parseInt(back),
-					validate: back => !isNaN(back) || "please enter a number!"
+					validate: back => !isNaN(back) || "Please enter a number!"
 				}
 			]
 		});

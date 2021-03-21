@@ -23,8 +23,8 @@ module.exports = class extends Command {
 					key: "text",
 					parse: text => text.split(" : "),
 					validate: textArray => {
-						if (textArray.length < 2) return "please have at least two arguments";
-						if (textArray.length > 17) return "that's too many arguments. The max I can do is 17";
+						if (textArray.length < 2) return "Please have at least two arguments";
+						if (textArray.length > 17) return "That's too many arguments. The max I can do is 17";
 						return true;
 					}
 				}

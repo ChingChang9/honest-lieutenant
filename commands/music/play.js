@@ -31,12 +31,11 @@ module.exports = class extends Command {
 				}
 			],
 			default: "playlist-length: `100`",
-			guildOnly: true,
+			voiceOnly: true,
 			arguments: [
 				{
 					key: "searchString",
-					parse: searchString => searchString.match(/^<http/) && searchString.match(/>/) ? searchString.slice(1).replace(">", "") : searchString,
-					validate: (_, message) => message.member.voice.channel || "please only use this when you're in a voice channel"
+					parse: searchString => searchString.match(/^<http/) && searchString.match(/>/) ? searchString.slice(1).replace(">", "") : searchString
 				}
 			]
 		});

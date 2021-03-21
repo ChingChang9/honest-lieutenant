@@ -9,13 +9,13 @@ module.exports = class extends Command {
 			aliases: ["s", "sk", "next", "forward"],
 			description: "Skip to the next track",
 			format: "[#-of-songs-to-skip]",
-			guildOnly: true,
+			voiceOnly: true,
 			arguments: [
 				{
 					key: "skip",
 					default: 1,
 					parse: skip => parseInt(skip),
-					validate: skip => !isNaN(skip) || "please enter a number!"
+					validate: skip => !isNaN(skip) || "Please enter a number!"
 				}
 			]
 		});

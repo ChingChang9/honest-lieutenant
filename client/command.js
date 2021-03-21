@@ -12,6 +12,7 @@ module.exports = class Command {
 		this.default = info.default || null;
 		this.nsfw = info.nsfw;
 		this.guildOnly = info.guildOnly;
+		this.voiceOnly = info.voiceOnly;
 		this.ownerOnly = info.ownerOnly;
 		this.guarded = info.guarded;
 		this.hidden = info.hidden;
@@ -44,10 +45,9 @@ module.exports = class Command {
 
 	onBlock(message, reason, data) {
 		switch(reason) {
-			case "guildOnly":
-				return message.reply(`The \`${ this.name }\` command can only be used in servers`);
-			case "nsfw":
-				return message.reply(`The \`${ this.name }\` command can only be used in NSFW channels`);
+			case "guildOnly": return message.reply(`The \`${ this.name }\` command can only be used in servers`);
+			case "voiceOnly": return message.reply("Please only use this when you're in a voice channel");
+			case "nsfw": return message.reply(`The \`${ this.name }\` command can only be used in NSFW channels`);
 			case "permission": {
 				if (data.response) return message.reply(data.response);
 				return message.reply(`You do not have permission to use the \`${ this.name }\` command`);

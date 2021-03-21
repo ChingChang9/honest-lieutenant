@@ -12,13 +12,11 @@ module.exports = class extends Command {
 
 	run(message) {
 		const dispatcher = message.guild.voice?.dispatcher;
-		if (!dispatcher) {
-			message.reply("I'm not playing anything!");
-		} else {
-			dispatcher.pause();
-			if (this.client.rpc.verbose) {
-				this.client.rpc.pauseMusicStatus(message.guild.queue[message.guild.played - 1]);
-			}
+		if (!dispatcher) return message.reply("I'm not playing anything!");
+
+		dispatcher.pause();
+		if (this.client.rpc.verbose) {
+			this.client.rpc.pauseMusicStatus(message.guild.queue[message.guild.played - 1]);
 		}
 	}
 };

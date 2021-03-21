@@ -7,6 +7,7 @@ module.exports = class extends Command {
 			group: "filter",
 			aliases: ["nc"],
 			description: "Toggle or set nightcore on a scale of 0 to 1 (inclusive)",
+			voiceOnly: true,
 			format: "[on/off/number]",
 			examples: [
 				{
@@ -21,7 +22,6 @@ module.exports = class extends Command {
 					explanation: "Sets nightcore-ness to 0.3"
 				}
 			],
-			guildOnly: true,
 			arguments: [
 				{
 					key: "nightcore",
@@ -32,10 +32,6 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { nightcore }) {
-		if (!message.member.voice.channel) {
-			return message.reply("Please only use this when you're in a voice channel");
-		}
-
 		await message.member.voice.channel.join().then(connection => connection.voice.setSelfDeaf(true));
 		const voiceState = message.guild.voice;
 		nightcore = calculateNightcore(voiceState, nightcore);

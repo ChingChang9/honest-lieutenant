@@ -14,9 +14,7 @@ module.exports = class extends Command {
 
 	run(message) {
 		const dispatcher = message.guild.voice?.dispatcher;
-		if (!dispatcher) {
-			return message.reply("I'm not playing anything!");
-		}
+		if (!dispatcher) return message.reply("I'm not playing anything!");
 
 		const queue = message.guild.queue;
 		const index = message.guild.played - 1;

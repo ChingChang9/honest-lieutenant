@@ -24,17 +24,12 @@ module.exports = class extends Command {
 					explanation: "Once again jumps to 1:20 of the song"
 				}
 			],
-			guildOnly: true,
+			voiceOnly: true,
 			arguments: [
 				{
 					key: "timestamp",
 					parse: stringToSeconds,
-					validate: (timestamp, message) => {
-						if (!message.member.voice.channel) return "please only use this when you're in a voice channel";
-						if (isNaN(timestamp)) return "that's an invalid timestamp!";
-
-						return true;
-					}
+					validate: timestamp => !isNaN(timestamp) ||  "That's an invalid timestamp!"
 				}
 			]
 		});

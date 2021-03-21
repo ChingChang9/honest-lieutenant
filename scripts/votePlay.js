@@ -2,10 +2,6 @@ const playSong = require("@/scripts/playSong.js");
 const firebase = require("@/workers/firebase.js");
 
 module.exports = async (message, queue, currentIndex, toIndex, text, emoji) => {
-	if (!message.member.voice.channel) {
-		return message.reply("Please only use this when you're in a voice channel");
-	}
-
 	if (toIndex >= queue.length) {
 		firebase.updateGuildValue(message.guild.id, {
 			played: queue.length,

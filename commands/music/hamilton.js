@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			aliases: ["ham"],
 			description: "Queue the entire Hamilton soundtrack!! 😃😃",
 			format: "[original/outtakes/instrumental]",
-			guildOnly: true,
+			voiceOnly: true,
 			arguments: [
 				{
 					key: "version",

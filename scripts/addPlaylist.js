@@ -2,10 +2,6 @@ const ytpl = require("ytpl");
 const playSong = require("@/scripts/playSong.js");
 
 module.exports = (message, playlistId, number = 101) => {
-	if (!message.member.voice.channel) {
-		return message.reply("Please only use this when you're in a voice channel");
-	}
-
 	Promise.all([
 		getPlaylist(message, playlistId, number - 1),
 		message.member.voice.channel.join().then(connection => {

@@ -14,7 +14,7 @@ module.exports = class extends Command {
 				{
 					key: "text",
 					parse: text => text.split(" : "),
-					validate: textArray => textArray.length >= 3 || "please give me at least 3 arguments"
+					validate: textArray => textArray.length >= 3 || "Please give me at least 3 arguments"
 				}
 			]
 		});

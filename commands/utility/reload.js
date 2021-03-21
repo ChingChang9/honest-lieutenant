@@ -26,7 +26,7 @@ module.exports = class extends Command {
 					parse: command => this.client.registry.findCommands(command)[0] ||
 						this.client.registry.findGroups(command)[0],
 					validate: command => command instanceof Command || command instanceof CommandGroup ||
-						"cannot find the command/group"
+						"Cannot find the command/group"
 				}
 			]
 		});

@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.16.0",
+  "version": "3.16.1",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -50,7 +50,7 @@
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^4.2.8",
     "firebase-admin": "^9.5.0",
-    "googleapis": "^67.1.1",
+    "googleapis": "^68.0.0",
     "module-alias": "^2.2.2",
     "node-gyp": "^7.1.2",
     "register-scheme": "github:devsnek/node-register-scheme",

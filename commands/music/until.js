@@ -14,7 +14,7 @@ module.exports = class extends Command {
 				{
 					key: "untilIndex",
 					parse: untilIndex => parseInt(untilIndex),
-					validate: untilIndex => !isNaN(untilIndex) || "please enter a number!"
+					validate: untilIndex => !isNaN(untilIndex) || "Please enter a number!"
 				}
 			]
 		});
@@ -22,9 +22,7 @@ module.exports = class extends Command {
 
 	run(message, { untilIndex }) {
 		const dispatcher = message.guild.voice?.dispatcher;
-		if (!dispatcher) {
-			return message.reply("I'm not playing anything!");
-		}
+		if (!dispatcher) return message.reply("I'm not playing anything!");
 
 		const queue = message.guild.queue;
 		const played = message.guild.played;

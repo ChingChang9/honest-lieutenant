@@ -10,12 +10,12 @@ module.exports = class extends Command {
 			aliases: ["gt"],
 			description: "Play a specific track in the queue",
 			format: "<song-index>",
-			guildOnly: true,
+			voiceOnly: true,
 			arguments: [
 				{
 					key: "index",
 					parse: index => index === "farewell" ? index : parseInt(index),
-					validate: index => !isNaN(index) || index === "farewell" || "please enter a number!"
+					validate: index => !isNaN(index) || index === "farewell" || "Please enter a number!"
 				}
 			]
 		});

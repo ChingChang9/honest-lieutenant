@@ -57,7 +57,8 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		canRun() {
-			if (this.command.guildOnly && !this.guild) return this.command.onBlock(this, "guildOnly");
+			if ((this.command.guildOnly || this.command.voiceOnly) && !this.guild) return this.command.onBlock(this, "guildOnly");
+			if (this.command.voiceOnly && !this.member.voice.channel) return this.command.onBlock(this, "voiceOnly");
 			if (this.command.nsfw && !this.channel.nsfw) return this.command.onBlock(this, "nsfw");
 
 			const hasPermission = this.command.hasPermission(this);

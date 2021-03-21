@@ -8,10 +8,6 @@ const trashes = [
 ];
 
 module.exports = async (message, searchString) => {
-	if (!message.member.voice.channel) {
-		return message.reply("Please only use this when you're in a voice channel");
-	}
-
 	const songInfo = await getSongInfo(message, searchString);
 	if (!songInfo) return message.reply("Sorry I couldn't find this song 😬😬\nMaybhaps give me the link?");
 
