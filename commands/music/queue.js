@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const formatTime = require("@/scripts/formatTime.js");
+const { secondsToString } = require("@/scripts/formatTime.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		if (page === "auto") {
 			page = Math.ceil(message.guild.played / 10);
 		} else if (page > maxPage) {
-			return message.reply("the page doesn't exist");
+			return message.reply("The page doesn't exist");
 		}
 
 		const newMessage = await sendQueue(message, page);
@@ -48,7 +48,7 @@ async function sendQueue(message, page) {
 
 	if (!queue[0]) {
 		message.reactions.removeAll();
-		return message.reply("this queue empty! YEET!");
+		return message.reply("This queue empty! YEET!");
 	}
 
 	const queueString = getQueueString(message.guild, page);
@@ -105,9 +105,9 @@ function getDuration(voice, durationString, isCurr) {
 	if (durationString === "0") {
 		return `∞ ${ isPlaying ? "left" : "    " }`;
 	} else if (isPlaying) {
-		return `${ formatTime(durationString - voice.songElapsed) } left`;
+		return `${ secondsToString(durationString - voice.songElapsed) } left`;
 	} else {
-		return `${ formatTime(durationString) }     `;
+		return `${ secondsToString(durationString) }     `;
 	}
 }
 

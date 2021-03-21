@@ -3,7 +3,7 @@ const firebase = require("@/workers/firebase.js");
 
 module.exports = async (message, queue, currentIndex, toIndex, text, emoji) => {
 	if (!message.member.voice.channel) {
-		return message.reply("please only use this when you're in a voice channel");
+		return message.reply("Please only use this when you're in a voice channel");
 	}
 
 	if (toIndex >= queue.length) {

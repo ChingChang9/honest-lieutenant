@@ -29,7 +29,7 @@ module.exports = class extends Command {
 		const queue = message.guild.queue;
 		index = parseInt(index) - 1;
 
-		if (!queue[index]) return message.reply("the track doesn't exist");
+		if (!queue[index]) return message.reply("The track doesn't exist");
 
 		votePlay(message, queue, message.guild.played - 1, index, `Vote on jumping to \`${ queue[index].title }\``, "☑️");
 	}

@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		const queue = message.guild.queue;
 		const index = message.guild.played - 1;
 
-		if (!queue) message.reply("the queue is empty!");
+		if (!queue) message.reply("The queue is empty!");
 
 		const toIndex = Math.max(index - back, 0);
 		votePlay(message, queue, index, toIndex, `Vote on rewinding to \`${ queue[toIndex].title }\``, "⏪");

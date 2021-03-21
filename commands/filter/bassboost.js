@@ -33,7 +33,7 @@ module.exports = class extends Command {
 
 	async run(message, { bassboost }) {
 		if (!message.member.voice.channel) {
-			return message.reply("please only use this when you're in a voice channel");
+			return message.reply("Please only use this when you're in a voice channel");
 		}
 
 		await message.member.voice.channel.join().then(connection => connection.voice.setSelfDeaf(true));
@@ -41,7 +41,7 @@ module.exports = class extends Command {
 		bassboost = calculateBassboost(voiceState, bassboost);
 
 		if (isNaN(bassboost)) {
-			return message.reply(`the input must be a number between 0 and 1 inclusive. Use \`${ message.guild.commandPrefix }help bassboost\` to see examples`);
+			return message.reply(`The input must be a number between 0 and 1 inclusive. Use \`${ message.guild.commandPrefix }help bassboost\` to see examples`);
 		}
 
 		if (voiceState.bass === bassboost) {

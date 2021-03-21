@@ -33,7 +33,7 @@ module.exports = class extends Command {
 		const nsfw = await request(`https://www.reddit.com/r/${ subreddit }/about.json`).then(response => response.data.data.over18);
 
 		if (nsfw && !message.channel.nsfw) {
-			return message.reply("this subreddit is age restricted and this is a SFW channel");
+			return message.reply("This subreddit is age restricted and this is a SFW channel");
 		}
 
 		const embed = await getRedditPost([subreddit], {

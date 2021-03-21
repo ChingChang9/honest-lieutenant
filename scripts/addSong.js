@@ -1,30 +1,21 @@
-const ytdl = require("ytdl-core");
+const ytsr = require("ytsr");
 const playSong = require("@/scripts/playSong.js");
-const Message = require("@/client/message.js");
+const { stringToSeconds } = require("@/scripts/formatTime.js");
 
 const trashes = [
 	"100 gecs",
 	"ppcocaine"
 ];
 
-module.exports = async (message, songUrl) => {
+module.exports = async (message, searchString) => {
 	if (!message.member.voice.channel) {
-		return message.reply("please only use this when you're in a voice channel");
+		return message.reply("Please only use this when you're in a voice channel");
 	}
 
-	const songInfo = await ytdl.getBasicInfo(songUrl).catch(error => {
-		switch (error.message) {
-			case "Not a youtube domain": return message.reply("I can only play songs from Youtube");
-			case "Video unavailable": return message.reply("this video doesn't exist. Has it been deleted?");
-			case "This is a private video. Please sign in to verify that you may see it.": return message.reply("this video is private");
-		}
+	const songInfo = await getSongInfo(message, searchString);
+	if (!songInfo) return message.reply("Sorry I couldn't find this song 😬😬\nMaybhaps give me the link?");
 
-		if (error.name === "TypeError") return message.reply("this link is invalid");
-		return message.error(error);
-	});
-	if (songInfo instanceof Message) return;
-
-	const trashMessage = checkTrash(songInfo.videoDetails.title.toLowerCase());
+	const trashMessage = checkTrash(songInfo.title.toLowerCase());
 	if (trashMessage) return message.reply(trashMessage);
 
 	Promise.all([
@@ -42,22 +33,25 @@ module.exports = async (message, songUrl) => {
 	});
 };
 
-async function addSong(message, songInfo) {
-	await message.guild.queueRef.push({
-		title: songInfo.videoDetails.title,
-		videoUrl: songInfo.videoDetails.video_url,
-		thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
-		channel: songInfo.videoDetails.ownerChannelName,
-		channelUrl: `https://www.youtube.com/channel/${ songInfo.videoDetails.channelId }`,
-		duration: songInfo.videoDetails.lengthSeconds,
+async function getSongInfo(message, searchString) {
+	const result = await ytsr(searchString, { limit: 1 });
+
+	if (result.items.length) return {
+		title: result.items[0].title,
+		videoUrl: result.items[0].url,
+		thumbnail: result.items[0].bestThumbnail.url,
+		duration: stringToSeconds(result.items[0].duration),
 		requester: message.member.displayName,
 		requesterId: message.member.id
-	});
+	};
+}
 
-	const queue = message.guild.queue;
-	message.say(`Enqueued \`${ songInfo.videoDetails.title }\` at index \`${ queue.length }\``);
+async function addSong(message, songInfo) {
+	await message.guild.queueRef.push(songInfo);
 
-	return queue;
+	message.say(`Enqueued \`${ songInfo.title }\` at index \`${ message.guild.queue.length }\``);
+
+	return message.guild.queue;
 }
 
 function checkTrash(title) {
@@ -67,7 +61,7 @@ function checkTrash(title) {
 
 	if (trash) {
 		const refusal = [
-			`no ${ trash } please!`,
+			`No ${ trash } please!`,
 			`I refuse to queue ${ trash }`,
 			`nah bro, not ${ trash }`,
 			`${ trash }... this ain't it chief`

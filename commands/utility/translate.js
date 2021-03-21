@@ -17,7 +17,8 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(message, { text }) {
+	// async run(message, { text }) {
+	async run(message) {
 		message.reply("This command is deprecated :(");
 		// message.say(await translate(text));
 	}

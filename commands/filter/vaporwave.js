@@ -33,7 +33,7 @@ module.exports = class extends Command {
 
 	async run(message, { vaporwave }) {
 		if (!message.member.voice.channel) {
-			return message.reply("please only use this when you're in a voice channel");
+			return message.reply("Please only use this when you're in a voice channel");
 		}
 
 		await message.member.voice.channel.join().then(connection => connection.voice.setSelfDeaf(true));
@@ -41,7 +41,7 @@ module.exports = class extends Command {
 		vaporwave = calculateVaporwave(voiceState, vaporwave);
 
 		if (isNaN(vaporwave)) {
-			return message.reply(`the input must be a number between 0 and 1 inclusive. Use \`${ message.guild.commandPrefix }help vaporwave\` to see examples`);
+			return message.reply(`The input must be a number between 0 and 1 inclusive. Use \`${ message.guild.commandPrefix }help vaporwave\` to see examples`);
 		}
 
 		if (voiceState.speed === 1 - 0.32 * vaporwave) {

@@ -45,9 +45,9 @@ module.exports = class Command {
 	onBlock(message, reason, data) {
 		switch(reason) {
 			case "guildOnly":
-				return message.reply(`the \`${ this.name }\` command can only be used in servers`);
+				return message.reply(`The \`${ this.name }\` command can only be used in servers`);
 			case "nsfw":
-				return message.reply(`the \`${ this.name }\` command can only be used in NSFW channels`);
+				return message.reply(`The \`${ this.name }\` command can only be used in NSFW channels`);
 			case "permission": {
 				if (data.response) return message.reply(data.response);
 				return message.reply(`You do not have permission to use the \`${ this.name }\` command`);
@@ -62,7 +62,7 @@ module.exports = class Command {
 					data.missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(", ") }`);
 			}
 			case "throttling": {
-				return message.reply(`you may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
+				return message.reply(`You may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
 			}
 		}
 	}

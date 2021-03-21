@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			name: "remove",
 			group: "music",
 			aliases: ["rm", "delete"],
-			description: "Remove a track from the queue",
+			description: "Remove some track(s) from the queue",
 			format: "<song-index> [song-index]",
 			examples: [
 				{
@@ -47,12 +47,12 @@ module.exports = class extends Command {
 		const queue = queueRef.val();
 
 		if (index1 > queueKeys.length) {
-			return message.reply(`the ${ index2 ? "" : "first " }index doesn't exist!`);
+			return message.reply(`The ${ index2 ? "" : "first " }index doesn't exist!`);
 		}
 		index2 = Math.min(index2 || index1, queueKeys.length);
 
 		if (index1 === index2 && index1 === played && message.guild.voice?.dispatcher) {
-			return message.reply("bruh I'm playing that right now. I can't delete the current track 🙄🙄");
+			return message.reply("Bruh I'm playing that right now. I can't delete the current track 🙄🙄");
 		}
 
 		removeRange(message.guild, queue, queueKeys, played, Math.min(index1, index2), Math.max(index1, index2));

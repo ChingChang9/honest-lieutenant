@@ -1,5 +1,6 @@
 const Command = require("@/client/command.js");
 const playSong = require("@/scripts/playSong.js");
+const { stringToSeconds } = require("@/scripts/formatTime.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -27,17 +28,7 @@ module.exports = class extends Command {
 			arguments: [
 				{
 					key: "timestamp",
-					parse: timestamp => {
-						let timeArray = timestamp.split(":");
-
-						if (timeArray.length && timeArray.length <= 3) {
-							return timeArray.reduce((accumulator, element, index) => {
-								return accumulator + parseInt(element) * 60 ** (timeArray.length - index - 1);
-							}, 0);
-						} else {
-							return NaN;
-						}
-					},
+					parse: stringToSeconds,
 					validate: (timestamp, message) => {
 						if (!message.member.voice.channel) return "please only use this when you're in a voice channel";
 						if (isNaN(timestamp)) return "that's an invalid timestamp!";
@@ -57,7 +48,7 @@ module.exports = class extends Command {
 		connection.voice.setSelfDeaf(true);
 
 		if (timestamp >= queue[index].duration) {
-			return message.reply("the timestamp is past the duration of the song!");
+			return message.reply("The timestamp is past the duration of the song!");
 		}
 
 		playSong(message, connection, queue, index, timestamp);

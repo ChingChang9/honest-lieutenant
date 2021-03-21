@@ -33,7 +33,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { language }) {
-		const [videoTitle, videoUrl] = getVideoInfo(message);
+		const [videoTitle, videoUrl, videoThumbnail] = getVideoInfo(message);
 
 		const data = await request("https://api.ksoft.si/lyrics/search", {
 			headers: {
@@ -59,7 +59,9 @@ module.exports = class extends Command {
 			message.embed({
 				title: start === 0 ? data.name : null,
 				url: start === 0 ? videoUrl : null,
-				thumbnail: start === 0 ? { url: data.album_art } : null,
+				thumbnail: start === 0 ? {
+					url: data.album_art === "https://cdn.ksoft.si/images/Logo1024%20-%20W.png" ? videoThumbnail : data.album_art
+				} : null,
 				description: lyrics.slice(start, end),
 				footer: end >= lyrics.length ? { text: "Lyrics provided by KSoft.Si" } : null
 			});
@@ -71,5 +73,5 @@ module.exports = class extends Command {
 function getVideoInfo(message) {
 	const queue = message.guild.queue;
 	const index = message.guild.played - 1;
-	return [queue[index].title, queue[index].videoUrl];
+	return [queue[index].title, queue[index].videoUrl, queue[index].thumbnail];
 }

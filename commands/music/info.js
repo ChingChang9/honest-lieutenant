@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const formatTime = require("@/scripts/formatTime.js");
+const { secondsToString } = require("@/scripts/formatTime.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 	run(message) {
 		const dispatcher = message.guild.voice?.dispatcher;
 		if (!dispatcher) {
-			return message.reply("I am not playing anything!");
+			return message.reply("I'm not playing anything!");
 		}
 
 		const queue = message.guild.queue;
@@ -24,10 +24,6 @@ module.exports = class extends Command {
 		const [elapsed, duration, ratio] = getInfo(message.guild.voice.songElapsed, queue[index].duration);
 
 		message.embed({
-			author: {
-				name: queue[index].channel,
-				url: queue[index].channelUrl
-			},
 			title: queue[index].title,
 			url: queue[index].videoUrl,
 			thumbnail: {
@@ -57,5 +53,5 @@ module.exports = class extends Command {
 function getInfo(elapsedTimestamp, duration) {
 	const ratio = duration === "0" ? 9 : Math.floor(elapsedTimestamp / duration * 10);
 
-	return [formatTime(elapsedTimestamp), formatTime(duration), ratio];
+	return [secondsToString(elapsedTimestamp), secondsToString(duration), ratio];
 }

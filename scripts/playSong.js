@@ -1,5 +1,5 @@
 const ytdl = require("discord-ytdl-core");
-const formatTime = require("@/scripts/formatTime.js");
+const { secondsToString } = require("@/scripts/formatTime.js");
 const firebase = require("@/workers/firebase.js");
 const { embedColours } = require("@/config.json");
 
@@ -14,10 +14,6 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 		if (voiceState.repeat !== "one" && !seekTimestamp) message.channel.send({
 			embed: {
 				color: embedColours.default,
-				author: {
-					name: queue[index].channel,
-					url: queue[index].channelUrl
-				},
 				title: queue[index].title,
 				url: queue[index].videoUrl,
 				thumbnail: {
@@ -26,7 +22,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 				fields: [
 					{
 						name: "Duration",
-						value: queue[index].duration === "0" ? "Live" : formatTime(queue[index].duration),
+						value: queue[index].duration === "0" ? "Live" : secondsToString(queue[index].duration),
 						inline: true
 					},
 					{

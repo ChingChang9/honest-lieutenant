@@ -56,7 +56,7 @@ module.exports = class extends Command {
 		const commands = this.client.registry.findCommands(command);
 
 		if (!commands.length) return message.reply(`I can't find the command. Use \`${ prefix }help\` to see all my commands`);
-		if (commands.length > 1) return message.reply("please be more specific");{
+		if (commands.length > 1) return message.reply("Please be more specific");{
 
 			command = commands[0];
 			const fields = getDetails(command, prefix);

@@ -21,7 +21,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { text}) {
-		if (text.length < 3) return message.reply("please enter at least 3 arguments");
+		if (text.length < 3) return message.reply("Please enter at least 3 arguments");
 		if (text.length === 4 && text[2] !== text[3]) text.splice(3, 0, text[2]);
 		if (text.length === 3) text.push(text[2]);
 

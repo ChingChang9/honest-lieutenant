@@ -15,7 +15,7 @@ module.exports = (message, content) => {
         Math.random() < 0.75) return;
 
 			const sonName = content.slice(content.indexOf(triggerWord) + 1).join(" ");
-			if (!sonName && message.author.id == "195217084974759936") return message.reply("stop doing that 🙄");
+			if (!sonName && message.author.id == "195217084974759936") return message.reply("Stop doing that 🙄");
 
 			const emoji = emojis[Math.floor(Math.random() * emojis.length)];
 			if (sonName.match(/^not /) && sonName.length > 4) return message.say(`We know you're ${ sonName }, you're ${
