@@ -37,7 +37,7 @@ module.exports = class extends Command {
 		if (command.guarded) {
 			return message.reply(`The \`${ command.name }\` ${ command.group ? "command" : "group" } cannot be disabled`);
 		}
-		command.setEnabledIn(message.guild, false);
+		command.setDisabledIn(message.guild, true);
 		if (command instanceof Command) {
 			message.say(`Disabled the \`${ command.name }\` command`);
 		} else {

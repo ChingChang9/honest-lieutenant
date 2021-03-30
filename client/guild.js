@@ -7,8 +7,8 @@ module.exports = Structures.extend("Guild", Guild => {
 		constructor(...args) {
 			super(...args);
 			this._commandPrefix = null;
-			this._commandsEnabled = new Map();
-			this._groupsEnabled = new Map();
+			this._disabledCommands = new Set();
+			this._disabledGroups = new Set();
 			this.queue = [];
 			this.queueKeys = [];
 			this.played = 0;
@@ -39,20 +39,22 @@ module.exports = Structures.extend("Guild", Guild => {
 			this._commandPrefix = prefix;
 		}
 
-		setCommandEnabled(command, enabled) {
-			this._commandsEnabled.set(command.name, enabled);
+		setCommandDisabled(command, disabled) {
+			if (disabled) return this._disabledCommands.add(command.name);
+			this._disabledCommands.delete(command.name);
 		}
 
-		isCommandEnabled(command) {
-			return this._commandsEnabled.get(command.name);
+		isCommandDisabled(command) {
+			return this._disabledCommands.has(command.name);
 		}
 
-		setGroupEnabled(group, enabled) {
-			this._groupsEnabled.set(group.name, enabled);
+		setGroupDisabled(group, disabled) {
+			if (disabled) return this._disabledGroups.add(group.name);
+			this._disabledGroups.delete(group.name);
 		}
 
-		isGroupEnabled(group) {
-			return this._groupsEnabled.get(group.name);
+		isGroupDisabled(group) {
+			return this._disabledGroups.has(group.name);
 		}
 	};
 });

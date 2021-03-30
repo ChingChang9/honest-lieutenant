@@ -9,13 +9,13 @@ module.exports = class CommandGroup {
 		this.commands = new Collection();
 	}
 
-	setEnabledIn(guild, enabled) {
-		guild.setGroupEnabled(this, enabled);
+	setDisabledIn(guild, disabled) {
+		guild.setGroupDisabled(this, disabled);
 	}
 
-	isEnabledIn(guild) {
+	isDisabledIn(guild) {
 		guild = this.client.guilds.resolve(guild);
-		return guild.isGroupEnabled(this);
+		return guild.isGroupDisabled(this);
 	}
 
 	reload() {

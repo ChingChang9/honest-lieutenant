@@ -39,7 +39,7 @@ module.exports = class extends Command {
 		}
 
 		if (!message.member.hasPermission("ADMINISTRATOR")) {
-			return message.reply("Sorry, you need admin permission to change the prefix");
+			return message.reply("Sorry, you need the admin permission to change the prefix");
 		}
 
 		if (newPrefix.toLowerCase() === "default") {

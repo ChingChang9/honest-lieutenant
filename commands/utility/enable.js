@@ -34,11 +34,11 @@ module.exports = class extends Command {
 	}
 
 	run(message, { command }) {
-		command.setEnabledIn(message.guild, true);
+		command.setDisabledIn(message.guild, false);
 		const group = command.group;
 		if (group) {
 			message.say(`Enabled the \`${ command.name }\` command${
-				group.isEnabledIn(message.guild) === false ? `, but the \`${ group.displayName }\` group is disabled, so it still can't be used` : ""
+				group.isDisabledIn(message.guild) ? `, but the \`${ group.displayName }\` group is disabled, so it still can't be used` : ""
 			}`);
 		} else {
 			message.say(`Enabled all commands in \`${ command.name }\``);

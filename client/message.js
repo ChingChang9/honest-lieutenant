@@ -7,7 +7,7 @@ module.exports = Structures.extend("Message", Message => {
 			super(...args);
 			this.command = null;
 			this.argString = null;
-			this.response = null;
+			this._response = null;
 		}
 
 		initCommand(command, argString) {
@@ -17,17 +17,17 @@ module.exports = Structures.extend("Message", Message => {
 		}
 
 		async run() {
-			if (this.canRun() !== true) return;
+			if (this._block() instanceof Promise) return;
 
 			const throttle = this.command.throttle(this.author.id);
 			if (throttle) throttle.usages++;
 
-			const args = await this.parseArgs(this.argString);
-			if (args instanceof Message) return;
+			const args = await this._parseArgs(this.argString);
+			if (args instanceof Promise) return;
 			this.command.run(this, args);
 		}
 
-		async parseArgs(argString) {
+		async _parseArgs(argString) {
 			const argsArray = this.command.arguments.length > 1 ? argString.split(" ") : [argString];
 			let args = {};
 
@@ -35,20 +35,20 @@ module.exports = Structures.extend("Message", Message => {
 				const arg = this.command.arguments[index];
 
 				if (!argsArray[index] && arg.default === null) {
-					return await this.reply(`the correct usage is \`${
+					return this.reply(`The correct usage is \`${
 						this.guild.commandPrefix }${ this.command.name } ${ this.command.format
-					}\`. Use \`${ this.guild.commandPrefix }help ${ this.command.name
+					}\`\nType \`${ this.guild.commandPrefix }help ${ this.command.name
 					}\` for more information`);
 				}
 
 				const argValue = argsArray[index] ? arg.parse(argsArray[index]) : arg.default;
 
 				if (arg.oneOf && !arg.oneOf.includes(argValue)) {
-					return await this.reply(`the input has to be one of \`${ arg.oneOf.join("`, `") }\``);
+					return this.reply(`The input has to be one of \`${ arg.oneOf.join("`, `") }\``);
 				}
 
 				const validity = arg.validate(argValue, this);
-				if (typeof validity === "string") return await this.reply(validity);
+				if (typeof validity === "string") return this.reply(validity);
 
 				args[arg.key] = argValue;
 			}
@@ -56,44 +56,50 @@ module.exports = Structures.extend("Message", Message => {
 			return args;
 		}
 
-		canRun() {
-			if ((this.command.guildOnly || this.command.voiceOnly) && !this.guild) return this.command.onBlock(this, "guildOnly");
-			if (this.command.voiceOnly && !this.member.voice.channel) return this.command.onBlock(this, "voiceOnly");
-			if (this.command.nsfw && !this.channel.nsfw) return this.command.onBlock(this, "nsfw");
+		_block() {
+			if (this.command.isDisabledIn(this.guild)) return this.reply(`The ${ this.command.name } command is disabled in this server`);
+			if ((this.command.guildOnly || this.command.voiceOnly) && !this.guild) return this.reply(`The \`${ this.command.name }\` command can only be used in servers`);
+			if (this.command.voiceOnly && !this.member.voice.channel) return this.reply(`Please only use the ${ this.command.name } command when you're in a voice channel`);
+			if (this.command.nsfw && !this.channel.nsfw) return this.reply(`The \`${ this.command.name }\` command can only be used in NSFW channels`);
+			if (this.command.ownerOnly && !this.client.isOwner(this.author)) return this.reply(`The \`${ this.command.name }\` command can only be used by the bot owner`);
 
-			const hasPermission = this.command.hasPermission(this);
-			if (typeof hasPermission === "string") {
-				return this.command.onBlock(this, "permission", { response: typeof hasPermission === "string" ? hasPermission : undefined });
+			if (this.command.userPermissions) {
+				const missing = this.channel.permissionsFor(this.author).missing(this.command.userPermissions);
+				if (missing.length === 1) {
+					return this.reply(`You need the \`${ missing[0].replace(/_/g, " ").toLowerCase() }\` permission to run this command`);
+				} else if (missing.length > 1) {
+					return this.reply(`You need the following permissions to run this command: \`${ missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join("`, `") }\``);
+				}
 			}
 
-			if (this.command.clientPermissions && this.channel.type !== "dm") {
+			if (this.command.clientPermissions) {
 				const missing = this.channel.permissionsFor(this.client.user).missing(this.command.clientPermissions);
-				if (missing.length) {
-					return this.command.onBlock(this, "clientPermissions", { missing });
+				if (missing.length === 1) {
+					return this.reply(`I need the "${ missing[0].toLowerCase().replace(/_/g, " ") }" permission for the \`${ this.command.name }\` command to work`);
+				} else if (missing.length > 1) {
+					return this.reply(`I need the following permissions to run the \`${ this.command.name }\` command: ${
+						missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(", ") }`);
 				}
 			}
 
 			const throttle = this.command.throttle(this.author.id);
-			if (throttle && throttle.usages + 1 > this.command.throttling.usages) {
+			if (throttle && throttle.usages >= this.command.throttling.usages) {
 				const remaining = (throttle.start + (this.command.throttling.duration * 1000) - Date.now()) / 1000;
-				const data = { throttle, remaining };
-				return this.command.onBlock(this, "throttling", data);
+				return this.reply(`You may not use the \`${ this.command.name }\` command again for another ${ remaining.toFixed(1) } seconds`);
 			}
-
-			return true;
 		}
 
 		say(content, cache = true) {
 			let message;
 			if (content instanceof MessageAttachment || content.files) {
 				message = this.channel.send(content);
-				this.response?.delete();
+				this._response?.delete();
 			} else {
 				if (typeof content === "string") content = { content, embed: null };
-				message = this.response ? this.response.edit(content) : this.channel.send(content);
+				message = this._response ? this._response.edit(content) : this.channel.send(content);
 			}
 			return message.then(response => {
-				this.response = cache ? response : null;
+				this._response = cache ? response : null;
 				return response;
 			});
 		}

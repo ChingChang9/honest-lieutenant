@@ -23,50 +23,6 @@ module.exports = class Command {
 		this._throttles = new Map();
 	}
 
-	hasPermission(message) {
-		if (!this.ownerOnly && !this.userPermissions) return true;
-		if (this.client.isOwner(message.author)) return true;
-
-		if (this.ownerOnly) {
-			return "this command can only be used by the bot owner";
-		}
-
-		if (this.userPermissions) {
-			const missing = message.channel.permissionsFor(message.author).missing(this.userPermissions);
-			if (missing.length === 1) {
-				return `you need the \`${ missing[0].replace(/_/g, " ").toLowerCase() }\` permission`;
-			} else if (missing.length > 0) {
-				return `you need the following permissions: \`${ missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join("`, `") }\``;
-			}
-		}
-
-		return true;
-	}
-
-	onBlock(message, reason, data) {
-		switch(reason) {
-			case "guildOnly": return message.reply(`The \`${ this.name }\` command can only be used in servers`);
-			case "voiceOnly": return message.reply("Please only use this when you're in a voice channel");
-			case "nsfw": return message.reply(`The \`${ this.name }\` command can only be used in NSFW channels`);
-			case "permission": {
-				if (data.response) return message.reply(data.response);
-				return message.reply(`You do not have permission to use the \`${ this.name }\` command`);
-			}
-			case "clientPermissions": {
-				if (data.missing.length === 1) {
-					return message.reply(
-						`I need the "${ data.missing[0].toLowerCase().replace(/_/g, " ") }" permission for the \`${ this.name }\` command to work`
-					);
-				}
-				return message.reply(`I need the following permissions to run the \`${ this.name }\` command: ${
-					data.missing.map(perm => perm.toLowerCase().replace(/_/g, " ")).join(", ") }`);
-			}
-			case "throttling": {
-				return message.reply(`You may not use the \`${ this.name }\` command again for another ${ data.remaining.toFixed(1) } seconds`);
-			}
-		}
-	}
-
 	throttle(userID) {
 		if(!this.throttling || this.client.isOwner(userID)) return null;
 
@@ -85,13 +41,13 @@ module.exports = class Command {
 		return throttle;
 	}
 
-	setEnabledIn(guild, enabled) {
-		guild.setCommandEnabled(this, enabled);
+	setDisabledIn(guild, disabled) {
+		guild.setCommandDisabled(this, disabled);
 	}
 
-	isEnabledIn(guild) {
-		if (this.guarded) return true;
-		return guild.isGroupEnabled(this.group) && guild.isCommandEnabled(this);
+	isDisabledIn(guild) {
+		if (this.guarded) return false;
+		return guild.isGroupDisabled(this.group) || guild.isCommandDisabled(this);
 	}
 
 	reload() {
