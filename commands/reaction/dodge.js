@@ -5,23 +5,10 @@ const mentionReact = require("@/scripts/mentionReact.js");
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: "fbi",
+			name: "dodge",
 			group: "reaction",
-			aliases: ["police"],
-			description: "Call the FBI",
-			format: "[@user] [message]",
-			examples: [
-				{},
-				{
-					input: "don't move"
-				},
-				{
-					input: "@user"
-				},
-				{
-					input: "@user don't move"
-				}
-			],
+			description: "Dodge whatever comes at you. Always works",
+			format: "[message]",
 			throttling: {
 				usages: 3,
 				duration: 10
@@ -30,8 +17,8 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await tenorGif("fbi open up");
-		const fullEmbed = mentionReact(message, "calls the FBI on", imageEmbed);
+		const imageEmbed = await tenorGif("anime dodge");
+		const fullEmbed = mentionReact(message, "", imageEmbed);
 		message.embed(fullEmbed);
 	}
 };

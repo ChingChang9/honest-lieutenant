@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const kSoftImage = require("@/scripts/kSoftImage.js");
+const tenorGif = require("@/scripts/tenorGif.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
 module.exports = class extends Command {
@@ -7,19 +7,18 @@ module.exports = class extends Command {
 		super(client, {
 			name: "dab",
 			group: "reaction",
-			description: "Dab on someone",
-			format: "[message/user]",
+			description: "Dab on 'em haters",
+			format: "[@user] [message]",
 			examples: [
+				{},
 				{
-					explanation: "You dab"
+					input: "ah ha gottem!"
 				},
 				{
-					input: "they ain't us",
-					explanation: "You dab and say \"they ain't us\""
+					input: "@user"
 				},
 				{
-					input: "@user",
-					explanation: "You dab on @user"
+					input: "@user ah ha gottem!"
 				}
 			],
 			throttling: {
@@ -30,7 +29,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await kSoftImage("dab");
+		const imageEmbed = await tenorGif("anime dab");
 		const fullEmbed = mentionReact(message, "dabs on", imageEmbed);
 		message.embed(fullEmbed);
 	}

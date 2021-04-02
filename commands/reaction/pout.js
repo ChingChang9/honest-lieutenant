@@ -5,21 +5,20 @@ const mentionReact = require("@/scripts/mentionReact.js");
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: "clap",
+			name: "pout",
 			group: "reaction",
-			aliases: ["applaud"],
-			description: "Start clapping",
+			description: "Start pouting hehe",
 			format: "[@user] [message]",
 			examples: [
 				{},
 				{
-					input: "wow that's awesome"
+					input: "b-b-baka!"
 				},
 				{
 					input: "@user"
 				},
 				{
-					input: "@user wow that's awesome"
+					input: "@user you are a baka!"
 				}
 			],
 			throttling: {
@@ -30,8 +29,8 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await tenorGif("anime clap");
-		const fullEmbed = mentionReact(message, "applauds", imageEmbed);
+		const imageEmbed = await tenorGif("anime pout");
+		const fullEmbed = mentionReact(message, "pouts at", imageEmbed);
 		message.embed(fullEmbed);
 	}
 };

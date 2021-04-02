@@ -6,7 +6,7 @@ module.exports = (message, action, embed) => {
 	} else {
 		embed.author = {
 			name: message.member.displayName,
-			icon_url: `https://cdn.discordapp.com/avatars/${ message.author.id }/${ message.author.avatar }.jpg`
+			icon_url: message.author.displayAvatarURL()
 		};
 		embed.description = message.argString;
 	}

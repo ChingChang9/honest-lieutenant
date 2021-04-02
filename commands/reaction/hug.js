@@ -1,5 +1,6 @@
 const Command = require("@/client/command.js");
 const kSoftImage = require("@/scripts/kSoftImage.js");
+const tenorGif = require("@/scripts/tenorGif.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
 module.exports = class extends Command {
@@ -7,20 +8,14 @@ module.exports = class extends Command {
 		super(client, {
 			name: "hug",
 			group: "reaction",
-			aliases: ["cuddle"],
-			description: "Hug someone",
-			format: "[user/message]",
+			description: "Give someone a good hug",
+			format: "[@user] [message]",
 			examples: [
 				{
-					explanation: "You hug someone"
+					input: "@user"
 				},
 				{
-					input: "@user",
-					explanation: "You hug @user"
-				},
-				{
-					input: "it's okay @user",
-					explanation: "You hug @user and say \"it's okay\""
+					input: "@user it's okay"
 				}
 			],
 			throttling: {
@@ -31,7 +26,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await kSoftImage("hug");
+		const imageEmbed = Math.random() < 0.5 ? await kSoftImage("hug") : await tenorGif("anime hug");
 		const fullEmbed = mentionReact(message, "hugs", imageEmbed);
 		message.embed(fullEmbed);
 	}

@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.16.2",
+  "version": "3.17.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -13,11 +13,13 @@
   },
   "keywords": [
     "discord",
+    "audio",
+    "audio-effect",
     "music",
     "meme",
     "ffmpeg",
     "firebase",
-    "rpc",
+    "discord-rpc",
     "reddit",
     "weeb"
   ],
@@ -40,17 +42,17 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
-    "better-sqlite3": "^7.1.2",
+    "better-sqlite3": "^7.1.4",
     "bufferutil": "^4.0.3",
     "canvas": "^2.7.0",
     "cheerio": "^1.0.0-rc.5",
     "discord-rpc": "^3.2.0",
     "discord-ytdl-core": "^5.0.2",
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.5.2",
     "erlpack": "github:discord/erlpack",
-    "ffmpeg-static": "^4.2.8",
+    "ffmpeg-static": "^4.3.0",
     "firebase-admin": "^9.6.0",
-    "googleapis": "^68.0.0",
+    "googleapis": "^70.0.0",
     "module-alias": "^2.2.2",
     "node-gyp": "^7.1.2",
     "register-scheme": "github:devsnek/node-register-scheme",
@@ -59,8 +61,8 @@
     "utf-8-validate": "^5.0.4",
     "uuid": "^8.3.2",
     "ytdl-core": "^4.5.0",
-    "ytpl": "^2.0.5",
-    "ytsr": "^3.3.1",
+    "ytpl": "^2.1.0",
+    "ytsr": "^3.4.0",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {

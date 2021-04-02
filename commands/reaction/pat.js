@@ -1,5 +1,6 @@
 const Command = require("@/client/command.js");
 const kSoftImage = require("@/scripts/kSoftImage.js");
+const tenorGif = require("@/scripts/tenorGif.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
 module.exports = class extends Command {
@@ -7,20 +8,15 @@ module.exports = class extends Command {
 		super(client, {
 			name: "pat",
 			group: "reaction",
-			aliases: ["headrub"],
+			aliases: ["headpat", "headrub"],
 			description: "Pat someone",
-			format: "[user/message]",
+			format: "[@user] [message]",
 			examples: [
 				{
-					explanation: "You pat someone's head"
+					input: "@user"
 				},
 				{
-					input: "@user",
-					explanation: "You pat @user's head"
-				},
-				{
-					input: "it's okay @user",
-					explanation: "You pat @user's head and say \"it's okay\""
+					input: "@user it's okay"
 				}
 			],
 			throttling: {
@@ -33,10 +29,10 @@ module.exports = class extends Command {
 	async run(message) {
 		let fullEmbed;
 		if (message.content.includes("headrub") || Math.random() < 0.5) {
-			const imageEmbed = await kSoftImage("headrub");
+			const imageEmbed = Math.random() < 0.68 ? await tenorGif("anime head rub") : await kSoftImage("headrub");
 			fullEmbed = mentionReact(message, "rubs @'s head", imageEmbed);
 		} else {
-			const imageEmbed = await kSoftImage("pat");
+			const imageEmbed = Math.random() < 0.68 ? await tenorGif("anime head pat") : await kSoftImage("pat");
 			fullEmbed = mentionReact(message, "pats @ on the head", imageEmbed);
 		}
 

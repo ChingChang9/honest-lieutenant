@@ -2,24 +2,22 @@ const Command = require("@/client/command.js");
 const tenorGif = require("@/scripts/tenorGif.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
+const attacks = ["slap", "attack", "kick", "punch", "hit"];
+
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: "clap",
+			name: "attack",
 			group: "reaction",
-			aliases: ["applaud"],
-			description: "Start clapping",
+			aliases: ["punch", "hit", "attacc"],
+			description: "Attack someone",
 			format: "[@user] [message]",
 			examples: [
-				{},
-				{
-					input: "wow that's awesome"
-				},
 				{
 					input: "@user"
 				},
 				{
-					input: "@user wow that's awesome"
+					input: "@user get rekt"
 				}
 			],
 			throttling: {
@@ -30,8 +28,9 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await tenorGif("anime clap");
-		const fullEmbed = mentionReact(message, "applauds", imageEmbed);
+		const attack = attacks[Math.floor(Math.random() *  attacks.length)];
+		const imageEmbed = await tenorGif(`anime ${ attack }`);
+		const fullEmbed = mentionReact(message, `${ attack }${ attack === "punch" ? "e" : "" }s`, imageEmbed);
 		message.embed(fullEmbed);
 	}
 };

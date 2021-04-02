@@ -1,5 +1,5 @@
 const Command = require("@/client/command.js");
-const kSoftImage = require("@/scripts/kSoftImage.js");
+const tenorGif = require("@/scripts/tenorGif.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
 module.exports = class extends Command {
@@ -7,7 +7,8 @@ module.exports = class extends Command {
 		super(client, {
 			name: "pepe",
 			group: "reaction",
-			description: "Send pepe",
+			description: "Send a pepe gif",
+			format: "[message]",
 			throttling: {
 				usages: 5,
 				duration: 10
@@ -16,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const imageEmbed = await kSoftImage("pepe");
+		const imageEmbed = await tenorGif("pepe");
 		const fullEmbed = mentionReact(message, "", imageEmbed);
 		message.embed(fullEmbed);
 	}

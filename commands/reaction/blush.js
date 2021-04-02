@@ -1,23 +1,23 @@
 const Command = require("@/client/command.js");
-const kSoftImage = require("@/scripts/kSoftImage.js");
+const tenorGif = require("@/scripts/tenorGif.js");
 const mentionReact = require("@/scripts/mentionReact.js");
 
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: "kappa",
+			name: "blush",
 			group: "reaction",
-			description: "Get some kappas in the chat",
+			description: "Start blushing owo",
 			format: "[message]",
 			throttling: {
-				usages: 5,
+				usages: 3,
 				duration: 10
 			}
 		});
 	}
 
 	async run(message) {
-		const imageEmbed = await kSoftImage("kappa");
+		const imageEmbed = await tenorGif("anime blush");
 		const fullEmbed = mentionReact(message, "", imageEmbed);
 		message.embed(fullEmbed);
 	}
