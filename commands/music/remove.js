@@ -43,8 +43,7 @@ module.exports = class extends Command {
 	async run(message, { index1, index2 }) {
 		const played = message.guild.played;
 		const queueKeys = message.guild.queueKeys;
-		const queueRef = await message.guild.queueRef.once("value");
-		const queue = queueRef.val();
+		const queue = await message.guild.queueRef.once("value").then(reference => reference.val());
 
 		if (index1 > queueKeys.length) {
 			return message.reply(`The ${ index2 ? "" : "first " }index doesn't exist!`);

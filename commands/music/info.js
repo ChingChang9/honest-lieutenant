@@ -12,7 +12,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	run(message) {
+	async run(message) {
 		const dispatcher = message.guild.voice?.dispatcher;
 		if (!dispatcher) return message.reply("I'm not playing anything!");
 
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 			fields: [
 				{
 					name: "Requested by",
-					value: queue[index].requester,
+					value: await message.getDisplayName(queue[index].requesterId),
 					inline: true
 				},
 				{

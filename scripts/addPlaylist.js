@@ -46,7 +46,6 @@ async function getPlaylist(message, playlistId, number) {
 			videoUrl: songInfo.shortUrl,
 			thumbnail: songInfo.thumbnails[0].url,
 			duration: songInfo.durationSec,
-			requester: message.member.displayName,
 			requesterId: message.member.id
 		};
 	});

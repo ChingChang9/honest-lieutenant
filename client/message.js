@@ -89,6 +89,11 @@ module.exports = Structures.extend("Message", Message => {
 			}
 		}
 
+		async getDisplayName(userId) {
+			return await this.guild.members.fetch(userId).then(member => member.displayName)
+				.catch(() => this.client.users.fetch(userId).then(user => user.username).catch(() => "Deleted User"));
+		}
+
 		say(content, cache = true) {
 			let message;
 			if (content instanceof MessageAttachment || content.files) {

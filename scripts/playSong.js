@@ -8,6 +8,7 @@ module.exports = playSong;
 async function playSong(message, connection, queue, index, seekTimestamp = 0, changeFilter = false) {
 	const dispatcher = await startSong(connection, queue, index, seekTimestamp, message.guild.voice.filter);
 	const voiceState = message.guild.voice;
+	const requester = await message.getDisplayName(queue[index].requesterId);
 
 	dispatcher.once("start", () => {
 		if (message.client.rpc.verbose) message.client.rpc.startMusicStatus(queue[index], seekTimestamp);
@@ -27,7 +28,7 @@ async function playSong(message, connection, queue, index, seekTimestamp = 0, ch
 					},
 					{
 						name: "Requested by",
-						value: queue[index].requester,
+						value: requester,
 						inline: true
 					},
 					{

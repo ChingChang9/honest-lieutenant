@@ -37,7 +37,6 @@ async function getSongInfo(message, searchString) {
 		videoUrl: result.items[0].url,
 		thumbnail: result.items[0].bestThumbnail.url,
 		duration: stringToSeconds(result.items[0].duration),
-		requester: message.member.displayName,
 		requesterId: message.member.id
 	};
 }
