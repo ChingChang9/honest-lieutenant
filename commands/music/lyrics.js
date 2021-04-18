@@ -1,7 +1,7 @@
 const Command = require("@/client/command.js");
 const request = require("@/workers/request.js");
 const { ksoftAuth } = require("@/config.json");
-// const translate = require("@/scripts/translate.js");
+const translate = require("@/scripts/translate.js");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -45,9 +45,7 @@ module.exports = class extends Command {
 			}
 		}).then(response => response.data.data[0]);
 
-		const lyrics = data.lyrics;
-		if (language === "translate") message.say("the translation feature is deprecated :(");
-		// const lyrics = language === "translate" ? await translate(data.lyrics) : data.lyrics;
+		const lyrics = language === "translate" ? await translate(data.lyrics) : data.lyrics;
 
 		let start = 0;
 		let end = 0;
