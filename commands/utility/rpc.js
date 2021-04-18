@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(message, { verbose }) {
+	run(message, { verbose }) {
 		if (verbose === "off" && this.client.rpc.verbose) {
 			this.client.rpc.clearActivity();
 			this.client.rpc.verbose = false;

@@ -7,6 +7,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "cry",
 			group: "reaction",
+			aliases: ["sob"],
 			description: "Aweee what happened? You start crying 🥺🥺",
 			format: "[message]",
 			throttling: {

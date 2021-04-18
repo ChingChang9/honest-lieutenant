@@ -16,18 +16,18 @@ module.exports = Structures.extend("Message", Message => {
 			this.run();
 		}
 
-		async run() {
+		run() {
 			if (this._block() instanceof Promise) return;
 
 			const throttle = this.command.throttle(this.author.id);
 			if (throttle) throttle.usages++;
 
-			const args = await this._parseArgs(this.argString);
+			const args = this._parseArgs(this.argString);
 			if (args instanceof Promise) return;
 			this.command.run(this, args);
 		}
 
-		async _parseArgs(argString) {
+		_parseArgs(argString) {
 			const argsArray = this.command.arguments.length > 1 ? argString.split(" ") : [argString];
 			let args = {};
 
@@ -84,7 +84,7 @@ module.exports = Structures.extend("Message", Message => {
 
 			const throttle = this.command.throttle(this.author.id);
 			if (throttle && throttle.usages >= this.command.throttling.usages) {
-				const remaining = (throttle.start + (this.command.throttling.duration * 1000) - Date.now()) / 1000;
+				const remaining = (throttle.start + this.command.throttling.duration * 1000 - Date.now()) / 1000;
 				return this.reply(`You may not use the \`${ this.command.name }\` command again for another ${ remaining.toFixed(1) } seconds`);
 			}
 		}

@@ -15,6 +15,7 @@ module.exports = class extends Command {
 				{
 					key: "page",
 					parse: page => parseInt(page),
+					validate: page => !isNaN(page) || page === "auto" || "Please enter a number",
 					default: "auto",
 				}
 			]

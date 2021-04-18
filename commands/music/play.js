@@ -41,7 +41,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(message, { searchString }) {
+	run(message, { searchString }) {
 		const playlistId = searchString.match(/^http.+playlist\?list=(.+)&?/)?.[1];
 		if (playlistId) return addPlaylist(message, playlistId, searchString.split(" ")[1]);
 

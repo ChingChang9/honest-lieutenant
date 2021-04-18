@@ -27,7 +27,7 @@ module.exports = class extends Command {
 			thumbnail: {
 				url: queue[index].thumbnail
 			},
-			description: `${ elapsed } ${ "▬".repeat(ratio) }🔘${ "▬".repeat((9 - ratio)) } ${ duration }`,
+			description: `${ elapsed } ${ "▬".repeat(ratio) }🔘${ "▬".repeat(9 - ratio) } ${ duration }`,
 			fields: [
 				{
 					name: "Requested by",

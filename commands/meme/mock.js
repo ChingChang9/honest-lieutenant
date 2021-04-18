@@ -24,12 +24,10 @@ module.exports = class extends Command {
 								} else {
 									text2 += text[index].toLowerCase();
 								}
+							} else if (index < 30) {
+								text1 += text[index].toUpperCase();
 							} else {
-								if (index < 30) {
-									text1 += text[index].toUpperCase();
-								} else {
-									text2 += text[index].toUpperCase();
-								}
+								text2 += text[index].toUpperCase();
 							}
 						}
 						if (text1.length === 30) {
