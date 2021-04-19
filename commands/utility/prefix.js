@@ -9,15 +9,15 @@ module.exports = class extends Command {
 			format: "[prefix/default]",
 			examples: [
 				{
-					explanation: "Shows my prefix in this server"
+					explanation: "Show my prefix in this server"
 				},
 				{
 					input: "-",
-					explanation: "Sets my prefix in this server to `-`"
+					explanation: "Set my prefix in this server to `-`"
 				},
 				{
 					input: "default",
-					explanation: "Resets my prefix in this server to default"
+					explanation: "Reset my prefix in this server to default"
 				}
 			],
 			guildOnly: true,

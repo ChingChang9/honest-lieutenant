@@ -11,11 +11,11 @@ module.exports = class extends Command {
 			examples: [
 				{
 					input: "meme",
-					explanation: "Enables all commands in `🙃 Meme`"
+					explanation: "Enable all commands in `🙃 Meme`"
 				},
 				{
 					input: "dog",
-					explanation: "Enables the `dog` command"
+					explanation: "Enable the `dog` command"
 				}
 			],
 			userPermissions: ["ADMINISTRATOR"],

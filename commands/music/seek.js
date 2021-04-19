@@ -13,15 +13,15 @@ module.exports = class extends Command {
 			examples: [
 				{
 					input: "1:20",
-					explanation: "Jumps to 1:20 of the song"
+					explanation: "Jump to 1:20 of the song"
 				},
 				{
 					input: "80",
-					explanation: "Also jumps to 1:20 of the song"
+					explanation: "Also jump to 1:20 of the song"
 				},
 				{
 					input: "0:80",
-					explanation: "Once again jumps to 1:20 of the song"
+					explanation: "Once again jump to 1:20 of the song"
 				}
 			],
 			voiceOnly: true,

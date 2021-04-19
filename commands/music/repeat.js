@@ -14,15 +14,15 @@ module.exports = class extends Command {
 				},
 				{
 					input: "one",
-					explanation: "Repeats one song"
+					explanation: "Repeat one song"
 				},
 				{
 					input: "queue",
-					explanation: "Loops the entire playlist"
+					explanation: "Loop the entire playlist"
 				},
 				{
 					input: "off",
-					explanation: "Turns repeat off"
+					explanation: "Turn repeat off"
 				}
 			],
 			guildOnly: true,

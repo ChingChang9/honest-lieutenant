@@ -12,15 +12,15 @@ module.exports = class extends Command {
 			format: "[breed-id]",
 			examples: [
 				{
-					explanation: "Sends a random cat!"
+					explanation: "Send a random cat!"
 				},
 				{
 					input: "beng",
-					explanation: "Sends a random Bengal"
+					explanation: "Send a random Bengal"
 				},
 				{
 					input: "breeds",
-					explanation: "Lists the breeds and their IDs"
+					explanation: "List the breeds and their IDs"
 				}
 			],
 			arguments: [

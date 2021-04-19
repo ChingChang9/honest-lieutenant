@@ -19,15 +19,15 @@ module.exports = class extends Command {
 				},
 				{
 					input: "<playlist-link>",
-					explanation: "Queues the first 100 songs in the playlist"
+					explanation: "Queue the first 100 songs in the playlist"
 				},
 				{
 					input: " <playlist-link> 4",
-					explanation: "Queues the first 4 songs in the playlist"
+					explanation: "Queue the first 4 songs in the playlist"
 				},
 				{
 					input: "<playlist-link> all",
-					explanation: "Queues the entire playlist"
+					explanation: "Queue the entire playlist"
 				}
 			],
 			default: "playlist-length: `100`",

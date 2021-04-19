@@ -17,25 +17,25 @@ module.exports = class extends Command {
 					explanation: "Display Honest Lieutenant's profile picture"
 				},
 				{
-					input: "<@!668301556185300993>",
+					input: "668301556185300993",
 					explanation: "Display Honest Lieutenant's profile picture without pinging him"
 				}
 			],
 			arguments: [
 				{
-					key: "userId",
+					key: "mentioned",
 					default: "You"
 				}
 			]
 		});
 	}
 
-	async run(message, { userId }) {
-		if (userId === "You") return message.say(message.author.displayAvatarURL());
+	async run(message, { mentioned }) {
+		if (mentioned === "You") return message.say(message.author.displayAvatarURL());
 
-		const matches = userId.match(/^(?:<@!?)?([0-9]+)>?$/);
-		if (matches) {
-			const user = await message.client.users.fetch(matches[1]);
+		const userId = mentioned.match(/^(\\?<@!?)?([0-9]+)>?$/)?.[2];
+		if (userId) {
+			const user = await message.client.users.fetch(userId);
 			if (user) return message.say(user.displayAvatarURL());
 		}
 

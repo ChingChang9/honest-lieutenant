@@ -16,6 +16,14 @@ module.exports = class extends Client {
 		this.rpc = new RPCClient({ transport: "ipc" });
 		this.registry = new Registry(this);
 		this.dispatcher = new Dispatcher(this, this.registry);
+		this.spamRate = {
+			coffinDance: 1,
+			dadJoke: 0,
+			lmao: 1,
+			owo: 1,
+			talkingAbout: 1,
+			vexeraPlay: 1
+		};
 
 		this.rpc.login({ clientId }).catch(console.error);
 

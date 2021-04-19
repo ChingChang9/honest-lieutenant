@@ -10,15 +10,15 @@ module.exports = class extends Command {
 			format: "[clear]",
 			examples: [
 				{
-					explanation: "Displays the applied filters"
+					explanation: "Display the applied filters"
 				},
 				{
 					input: "clear",
-					explanation: "Clears all filters"
+					explanation: "Clear all filters"
 				},
 				{
 					input: "reset",
-					explanation: "Clears all filters"
+					explanation: "Clear all filters"
 				}
 			],
 			guildOnly: true,

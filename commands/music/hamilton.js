@@ -13,8 +13,6 @@ module.exports = class extends Command {
 			arguments: [
 				{
 					key: "version",
-					prompt: "What version do you want?",
-					type: "string",
 					oneOf: ["original", "outtakes", "instrumental"],
 					default: "outtakes"
 				}

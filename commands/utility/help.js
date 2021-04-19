@@ -13,11 +13,11 @@ module.exports = class extends Command {
 			format: "[command]",
 			examples: [
 				{
-					explanation: "Lists all my commands"
+					explanation: "List all my commands"
 				},
 				{
 					input: "prefix",
-					explanation: "Shows a detailed menu for the `prefix` command"
+					explanation: "Show a detailed menu for the `prefix` command"
 				}
 			],
 			guarded: true,

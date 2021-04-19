@@ -11,11 +11,11 @@ module.exports = class extends Command {
 			examples: [
 				{
 					input: "meme",
-					explanation: "Reloads all commands in `🙃 Meme`"
+					explanation: "Reload all commands in `🙃 Meme`"
 				},
 				{
 					input: "dog",
-					explanation: "Reloads the `dog` command"
+					explanation: "Reload the `dog` command"
 				}
 			],
 			ownerOnly: true,

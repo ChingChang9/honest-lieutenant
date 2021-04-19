@@ -11,11 +11,11 @@ module.exports = class extends Command {
 			examples: [
 				{
 					input: "#general hi everyone!",
-					explanation: "Says \"hi everyone!\" in #general"
+					explanation: "Say \"hi everyone!\" in #general"
 				},
 				{
 					input: "I am a bot",
-					explanation: "Replaces this message with \"I am a bot\""
+					explanation: "Replace this message with \"I am a bot\""
 				}
 			],
 			guildOnly: true,

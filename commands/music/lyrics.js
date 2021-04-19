@@ -13,11 +13,11 @@ module.exports = class extends Command {
 			format: "[original/translate]",
 			examples: [
 				{
-					explanation: "Displays the lyrics in its language"
+					explanation: "Display the lyrics in its language"
 				},
 				{
 					input: "translate",
-					explanation: "Displays the English translation of the lyrics"
+					explanation: "Display the English translation of the lyrics"
 				}
 			],
 			guildOnly: true,

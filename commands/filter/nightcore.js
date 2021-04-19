@@ -11,15 +11,15 @@ module.exports = class extends Command {
 			format: "[on/off/number]",
 			examples: [
 				{
-					explanation: "Toggles nightcore on and off"
+					explanation: "Toggle nightcore on and off"
 				},
 				{
 					input: "on",
-					explanation: "Turns on nightcore"
+					explanation: "Turn on nightcore"
 				},
 				{
 					input: "0.3",
-					explanation: "Sets nightcore-ness to 0.3"
+					explanation: "Set nightcore-ness to 0.3"
 				}
 			],
 			arguments: [

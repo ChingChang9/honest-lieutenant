@@ -12,15 +12,15 @@ module.exports = class extends Command {
 			examples: [
 				{
 					input: "2",
-					explanation: "Removes the second song in the queue"
+					explanation: "Remove the second song in the queue"
 				},
 				{
 					input: "2 6",
-					explanation: "Removes song 2 to 6"
+					explanation: "Remove song 2 to 6"
 				},
 				{
 					input: "6, 2",
-					explanation: "Also removes song 2 to 6 :D"
+					explanation: "Also remove song 2 to 6 :D"
 				}
 			],
 			guildOnly: true,

@@ -1,15 +1,12 @@
 const { lmao, owo, no, vexeraPlay, talkingAbout, coffinDance, dadJoke } = require("require-all")(__dirname);
 
+const functions = [lmao, owo, no, vexeraPlay, talkingAbout, coffinDance, dadJoke];
+
 module.exports = {
 	run(message) {
 		const content = message.content.toLowerCase().split(/\s|\n/);
+		const chance = Math.random();
 
-		lmao(message, content) ||
-    owo(message, content) ||
-    no(message, content) ||
-    vexeraPlay(message, content) ||
-    talkingAbout(message, content) ||
-    coffinDance(message, content) ||
-    dadJoke(message, content);
+		functions.some(prefixless => chance < message.guild.getSpamRate(prefixless.name) && prefixless.run(message, content));
 	}
 };

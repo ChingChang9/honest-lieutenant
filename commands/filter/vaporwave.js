@@ -11,15 +11,15 @@ module.exports = class extends Command {
 			format: "[on/off/number]",
 			examples: [
 				{
-					explanation: "Toggles vaporwave on and off"
+					explanation: "Toggle vaporwave on and off"
 				},
 				{
 					input: "on",
-					explanation: "Turns on vaporwave"
+					explanation: "Turn on vaporwave"
 				},
 				{
 					input: "0.3",
-					explanation: "Sets vaporwave-ness to 0.3"
+					explanation: "Set vaporwave-ness to 0.3"
 				}
 			],
 			arguments: [
