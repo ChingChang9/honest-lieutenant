@@ -1,7 +1,4 @@
 const Command = require("@/client/command.js");
-const { MessageAttachment } = require("discord.js");
-const icon = new MessageAttachment("./assets/icon.jpg");
-const { embedColours } = require("@/config.json");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -34,21 +31,18 @@ module.exports = class extends Command {
 		const prefix = message.guild?.commandPrefix || this.client.commandPrefix;
 		if (!command) {
 			const fields = getCommands(this.client, prefix);
-			return message.say({
-				files: [icon],
-				embed: {
-					color: embedColours.default,
-					author: {
-						name: "Honest Lieutenant's Commands",
-						icon_url: "attachment://icon.jpg",
-						url: "https://www.chingchang.dev"
-					},
-					description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
-					fields,
-					footer: {
-						text: "Ching Chang © 2021 Some Rights Reserved",
-						icon_url: "attachment://icon.jpg"
-					}
+			return message.embed({
+				files: ["./assets/icon.jpg"],
+				author: {
+					name: "Honest Lieutenant's Commands",
+					icon_url: "attachment://icon.jpg",
+					url: "https://www.chingchang.dev"
+				},
+				description: `Use \`${ prefix }help [command]\` for more information on a specific command\n\`<>\`: Required \`[]\`: Optional`,
+				fields,
+				footer: {
+					text: "Ching Chang © 2021 Some Rights Reserved",
+					icon_url: "attachment://icon.jpg"
 				}
 			});
 		}

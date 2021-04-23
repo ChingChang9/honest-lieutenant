@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.19.1",
+  "version": "3.20.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {

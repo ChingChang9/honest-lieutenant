@@ -17,7 +17,7 @@ module.exports = class extends Command {
 		super(client, {
 			name: "corona",
 			group: "other",
-			aliases: ["covid", "coronavirus", "virus", "stats"],
+			aliases: ["corona", "coronavirus"],
 			description: "Display the coronavirus stats in Edmonton"
 		});
 	}

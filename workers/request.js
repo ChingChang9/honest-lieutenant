@@ -8,6 +8,7 @@ function makeRequest(url, { method = "GET", headers = {}, params = {}, body = {}
 		url += `${ i === 0 ? "?" : "&" }${ keys[i] }=${ params[keys[i]] }`;
 	}
 	keys = null;
+	headers["User-Agent"] = "Honest Lieutenant";
 
 	body = typeof body === "string" ? body : JSON.stringify(body);
 	return new Promise((resolve, reject) => {

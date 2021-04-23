@@ -95,7 +95,8 @@ module.exports = Structures.extend("Message", Message => class extends Message {
 
 	say(content, cache = true) {
 		let message;
-		if (content instanceof MessageAttachment || content.files) {
+		if (content instanceof MessageAttachment || content.files || this._response?.embeds[0]?.image ||
+			this._response?.embeds[0]?.thumbnail || this._response?.embeds[0]?.footer?.iconURL) {
 			message = this.channel.send(content);
 			this._response?.delete();
 		} else {
@@ -131,7 +132,9 @@ module.exports = Structures.extend("Message", Message => class extends Message {
 			});
 		} else {
 			embed.color = embedColours[type];
-			return this.say({embed});
+			const files = embed.files;
+			delete embed.files;
+			return this.say({ files, embed });
 		}
 	}
 
