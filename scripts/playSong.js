@@ -116,14 +116,15 @@ function disconnect(message) {
 		if (!message.guild.voice?.channel) return;
 
 		const farewells = [
-			"Ight imma head out",
+			"ight imma head out",
 			"Time to banana split out of this awkwardness",
 			"Let me strawberry jam outta here",
 			"Anyway~ I gotta wake up early tomorrow, so... yeah",
 			"Alright, cya",
 			"Goto. Farewell",
 			"I'll go sell all my land",
-			`For LOHS TV, I am ${ message.guild.clientName }, and just remember: BE LEGENDARY!`
+			`For LOHS TV, I am ${ message.guild.clientName }, and just remember: BE LEGENDARY!`,
+			"oyasuminasai"
 		];
 
 		message.channel.send(farewells[Math.floor(Math.random() * farewells.length)]);

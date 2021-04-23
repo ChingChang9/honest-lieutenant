@@ -75,7 +75,7 @@ async function startCollector(oldMessage, newMessage, queue, page) {
 		if (reaction.emoji.name === "⏩") return sendQueue(oldMessage, lastPage || lastPage);
 	});
 	collector.once("end", () => {
-		if (!collector.endReason()) newMessage.reactions.removeAll();
+		if (!collector.endReason() && !newMessage.deleted) newMessage.reactions.removeAll();
 	});
 }
 

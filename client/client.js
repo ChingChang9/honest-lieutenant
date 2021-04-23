@@ -29,6 +29,7 @@ module.exports = class extends Client {
 
 		this.once("ready", () => {
 			this.user.setActivity("with myself | .help");
+			process.send("ready");
 			console.log(`Logged in as ${ this.user.tag }!`);
 		});
 

@@ -40,33 +40,34 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(message, { index1, index2 }) {
-		const played = message.guild.played;
-		const queueKeys = message.guild.queueKeys;
-		const queue = await message.guild.queueRef.once("value").then(reference => reference.val());
-
-		if (index1 > queueKeys.length) {
-			return message.reply(`The ${ index2 ? "" : "first " }index doesn't exist!`);
+	run(message, { index1, index2 }) {
+		if (index1 > message.guild.queueKeys.length && index2 === 0) {
+			return message.reply("The index doesn't exist!");
 		}
-		index2 = Math.min(index2 || index1, queueKeys.length);
+		index2 = Math.min(index2 || index1, message.guild.queueKeys.length);
 
-		if (index1 === index2 && index1 === played && message.guild.voice?.dispatcher) {
+		if (index1 === index2 && index1 === message.guild.played && message.guild.voice?.dispatcher) {
 			return message.reply("Bruh I'm playing that right now. I can't delete the current track 🙄🙄");
 		}
 
-		removeRange(message.guild, queue, queueKeys, played, Math.min(index1, index2), Math.max(index1, index2));
+		removeRange(message.guild, Math.min(index1, index2) - 1, Math.max(index1, index2) - 1);
 		message.react("👍🏽");
 	}
 };
 
-function removeRange(guild, queue, queueKeys, played, index1, index2) {
-	let count = 0;
-	for (let index = index1; index <= index2; index++) {
-		if (index !== played || !guild.voice?.dispatcher) queue[queueKeys[index - 1]] = null;
-		if (index <= played) count++;
+function removeRange(guild, index1, index2) {
+	let removedCount = 0;
+	let newQueue = {};
+	for (let index = 0; index < guild.queueKeys.length; index++) {
+		if (index >= index1 && index <= index2 && (index !== guild.played || !guild.voice?.dispatcher)) {
+			newQueue[guild.queueKeys[index]] = null;
+			if (index <= guild.played) removedCount++;
+		} else {
+			newQueue[guild.queueKeys[index]] = guild.queue[index];
+		}
 	}
 	firebase.updateGuildValue(guild.id, {
-		played: played - count
+		queue: newQueue,
+		played: guild.played - removedCount
 	});
-	guild.queueRef.set(queue);
 }

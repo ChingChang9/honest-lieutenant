@@ -20,3 +20,15 @@ module.exports = {
 		await database.ref(`users/${ userId }`).update(value);
 	}
 };
+
+process.once("SIGINT", () => {
+	database.goOffline();
+	process.exit();
+});
+
+process.once("message", message => {
+	if (message === "shutdown") {
+		database.goOffline();
+		process.exit();
+	}
+});

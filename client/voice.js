@@ -20,8 +20,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => class extends Voi
 			Nightcore: "aresample=48000,asetrate=48000*1.2",
 			Normalizer: "loudnorm,volume=3",
 			Vaporwave: "aresample=48000,asetrate=48000*0.84",
-			Vibrate: "vibrato=f=6.5",
-			WTF: "apulsator=hz=1,vibrato=f=3.5,tremolo,bass=g=7"
+			Vibrate: "vibrato=f=6.5"
 		};
 	}
 
@@ -30,8 +29,6 @@ module.exports = Structures.extend("VoiceState", VoiceState => class extends Voi
 	}
 
 	applyFilter(message, filterName, { newSpeed = this.speed, newBass = this.bass } = {}) {
-		if (filterName !== "WTF") this.removeFilter("WTF", false);
-
 		let action;
 		if (this.appliedFilterNames.has(filterName) &&
 		(newSpeed !== this.speed && newSpeed !== 1 || newBass !== this.bass && newBass !== 0)) {
@@ -41,7 +38,6 @@ module.exports = Structures.extend("VoiceState", VoiceState => class extends Voi
 			this.removeFilter(filterName);
 			action = "Removing";
 		} else {
-			if (filterName === "WTF") this.clearAllFilters(message, false);
 			this.addFilter(filterName);
 			action = "Applying";
 		}
@@ -70,7 +66,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => class extends Voi
 		delete this.appliedFilters[filterName];
 	}
 
-	clearAllFilters(message, showMessge = true) {
+	clearAllFilters(message) {
 		this.appliedFilterNames.clear();
 		this.appliedFilters = {};
 		this.filter = "";
@@ -80,7 +76,7 @@ module.exports = Structures.extend("VoiceState", VoiceState => class extends Voi
 			const seekTimestamp = Math.max(0, this.songElapsed - 1.5);
 			this.speed = 1;
 			playSong(message, this.dispatcher.player.voiceConnection, message.guild.queue, message.guild.played - 1, seekTimestamp, true);
-			if (showMessge) return message.embed("Removing all filters...", "loading");
+			return message.embed("Removing all filters...", "loading");
 		} else {
 			this.speed = 1;
 		}
