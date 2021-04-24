@@ -18,7 +18,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { location }) {
-		const [longitude, latitude] = await request(`https://nominatim.openstreetmap.org/search/${ location }/?format=geocodejson`)
+		const [longitude, latitude] = await request(`https://nominatim.openstreetmap.org/search/${ encodeURIComponent(location) }/?format=geocodejson`)
 			.then(response => response.data.features[0]?.geometry.coordinates || []);
 
 		if (!longitude && !latitude) return message.reply("Couldn't find the location 😔😔");
@@ -74,11 +74,15 @@ module.exports = class extends Command {
 };
 
 function getDirection(degree) {
-	return degree < 22.5 || degree >= 337.5 ? "North" :
-		degree < 67.5 ? "Northeast" :
-		degree < 112.5 ? "East" :
-		degree < 157.5 ? "Southeast" :
-		degree < 202.5 ? "South" :
-		degree < 247.5 ? "Southwest" :
-		degree < 292.5 ? "West" : "Northwest";
+	const octant = Math.floor((degree + 22.5) % 360 / 45);
+	return {
+		0: "North",
+		1: "Northeast",
+		2: "East",
+		3: "Southeast",
+		4: "South",
+		5: "Southwest",
+		6: "West",
+		7: "Northwest"
+	}[octant];
 }

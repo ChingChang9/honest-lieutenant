@@ -18,7 +18,7 @@ module.exports = class extends Command {
 	}
 
 	async run(message, { location }) {
-		const [longitude, latitude] = await request(`https://nominatim.openstreetmap.org/search/${ location }/?format=geocodejson`)
+		const [longitude, latitude] = await request(`https://nominatim.openstreetmap.org/search/${ encodeURIComponent(location) }/?format=geocodejson`)
 			.then(response => response.data.features[0].geometry.coordinates);
 
 		message.embed({

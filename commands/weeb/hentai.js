@@ -7,7 +7,8 @@ const subreddits = [
 	"CumHentai",
 	"PublicHentai",
 	"MasturbationHentai",
-	"Animemasturbation"
+	"Animemasturbation",
+	"HentaiTLF"
 ];
 
 module.exports = class extends Command {

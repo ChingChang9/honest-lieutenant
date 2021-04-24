@@ -10,7 +10,6 @@ module.exports = class extends Command {
 		super(client, {
 			name: "askreddit",
 			group: "reddit",
-			aliases: ["ar"],
 			description: "Send a post from r/AskReddit",
 			throttling: {
 				usages: 5,
