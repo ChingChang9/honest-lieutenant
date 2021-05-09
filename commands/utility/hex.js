@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
-const Canvas = require("canvas");
+const { createCanvas } = require("canvas");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -66,7 +66,7 @@ function getHexAndRGBA(code) {
 }
 
 function getColourAttachment(hex) {
-	const canvas = Canvas.createCanvas(512, 512);
+	const canvas = createCanvas(512, 512);
 	const context = canvas.getContext("2d");
 	context.fillStyle = hex;
 	context.fillRect(0, 0, 512, 512);

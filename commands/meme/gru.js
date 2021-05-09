@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
-const Canvas = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
 
 module.exports = class extends Command {
@@ -41,9 +41,9 @@ module.exports = class extends Command {
 };
 
 async function createImage(size) {
-	const canvas = size > 4 ? Canvas.createCanvas(500, 500) : Canvas.createCanvas(500, 320);
+	const canvas = size > 4 ? createCanvas(500, 500) : createCanvas(500, 320);
 	const context = canvas.getContext("2d");
-	const background = await Canvas.loadImage("./assets/meme/gru-presentation.jpg");
+	const background = await loadImage("./assets/meme/gru-presentation.jpg");
 	context.drawImage(background, 0, 0, 500, 500);
 
 	return [context, canvas];

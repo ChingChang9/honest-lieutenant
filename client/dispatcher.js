@@ -27,7 +27,7 @@ module.exports = class Dispatcher {
 		this._editable.get(message.id)?.close();
 		this._editable.set(message.id, setTimeout(() => {
 			this._editable.delete(message.id);
-		}, 30 * 1000));
+		}, this.client.messageCacheLifetime * 1000));
 	}
 
 	getPrefixRegex(guild) {

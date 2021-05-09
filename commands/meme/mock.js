@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
-const Canvas = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 
 module.exports = class extends Command {
 	constructor(client) {
@@ -66,9 +66,9 @@ module.exports = class extends Command {
 };
 
 async function createImage() {
-	const canvas = Canvas.createCanvas(800, 400);
+	const canvas = createCanvas(800, 400);
 	const context = canvas.getContext("2d");
-	const background = await Canvas.loadImage("./assets/meme/spongebob-mocking.jpg");
+	const background = await loadImage("./assets/meme/spongebob-mocking.jpg");
 	context.drawImage(background, 0, 0, canvas.width, canvas.height);
 
 	return [context, canvas];

@@ -1,6 +1,6 @@
 const Command = require("@/client/command.js");
 const { MessageAttachment } = require("discord.js");
-const Canvas = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 const wordWrap = require("@/scripts/wordWrap.js");
 
 module.exports = class extends Command {
@@ -39,9 +39,9 @@ module.exports = class extends Command {
 };
 
 async function createImage(size) {
-	const canvas = Canvas.createCanvas(500, 145 * size - 29);
+	const canvas = createCanvas(500, 145 * size - 29);
 	const context = canvas.getContext("2d");
-	const background = await Canvas.loadImage("./assets/meme/spongebob-getting-tough.jpg");
+	const background = await loadImage("./assets/meme/spongebob-getting-tough.jpg");
 	if (size === 6) {
 		context.drawImage(background, 0, 0, 500, 841);
 	} else {

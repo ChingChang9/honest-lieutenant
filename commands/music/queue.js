@@ -63,7 +63,7 @@ async function sendQueue(message, page) {
 async function startCollector(oldMessage, newMessage, queue, page) {
 	const collector = await newMessage.createReactionCollector((reaction, user) => ["⏪", "⬅️", "➡️", "⏩"].includes(reaction.emoji.name) && !user.bot, {
 		max: 1,
-		idle: 30 * 1000
+		idle: newMessage.client.messageCacheLifetime * 1000
 	});
 
 	const lastPage = Math.ceil(queue.length / 10);

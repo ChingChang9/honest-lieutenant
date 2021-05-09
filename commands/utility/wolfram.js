@@ -29,8 +29,8 @@ module.exports = class extends Command {
 	async run(message, { query }) {
 		const output = await waApi.getShort(query).catch(error => {
 			switch (error.message) {
-				case "Wolfram|Alpha did not understand your input": message.reply(error.message); break;
-				default: message.error(error);
+				case "Wolfram|Alpha did not understand your input": return message.reply(error.message);
+				default: return message.error(error);
 			}
 		});
 

@@ -15,7 +15,7 @@ const messages = [
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
-			name: "corona",
+			name: "covid",
 			group: "other",
 			aliases: ["corona", "coronavirus"],
 			description: "Display the coronavirus stats in Edmonton"
