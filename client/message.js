@@ -33,7 +33,7 @@ module.exports = Structures.extend("Message", Message => class extends Message {
 		for (let index = 0; index < this.command.arguments.length; index++) {
 			const arg = this.command.arguments[index];
 
-			if (!argsArray[index] && arg.default === null) {
+			if (!argsArray[index] && arg.default === null && (!arg.allowAttachment || arg.allowAttachment && !this.attachments.size)) {
 				return this.reply(`The correct usage is \`${
 					this.guild.commandPrefix }${ this.command.name } ${ this.command.format
 				}\`\nType \`${ this.guild.commandPrefix }help ${ this.command.name

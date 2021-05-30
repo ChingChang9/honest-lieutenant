@@ -1,6 +1,6 @@
 {
   "name": "honest-lieutenant",
-  "version": "3.21.1",
+  "version": "3.22.0",
   "description": "To be direct and honest is not safe",
   "main": "index.js",
   "scripts": {
@@ -42,30 +42,31 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
-    "better-sqlite3": "^7.3.1",
+    "better-sqlite3": "^7.4.0",
     "bufferutil": "^4.0.3",
-    "canvas": "^2.7.0",
+    "canvas": "2.8",
     "cheerio": "^1.0.0-rc.9",
     "discord-rpc": "^3.2.0",
     "discord-ytdl-core": "^5.0.3",
     "discord.js": "^12.5.3",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^4.3.0",
-    "firebase-admin": "^9.7.0",
-    "googleapis": "^73.0.0",
+    "firebase-admin": "9.9",
+    "googleapis": "^74.2.0",
     "module-alias": "^2.2.2",
-    "node-gyp": "^8.0.0",
+    "node-gyp": "^8.1.0",
+    "node-tesseract-ocr": "^2.2.1",
     "register-scheme": "github:devsnek/node-register-scheme",
     "require-all": "^3.0.0",
     "sodium": "^3.0.2",
     "utf-8-validate": "^5.0.5",
     "wolfram-alpha-api": "https://products.wolframalpha.com/api/libraries/javascript/wolfram-alpha-api-1.0.0-rc.1.tgz",
-    "ytdl-core": "^4.7.0",
+    "ytdl-core": "^4.8.2",
     "ytpl": "^2.2.1",
     "ytsr": "^3.5.0",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.26.0"
+    "eslint": "7.27"
   }
 }

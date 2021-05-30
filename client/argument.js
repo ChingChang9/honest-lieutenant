@@ -5,5 +5,6 @@ module.exports = class Argument {
 		this.oneOf = info.oneOf || null;
 		this.validate = info.validate || (() => true);
 		this.parse = info.parse || (value => value);
+		this.allowAttachment = !!info.allowAttachment;
 	}
 };

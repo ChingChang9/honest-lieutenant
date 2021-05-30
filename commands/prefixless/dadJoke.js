@@ -45,7 +45,7 @@ module.exports = {
 					return message.say(`You are ${ sonName }?? I thought you were ${ message.member.displayName } 🤔🤔`);
 				}
 
-				return message.say(`Hi ${ sonName }, I'm ${ dadNames[Math.floor(Math.random() *  dadNames.length)] }! ${ emoji }`);
+				return message.say(`hi ${ sonName }, im ${ dadNames[Math.floor(Math.random() *  dadNames.length)] }! ${ emoji }`);
 			}
 		}
 	}
