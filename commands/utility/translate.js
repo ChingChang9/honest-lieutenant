@@ -23,7 +23,7 @@ module.exports = class extends Command {
 
 	async run(message, { text }) {
 		const imageUrl = message.attachments.entries().next().value?.[1].url;
-		if (imageUrl && !acceptedFormats.includes(imageUrl.match(/\..{3,4}$/)[1])) {
+		if (imageUrl && !acceptedFormats.includes(imageUrl.match(/\.(.{3,4})$/)?.[1])) {
 		    message.reply("Unaccepted file format");
         } else if (imageUrl) {
 			tesseract.recognize(imageUrl, {
